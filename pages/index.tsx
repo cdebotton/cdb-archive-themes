@@ -6,10 +6,11 @@ export default function IndexPage() {
   return (
     <>
       <Text scale={4} as="h1">
-        Hello world!{' '}
+        Hello world{' '}
         <span aria-label="globe" role="img">
           🌍
         </span>
+        !
       </Text>
     </>
   );
