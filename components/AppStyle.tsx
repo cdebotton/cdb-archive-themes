@@ -1,7 +1,9 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 import { normalize, transparentize, rem } from 'polished';
 
-export const AppStyle = createGlobalStyle`
+import { Theme } from './Theme';
+
+export const AppStyle = createGlobalStyle<{ theme: Theme }>`
   ${normalize()};
 
   *,
@@ -40,5 +42,22 @@ export const AppStyle = createGlobalStyle`
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case 'light':
+          return css`
+            color: #1f1f1f;
+            background-color: #fff;
+          `;
+        case 'dark':
+          return css`
+            color: #fff;
+            background-color: #1f1f1f;
+          `;
+      }
+    }}
   }
 `;

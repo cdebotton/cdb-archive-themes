@@ -5,7 +5,10 @@ import React, {
   useReducer,
   ReactElement,
 } from 'react';
-import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+import {
+  ThemeProvider as StyledThemeProvider,
+  ThemeContext,
+} from 'styled-components';
 
 export type Theme = {
   mode: 'light' | 'dark';
@@ -47,4 +50,8 @@ export function ThemeProvider({ children }: Props) {
 
 export function useThemeDispatch() {
   return useContext(ThemeDispatchContext);
+}
+
+export function useTheme() {
+  return useContext(ThemeContext);
 }
