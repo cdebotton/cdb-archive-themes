@@ -3,14 +3,17 @@ import { AppProps, Container } from 'next/app';
 
 import { AppStyle } from '../components/AppStyle';
 import { Viewport } from '../components/Viewport';
+import { ThemeProvider } from '../components/Theme';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Container>
-      <Viewport>
-        <AppStyle />
-        <Component {...pageProps} />
-      </Viewport>
+      <ThemeProvider>
+        <Viewport>
+          <AppStyle />
+          <Component {...pageProps} />
+        </Viewport>
+      </ThemeProvider>
     </Container>
   );
 }
