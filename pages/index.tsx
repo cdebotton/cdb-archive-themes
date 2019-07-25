@@ -8,6 +8,7 @@ export default function IndexPage() {
       <Text scale={4} as="h1">
         Hello, world!
       </Text>
+      <Text>This is my cool website.</Text>
     </>
   );
 }
