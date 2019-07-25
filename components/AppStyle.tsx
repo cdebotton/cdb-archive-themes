@@ -27,24 +27,7 @@ export const AppStyle = createGlobalStyle<{ theme: Theme }>`
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: calc(${rem(12)} + 0.35vw);
     line-height: 1.4;
-  }
-  
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    text-rendering: optimizeLegibility;
-    max-width: 40ch;
-    line-height: 1;
-  }
-  * {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  body {
+    
     ${({ theme }) => {
       switch (theme.mode) {
         case 'light':
@@ -59,5 +42,21 @@ export const AppStyle = createGlobalStyle<{ theme: Theme }>`
           `;
       }
     }}
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-rendering: optimizeLegibility;
+    max-width: 40ch;
+    line-height: 1;
+  }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 `;
