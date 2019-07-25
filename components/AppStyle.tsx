@@ -1,9 +1,7 @@
-import { createGlobalStyle, css } from 'styled-components';
+import { createGlobalStyle } from 'styled-components';
 import { normalize, transparentize, rem } from 'polished';
 
-import { Theme } from './Theme';
-
-export const AppStyle = createGlobalStyle<{ theme: Theme }>`
+export const AppStyle = createGlobalStyle`
   ${normalize()};
 
   *,
@@ -27,21 +25,6 @@ export const AppStyle = createGlobalStyle<{ theme: Theme }>`
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: calc(${rem(12)} + 0.35vw);
     line-height: 1.4;
-    
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case 'light':
-          return css`
-            color: #1f1f1f;
-            background-color: #fff;
-          `;
-        case 'dark':
-          return css`
-            color: #fff;
-            background-color: #1f1f1f;
-          `;
-      }
-    }}
   }
   
   h1,
@@ -54,7 +37,7 @@ export const AppStyle = createGlobalStyle<{ theme: Theme }>`
     max-width: 40ch;
     line-height: 1;
   }
-
+  
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
