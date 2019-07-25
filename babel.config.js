@@ -4,6 +4,7 @@ module.exports = {
     [
       'styled-components',
       {
+        pure: true,
         ssr: true,
         displayName: process.env.NODE_ENV !== 'production',
         minify: process.env.NODE_ENV === 'production',

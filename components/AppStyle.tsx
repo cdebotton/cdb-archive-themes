@@ -1,5 +1,25 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, ThemedStyledProps } from 'styled-components';
 import { normalize, transparentize, rem } from 'polished';
+
+import { Theme } from './Theme';
+
+function getBackgroundColor({ theme }: ThemedStyledProps<unknown, Theme>) {
+  switch (theme.mode) {
+    case 'dark':
+      return '#1f1f1f';
+    case 'light':
+      return '#efefef';
+  }
+}
+
+function getColor({ theme }: ThemedStyledProps<unknown, Theme>) {
+  switch (theme.mode) {
+    case 'dark':
+      return '#efefef';
+    case 'light':
+      return '#1f1f1f';
+  }
+}
 
 export const AppStyle = createGlobalStyle`
   ${normalize()};
@@ -25,6 +45,8 @@ export const AppStyle = createGlobalStyle`
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: calc(${rem(12)} + 0.35vw);
     line-height: 1.4;
+    color: ${getColor};
+    background-color: ${getBackgroundColor};
   }
   
   h1,

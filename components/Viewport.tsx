@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { padding, rem } from 'polished';
 
 type Props = {
@@ -36,21 +36,5 @@ export const Viewport = styled(function Viewport({
   width: 100vw;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-
   ${padding(rem(20))};
-
-  ${({ theme }) => {
-    switch (theme.mode) {
-      case 'light':
-        return css`
-          color: #1f1f1f;
-          background-color: #fff;
-        `;
-      case 'dark':
-        return css`
-          color: #fff;
-          background-color: #1f1f1f;
-        `;
-    }
-  }}
 `;
