@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppProps, Container } from 'next/app';
 import Head from 'next/head';
+import { css } from 'styled-components';
 
 import { AppStyle } from '../components/AppStyle';
 import { Viewport } from '../components/Viewport';
@@ -12,12 +13,22 @@ export default function App({ Component, pageProps }: AppProps) {
     <Container>
       <Head>
         <title>Christian de Botton</title>
+        <meta
+          name="description"
+          content="Photography portfolio and occasional engineering focused writing by Brooklyn based software engineer, Christian de Botton."
+        />
       </Head>
       <ThemeProvider>
         <Viewport>
           <AppStyle />
           <Component {...pageProps} />
-          <SocialAppBar css="position: fixed; bottom: 0; right: 0;" />
+          <SocialAppBar
+            css={css`
+              position: fixed;
+              bottom: 0;
+              right: 0;
+            `}
+          />
         </Viewport>
       </ThemeProvider>
     </Container>
