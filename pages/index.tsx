@@ -14,7 +14,13 @@ export default function IndexPage() {
       </Text>
       <Text scale={1}>
         I'm the lead engineer on{' '}
-        <a href="//vimeo.com" target="_blank" rel="noopener noreferrer">
+        <a
+          aria-label="vimeo"
+          tabIndex={0}
+          href="//vimeo.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Vimeo />
         </a>
         's frontend platform team, previously on the distribution product team.
