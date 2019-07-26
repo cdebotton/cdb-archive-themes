@@ -18,11 +18,19 @@ type Props = {
 export const SocialAppBar = styled(function SocialAppBar({ className }: Props) {
   return (
     <div className={className}>
-      <FALink icon={faGithub} href="//github.com/cdebotton" />
-      <FALink icon={faTwitter} href="//twitter.com/cdebotton" />
-      <FALink icon={faInstagram} href="//instagram.com/cdebotton" />
-      <FALink icon={faMedium} href="//medium.com/@cdebotton" />
-      <FALink icon={faLinkedin} href="//linkedin.com/in/christiandebotton" />
+      <FALink icon={faGithub} href="//github.com/cdebotton" label="Github" />
+      <FALink icon={faTwitter} href="//twitter.com/cdebotton" label="Twitter" />
+      <FALink
+        icon={faInstagram}
+        href="//instagram.com/cdebotton"
+        label="Instagram"
+      />
+      <FALink icon={faMedium} href="//medium.com/@cdebotton" label="Medium" />
+      <FALink
+        icon={faLinkedin}
+        href="//linkedin.com/in/christiandebotton"
+        label="LinkedIn"
+      />
     </div>
   );
 })`
@@ -36,11 +44,18 @@ export const SocialAppBar = styled(function SocialAppBar({ className }: Props) {
 type FALinkProps = {
   icon: IconDefinition;
   href: string;
+  label: string;
 };
 
-function FALink({ href, icon }: FALinkProps) {
+function FALink({ href, icon, label }: FALinkProps) {
   return (
-    <a rel="noopener noreferrer" target="_blank" href={href}>
+    <a
+      tabIndex={0}
+      aria-label={label}
+      rel="noopener noreferrer"
+      target="_blank"
+      href={href}
+    >
       <FontAwesomeIcon icon={icon} />
     </a>
   );
