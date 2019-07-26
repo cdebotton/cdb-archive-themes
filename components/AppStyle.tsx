@@ -59,6 +59,10 @@ export const AppStyle = createGlobalStyle`
     max-width: 40ch;
     line-height: 1;
   }
+
+  p {
+    max-width: 60ch;
+  }
   
   * {
     -webkit-font-smoothing: antialiased;
