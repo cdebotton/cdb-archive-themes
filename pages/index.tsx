@@ -1,11 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 import { em } from 'polished';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
 
 import { Text } from '../components/Text';
 import Vimeo from '../components/Vimeo';
 
+import { Users } from './__generated__/Users';
+
+const USERS_QUERY = gql`
+  query Users {
+    users {
+      id
+    }
+  }
+`;
+
 export default function IndexPage() {
+  const { data } = useQuery<Users>(USERS_QUERY);
+
+  console.log(data.users);
+
   return (
     <Layout>
       <Text scale={4}>Hello!</Text>

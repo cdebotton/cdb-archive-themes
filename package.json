@@ -7,6 +7,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "typegen": "apollo client:codegen --target=typescript --localSchemaFile=pages/api/schema.graphql --addTypename --includes=pages/**/*.tsx",
     "postinstall": "prisma2 generate"
   },
   "devDependencies": {
