@@ -20,7 +20,7 @@ const USERS_QUERY = gql`
 export default function IndexPage() {
   const { data } = useQuery<Users>(USERS_QUERY);
 
-  console.log(data.users);
+  console.log(data && data.users);
 
   return (
     <Layout>
