@@ -7,11 +7,6 @@
       "embedded": false
     },
     {
-      "stepType": "CreateModel",
-      "name": "Gallery",
-      "embedded": false
-    },
-    {
       "stepType": "CreateField",
       "model": "User",
       "name": "id",
@@ -60,37 +55,6 @@
         "Base": "String"
       },
       "arity": "optional",
-      "isUnique": false
-    },
-    {
-      "stepType": "CreateField",
-      "model": "Gallery",
-      "name": "id",
-      "type": {
-        "Base": "String"
-      },
-      "arity": "required",
-      "isUnique": true,
-      "id": {
-        "strategy": "Auto",
-        "sequence": null
-      },
-      "default": {
-        "Expression": [
-          "cuid",
-          "String",
-          []
-        ]
-      }
-    },
-    {
-      "stepType": "CreateField",
-      "model": "Gallery",
-      "name": "title",
-      "type": {
-        "Base": "String"
-      },
-      "arity": "required",
       "isUnique": false
     }
   ]
