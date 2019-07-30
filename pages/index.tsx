@@ -45,6 +45,7 @@ export default function IndexPage({ galleries }: Props) {
       </Text>
       {galleries.map(gallery => (
         <Link
+          prefetch
           key={gallery.uri}
           href="/galleries/:gid"
           as={`/galleries/${gallery.uri}`}
