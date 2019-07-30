@@ -24,7 +24,9 @@ export default function GalleryPage({ gallery }: Props) {
 
 GalleryPage.getInitialProps = async function getInitialProps({ req, query }) {
   const gallery = await fetch(
-    `http://${req.headers.host}/api/galleries/${query.gid}`,
+    `http://${req ? req.headers.host : window.location.host}/api/galleries/${
+      query.gid
+    }`,
   ).then(res => res.json());
 
   return { gallery };

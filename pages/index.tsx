@@ -59,7 +59,7 @@ export default function IndexPage({ galleries }: Props) {
 
 IndexPage.getInitialProps = async ({ req }) => {
   const galleries = await fetch(
-    `http://${req.headers.host}/api/galleries`,
+    `http://${req ? req.headers.host : window.location.host}/api/galleries`,
   ).then(res => res.json());
 
   return { galleries };

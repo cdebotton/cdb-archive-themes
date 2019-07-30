@@ -11,6 +11,7 @@ export default function(req: NextApiRequest, res: NextApiResponse) {
     res.end('Not found');
   }
 
+  res.setHeader('Content-Type', 'application/json; charset=UTF-8');
   res.status(200);
   res.end(JSON.stringify(gallery));
 }
