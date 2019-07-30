@@ -11,7 +11,7 @@ export const Viewport = styled(function Viewport({
   className,
   children,
 }: Props) {
-  const [height, setHeight] = useState(0);
+  const [height, setHeight] = useState<number>();
 
   useEffect(() => {
     function onResize() {
