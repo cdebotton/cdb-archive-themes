@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, AppProps } from 'next/app';
+import NextApp, { Container, AppProps, AppContext } from 'next/app';
 import Head from 'next/head';
 import { css } from 'styled-components';
 
@@ -8,7 +8,7 @@ import { Viewport } from '../components/Viewport';
 import { ThemeProvider } from '../components/Theme';
 import { SocialAppBar } from '../components/SocialAppBar';
 
-function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <Container>
       <Head>
@@ -35,4 +35,8 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 
-export default App;
+App.getInitialProps = async (context: AppContext) => {
+  const originalProps = await NextApp.getInitialProps(context);
+
+  return originalProps;
+};

@@ -1,11 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import { em } from 'polished';
+import fetch from 'isomorphic-unfetch';
+import Link from 'next/link';
 
 import { Text } from '../components/Text';
 import Vimeo from '../components/Vimeo';
 
-export default function IndexPage() {
+type Gallery = {
+  uri: string;
+  title: string;
+};
+
+type Props = {
+  galleries: Gallery[];
+};
+
+export default function IndexPage({ galleries }: Props) {
   return (
     <Layout>
       <Text scale={4}>Hello!</Text>
@@ -32,9 +43,26 @@ export default function IndexPage() {
         wanted a place to show off some images that I'm particularly happy with,
         and occasioanlly write about programming, so here we are.
       </Text>
+      {galleries.map(gallery => (
+        <Link
+          key={gallery.uri}
+          href="/galleries/:gid"
+          as={`/galleries/${gallery.uri}`}
+        >
+          <a>{gallery.title}</a>
+        </Link>
+      ))}
     </Layout>
   );
 }
+
+IndexPage.getInitialProps = async ({ req }) => {
+  const galleries = await fetch(
+    `http://${req.headers.host}/api/galleries`,
+  ).then(res => res.json());
+
+  return { galleries };
+};
 
 const Layout = styled.div`
   display: grid;
