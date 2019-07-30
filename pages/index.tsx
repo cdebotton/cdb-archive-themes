@@ -47,7 +47,7 @@ export default function IndexPage({ galleries }: Props) {
         <Link
           prefetch
           key={gallery.uri}
-          href="/galleries/:gid"
+          href="/galleries/[gid]"
           as={`/galleries/${gallery.uri}`}
         >
           <a>{gallery.title}</a>
