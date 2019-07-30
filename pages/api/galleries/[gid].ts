@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { galleries } from '../data';
+import { galleries } from '../data.json';
 
 export default function(req: NextApiRequest, res: NextApiResponse) {
   const uri = req.query.gid;
