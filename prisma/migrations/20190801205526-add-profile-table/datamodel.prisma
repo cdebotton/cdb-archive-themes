@@ -17,7 +17,7 @@ model User {
   password  String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  profile   Profile  @unique
+  profile   Profile
 }
 
 model Profile {
