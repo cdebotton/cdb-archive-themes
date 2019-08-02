@@ -16,7 +16,7 @@ if (!process.browser) {
 function create(initialState: NormalizedCacheObject) {
   return new ApolloClient({
     link: new HttpLink({
-      uri: 'http://localhost:3000/graphql',
+      uri: process.env.GRAPHQL_URL,
       fetch,
     }),
     ssrMode: !process.browser,
