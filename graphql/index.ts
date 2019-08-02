@@ -86,7 +86,7 @@ const schema = makeSchema({
   types: [Query, Mutation, User, Profile, nexusPrisma],
   outputs: {
     schema: join(__dirname, './schema.graphql'),
-    typegen: join(__dirname, './generated/nexus-typegen.ts'),
+    typegen: join(__dirname, '../generated/nexus-typegen.ts'),
   },
   typegenAutoConfig: {
     sources: [
@@ -95,6 +95,7 @@ const schema = makeSchema({
     ],
     contextType: 'ctx.Context',
   },
+  shouldGenerateArtifacts: process.env.BABEL_ENV === 'builder',
 });
 
 const server = new ApolloServer({

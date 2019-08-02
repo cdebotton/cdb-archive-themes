@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as ctx from "../types"
+import * as ctx from "../graphql/types"
 import * as photon from "@generated/photon"
 import { core } from "nexus"
 
