@@ -9,7 +9,7 @@
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "postinstall": "prisma2 generate"
+    "postinstall": "prisma2 generate && prisma2 lift up"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -45,6 +45,7 @@
     "eslint-plugin-react-hooks": "^1.6.1",
     "isomorphic-unfetch": "^3.0.0",
     "prettier": "^1.18.2",
+    "prisma2": "^2.0.0-preview-5",
     "typescript": "^3.5.3"
   },
   "dependencies": {
