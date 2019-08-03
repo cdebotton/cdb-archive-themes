@@ -11,6 +11,7 @@ import {
 } from '@prisma/nexus';
 import { ApolloServer } from 'apollo-server-micro';
 import { genSalt, hash, compare } from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 import { Context } from './types';
 
@@ -42,6 +43,18 @@ const Profile = objectType({
 
 const Query = queryType({
   definition(t) {
+    t.field('viewer', {
+      type: 'User',
+      args: {
+        jwt: stringArg({ required: true }),
+      },
+      async resolve(parent, args, { photon }) {
+        const user: any = await jwt.verify(args.jwt, process.env.JWT_SECRET);
+
+        return await photon.users.findOne({ where: { id: user.id } });
+      },
+    });
+
     t.list.field('users', {
       type: 'User',
       resolve(parent, args, { photon }) {
@@ -81,7 +94,7 @@ const Mutation = mutationType({
     });
 
     t.field('login', {
-      type: 'User',
+      type: 'String',
       args: {
         email: stringArg({ required: true }),
         password: stringArg({ required: true }),
@@ -99,7 +112,9 @@ const Mutation = mutationType({
           throw new Error('Bad credentials');
         }
 
-        return user;
+        return jwt.sign(user, process.env.JWT_SECRET, {
+          expiresIn: '60d',
+        });
       },
     });
   },

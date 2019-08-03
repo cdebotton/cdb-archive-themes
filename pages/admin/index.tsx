@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import { Formik, useField } from 'formik';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+
+import { useSetSession, useViewer } from '../../components/Viewer';
+
 import { Login, LoginVariables } from './__generated__/Login';
 
 type Values = { email: string; password: string };
@@ -18,14 +21,7 @@ function TextField({ type, name }: FieldProps) {
 
 const LOGIN_MUTATION = gql`
   mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      id
-      email
-      profile {
-        firstName
-        lastName
-      }
-    }
+    login(email: $email, password: $password)
   }
 `;
 
@@ -38,11 +34,19 @@ export default function Admin() {
     });
   }
 
+  const setSession = useSetSession();
+
   useEffect(() => {
     if (result.called && result.data) {
-      console.log(result.data.login.email);
+      setSession(result.data.login);
     }
-  }, [result]);
+  }, [result, setSession]);
+
+  const viewer = useViewer();
+
+  function handleLogout() {
+    setSession(null);
+  }
 
   return (
     <div>
@@ -59,6 +63,10 @@ export default function Admin() {
           </form>
         )}
       </Formik>
+      <button onClick={handleLogout}>Logout</button>
+      <pre>
+        <code>{JSON.stringify(viewer, null, 2)}</code>
+      </pre>
     </div>
   );
 }

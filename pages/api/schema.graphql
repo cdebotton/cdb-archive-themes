@@ -7,7 +7,7 @@ scalar DateTime
 
 type Mutation {
   createUser(email: String!, firstName: String, lastName: String, password: String!): User!
-  login(email: String!, password: String!): User!
+  login(email: String!, password: String!): String!
 }
 
 type Profile {
@@ -19,6 +19,7 @@ type Profile {
 
 type Query {
   users: [User!]!
+  viewer(jwt: String!): User!
 }
 
 type User {

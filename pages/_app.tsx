@@ -10,6 +10,7 @@ import { Viewport } from '../components/Viewport';
 import { ThemeProvider } from '../components/Theme';
 import { SocialAppBar } from '../components/SocialAppBar';
 import withApollo from '../libs/with-apollo';
+import { ViewerProvider } from '../components/Viewer';
 
 type Props = { apolloClient: ApolloClient<NormalizedCacheObject> };
 
@@ -20,26 +21,28 @@ class App extends NextApp<Props> {
     return (
       <ApolloProvider client={apolloClient}>
         <Container>
-          <Head>
-            <title>Christian de Botton</title>
-            <meta
-              name="description"
-              content="Photography portfolio and occasional engineering focused writing by Brooklyn based software engineer, Christian de Botton."
-            />
-          </Head>
-          <ThemeProvider>
-            <Viewport>
-              <AppStyle />
-              <Component {...pageProps} />
-              <SocialAppBar
-                css={css`
-                  position: fixed;
-                  bottom: 0;
-                  right: 0;
-                `}
+          <ViewerProvider>
+            <Head>
+              <title>Christian de Botton</title>
+              <meta
+                name="description"
+                content="Photography portfolio and occasional engineering focused writing by Brooklyn based software engineer, Christian de Botton."
               />
-            </Viewport>
-          </ThemeProvider>
+            </Head>
+            <ThemeProvider>
+              <Viewport>
+                <AppStyle />
+                <Component {...pageProps} />
+                <SocialAppBar
+                  css={css`
+                    position: fixed;
+                    bottom: 0;
+                    right: 0;
+                  `}
+                />
+              </Viewport>
+            </ThemeProvider>
+          </ViewerProvider>
         </Container>
       </ApolloProvider>
     );

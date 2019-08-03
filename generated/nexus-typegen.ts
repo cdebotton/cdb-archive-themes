@@ -43,7 +43,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createUser: NexusGenRootTypes['User']; // User!
-    login: NexusGenRootTypes['User']; // User!
+    login: string; // String!
   }
   Profile: { // field return type
     firstName: string | null; // String
@@ -53,6 +53,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     users: NexusGenRootTypes['User'][]; // [User!]!
+    viewer: NexusGenRootTypes['User']; // User!
   }
   User: { // field return type
     createdAt: any; // DateTime!
@@ -74,6 +75,11 @@ export interface NexusGenArgTypes {
     login: { // args
       email: string; // String!
       password: string; // String!
+    }
+  }
+  Query: {
+    viewer: { // args
+      jwt: string; // String!
     }
   }
 }
