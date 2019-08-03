@@ -15,6 +15,8 @@ import jwt from 'jsonwebtoken';
 
 import { Context } from './types';
 
+const { JWT_SECRET } = process.env;
+
 const photon = new Photon();
 const nexusPrisma = nexusPrismaPlugin({
   photon: (ctx: Context) => ctx.photon,
@@ -49,9 +51,17 @@ const Query = queryType({
         jwt: stringArg({ required: true }),
       },
       async resolve(parent, args, { photon }) {
-        const user: any = await jwt.verify(args.jwt, process.env.JWT_SECRET);
+        if (!JWT_SECRET) {
+          throw new Error(`process.env.TOKEN_KEY hasn't been set.`);
+        }
 
-        return await photon.users.findOne({ where: { id: user.id } });
+        const userId = await jwt.verify(args.jwt, JWT_SECRET);
+
+        if (typeof userId !== 'string') {
+          throw new Error('Invalid JWT');
+        }
+
+        return await photon.users.findOne({ where: { id: userId } });
       },
     });
 
@@ -100,6 +110,10 @@ const Mutation = mutationType({
         password: stringArg({ required: true }),
       },
       async resolve(parent, args, { photon }) {
+        if (!JWT_SECRET) {
+          throw new Error(`process.env.TOKEN_KEY hasn't been set.`);
+        }
+
         const user = await photon.users.findOne({
           where: { email: args.email },
         });
@@ -112,9 +126,7 @@ const Mutation = mutationType({
           throw new Error('Bad credentials');
         }
 
-        return jwt.sign(user, process.env.JWT_SECRET, {
-          expiresIn: '60d',
-        });
+        return jwt.sign(user.id, JWT_SECRET);
       },
     });
   },

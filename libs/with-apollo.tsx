@@ -28,7 +28,6 @@ export default function withApollo(App: any) {
       Head.rewind();
 
       const apolloState = apolloClient.cache.extract();
-      console.log(apolloState);
 
       return { ...appProps, apolloState };
     }

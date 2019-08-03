@@ -10,11 +10,13 @@ import React, {
 } from 'react';
 import gql from 'graphql-tag';
 import { useApolloClient } from '@apollo/react-hooks';
+import { useRouter } from 'next/router';
 
 import * as ApolloTypes from './__generated__/Viewer';
 
-type State = ApolloTypes.Viewer & {
+type State = {
   jwt: string | null;
+  viewer: ApolloTypes.Viewer['viewer'] | null;
 };
 
 type Action =
@@ -22,11 +24,17 @@ type Action =
       type: 'SET_JWT';
       payload: string | null;
     }
-  | { type: 'SET_VIEWER'; payload: ApolloTypes.Viewer['viewer'] };
+  | { type: 'SET_VIEWER'; payload: ApolloTypes.Viewer['viewer'] | null };
+
+const { TOKEN_KEY } = process.env;
 
 function readLocalToken(): string | null {
+  if (!TOKEN_KEY) {
+    throw new Error(`process.env.TOKEN_KEY hasn't been set.`);
+  }
+
   if (process.browser) {
-    return localStorage.getItem(process.env.TOKEN_KEY) || null;
+    return localStorage.getItem(TOKEN_KEY) || null;
   }
 
   return null;
@@ -36,7 +44,8 @@ type Props = {
   children?: ReactNode;
 };
 
-const Viewer = createContext<ApolloTypes.Viewer['viewer']>(null);
+const JWT = createContext<string | null>(null);
+const Viewer = createContext<ApolloTypes.Viewer['viewer'] | null>(null);
 const ViewerDispatch = createContext<Dispatch<Action>>(() => {
   throw new Error('Not implemented');
 });
@@ -80,10 +89,14 @@ export function ViewerProvider({ children }: Props) {
   const stale = useRef(false);
 
   useEffect(() => {
+    if (!TOKEN_KEY) {
+      throw new Error(`process.env.TOKEN_KEY hasn't been set.`);
+    }
+
     if (state.jwt) {
-      localStorage.setItem(process.env.TOKEN_KEY, state.jwt);
+      localStorage.setItem(TOKEN_KEY, state.jwt);
     } else {
-      localStorage.removeItem(process.env.TOKEN_KEY);
+      localStorage.removeItem(TOKEN_KEY);
     }
   }, [state.jwt]);
 
@@ -118,11 +131,13 @@ export function ViewerProvider({ children }: Props) {
   }, [state.jwt, client]);
 
   return (
-    <Viewer.Provider value={state.viewer}>
-      <ViewerDispatch.Provider value={dispatch}>
-        {children}
-      </ViewerDispatch.Provider>
-    </Viewer.Provider>
+    <JWT.Provider value={state.jwt}>
+      <Viewer.Provider value={state.viewer}>
+        <ViewerDispatch.Provider value={dispatch}>
+          {children}
+        </ViewerDispatch.Provider>
+      </Viewer.Provider>
+    </JWT.Provider>
   );
 }
 
@@ -137,4 +152,15 @@ export function useSetSession() {
     (payload: string | null) => dispatch({ type: 'SET_JWT', payload }),
     [dispatch],
   );
+}
+
+export function useProtectedRoute() {
+  const router = useRouter();
+  const jwt = useContext(JWT);
+
+  useEffect(() => {
+    if (!jwt) {
+      router.replace(`/admin/login?from=${router.asPath}`, '/admin/login');
+    }
+  }, [router, jwt]);
 }

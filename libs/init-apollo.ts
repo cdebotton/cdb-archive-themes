@@ -13,10 +13,12 @@ if (!process.browser) {
   global.fetch = unfetch;
 }
 
+const { NOW_URL = 'http://localhost:3000' } = process.env;
+
 function create(initialState: NormalizedCacheObject) {
   return new ApolloClient({
     link: new HttpLink({
-      uri: process.env.GRAPHQL_URL,
+      uri: `${NOW_URL}/api/graphql`,
       fetch: fetch,
     }),
     ssrMode: !process.browser,
