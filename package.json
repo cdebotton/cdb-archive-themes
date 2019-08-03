@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@apollo/react-hooks": "^0.1.0-beta.11",
-    "@apollo/react-ssr": "^0.1.0-beta.1",
+    "@apollo/react-ssr": "0.1.0-beta.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-brands-svg-icons": "^5.9.0",
     "@fortawesome/react-fontawesome": "^0.1.4",
@@ -57,6 +57,7 @@
     "apollo-server-micro": "^2.8.0",
     "bcrypt": "^3.0.6",
     "dotenv": "^8.0.0",
+    "formik": "^2.0.1-rc.12",
     "graphql": "^14.4.2",
     "graphql-import": "^0.7.1",
     "next": "^9.0.3",

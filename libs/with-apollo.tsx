@@ -15,7 +15,6 @@ export default function withApollo(App: any) {
       const appProps = await App.getInitialProps(ctx);
       const { AppTree } = ctx;
       const apolloClient = initApollo();
-
       if (!process.browser) {
         try {
           await getDataFromTree(
@@ -29,6 +28,7 @@ export default function withApollo(App: any) {
       Head.rewind();
 
       const apolloState = apolloClient.cache.extract();
+      console.log(apolloState);
 
       return { ...appProps, apolloState };
     }

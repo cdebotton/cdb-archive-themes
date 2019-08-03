@@ -17,7 +17,7 @@ function create(initialState: NormalizedCacheObject) {
   return new ApolloClient({
     link: new HttpLink({
       uri: process.env.GRAPHQL_URL,
-      fetch,
+      fetch: fetch,
     }),
     ssrMode: !process.browser,
     connectToDevTools:

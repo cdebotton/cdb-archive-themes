@@ -1,8 +1,4 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "package.json", "use": "@now/next" },
-    { "src": "graphql/index.ts", "use": "@now/node" }
-  ],
-  "routes": [{ "src": "/graphql", "dest": "/graphql" }]
+  "builds": [{ "src": "package.json", "use": "@now/next" }]
 }

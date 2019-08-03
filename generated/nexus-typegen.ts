@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as ctx from "../graphql/types"
+import * as ctx from "../pages/api/types"
 import * as photon from "@generated/photon"
 import { core } from "nexus"
 
@@ -43,6 +43,7 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createUser: NexusGenRootTypes['User']; // User!
+    login: NexusGenRootTypes['User']; // User!
   }
   Profile: { // field return type
     firstName: string | null; // String
@@ -68,6 +69,10 @@ export interface NexusGenArgTypes {
       email: string; // String!
       firstName?: string | null; // String
       lastName?: string | null; // String
+      password: string; // String!
+    }
+    login: { // args
+      email: string; // String!
       password: string; // String!
     }
   }

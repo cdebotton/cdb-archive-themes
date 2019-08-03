@@ -10,7 +10,7 @@ import {
   stringArg,
 } from '@prisma/nexus';
 import { ApolloServer } from 'apollo-server-micro';
-import { genSalt, hash } from 'bcrypt';
+import { genSalt, hash, compare } from 'bcrypt';
 
 import { Context } from './types';
 
@@ -79,6 +79,29 @@ const Mutation = mutationType({
         });
       },
     });
+
+    t.field('login', {
+      type: 'User',
+      args: {
+        email: stringArg({ required: true }),
+        password: stringArg({ required: true }),
+      },
+      async resolve(parent, args, { photon }) {
+        const user = await photon.users.findOne({
+          where: { email: args.email },
+        });
+
+        if (!user) {
+          throw new Error('Bad credentials');
+        }
+
+        if (!(await compare(args.password, user.password))) {
+          throw new Error('Bad credentials');
+        }
+
+        return user;
+      },
+    });
   },
 });
 
@@ -86,7 +109,7 @@ const schema = makeSchema({
   types: [Query, Mutation, User, Profile, nexusPrisma],
   outputs: {
     schema: join(__dirname, './schema.graphql'),
-    typegen: join(__dirname, '../generated/nexus-typegen.ts'),
+    typegen: join(__dirname, '../../generated/nexus-typegen.ts'),
   },
   typegenAutoConfig: {
     sources: [
@@ -111,4 +134,4 @@ export const config = {
   },
 };
 
-export default server.createHandler({ path: '/graphql' });
+export default server.createHandler({ path: '/api/graphql' });

@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { em } from 'polished';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 import { Text } from '../components/Text';
 import Vimeo from '../components/Vimeo';
