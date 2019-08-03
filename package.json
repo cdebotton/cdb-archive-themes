@@ -5,11 +5,11 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development next",
-    "build": "next build",
+    "build": "npx prisma2 lift up && next build",
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "postinstall": "prisma2 generate && prisma2 lift up"
+    "postinstall": "npx prisma2 generate"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
