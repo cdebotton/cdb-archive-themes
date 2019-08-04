@@ -49,7 +49,7 @@ export interface NexusGenFieldTypes {
     firstName: string | null; // String
     id: string; // ID!
     lastName: string | null; // String
-    user: NexusGenRootTypes['User']; // User!
+    user: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
     users: NexusGenRootTypes['User'][]; // [User!]!
