@@ -1,3 +1,9 @@
 README.md
 .next
 node_modules
+.eslintignore
+.eslintrc
+.storybook
+.env
+.gitignore
+.git
