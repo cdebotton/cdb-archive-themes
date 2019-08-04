@@ -3,7 +3,6 @@
   "builds": [{ "src": "package.json", "use": "@now/next" }],
   "env": {
     "POSTGRESQL_URL": "@postgresql-url",
-    "GRAPHQL_URL": "@graphql-url",
     "JWT_SECRET": "@jwt-secret",
     "TOKEN_KEY": "@token-key"
   }
