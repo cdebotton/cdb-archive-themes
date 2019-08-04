@@ -67,8 +67,12 @@ const Query = queryType({
 
     t.list.field('users', {
       type: 'User',
-      resolve(parent, args, { photon }) {
-        return photon.users.findMany();
+      async resolve(parent, args, { photon }) {
+        try {
+          return await photon.users.findMany();
+        } catch (err) {
+          console.log(err);
+        }
       },
     });
   },

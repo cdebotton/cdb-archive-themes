@@ -46,7 +46,6 @@
     "eslint-plugin-react-hooks": "^1.6.1",
     "isomorphic-unfetch": "^3.0.0",
     "prettier": "^1.18.2",
-    "prisma2": "^2.0.0-preview-5",
     "typescript": "^3.5.3"
   },
   "dependencies": {
@@ -67,10 +66,10 @@
     "next": "^9.0.3",
     "nexus": "^0.12.0-beta.6",
     "polished": "^3.4.1",
+    "prisma2": "^2.0.0-preview-5",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-is": "^16.8.6",
-    "react-spring": "^9.0.0-beta.31",
     "styled-components": "^4.3.2"
   }
 }
