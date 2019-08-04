@@ -1,0 +1,15 @@
+{
+  "version": "0.1.9",
+  "steps": [
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "lastLogin",
+      "type": {
+        "Base": "DateTime"
+      },
+      "arity": "optional",
+      "isUnique": false
+    }
+  ]
+}
