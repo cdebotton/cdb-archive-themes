@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development next",
-    "build": "prisma2 lift up && next build",
+    "now-build": "prisma2 lift up && next build",
+    "build": "next build",
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",

@@ -1,9 +1,11 @@
 {
   "version": 2,
   "builds": [{ "src": "package.json", "use": "@now/next" }],
-  "env": {
-    "POSTGRESQL_URL": "@postgresql-url",
-    "JWT_SECRET": "@jwt-secret",
-    "TOKEN_KEY": "@token-key"
+  "build": {
+    "env": {
+      "POSTGRESQL_URL": "@postgresql-url",
+      "JWT_SECRET": "@jwt-secret",
+      "TOKEN_KEY": "@token-key"
+    }
   }
 }
