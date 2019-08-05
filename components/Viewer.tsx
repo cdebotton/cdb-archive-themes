@@ -11,7 +11,7 @@ import React, {
 import gql from 'graphql-tag';
 import { useApolloClient } from '@apollo/react-hooks';
 
-import * as ApolloTypes from './__generated__/Viewer';
+import * as ApolloTypes from '../__generated__/Viewer';
 
 type State = {
   jwt: string | null;

@@ -22,7 +22,3 @@ export interface Viewer_viewer {
 export interface Viewer {
   viewer: Viewer_viewer;
 }
-
-export interface ViewerVariables {
-  jwt: string;
-}
