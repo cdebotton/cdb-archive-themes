@@ -63,6 +63,21 @@ const Query = queryType({
       },
     });
 
+    t.field('user', {
+      type: 'User',
+      args: {
+        id: stringArg(),
+        email: stringArg(),
+      },
+      resolve(parent, args, { photon }) {
+        if (!(args.id || args.email)) {
+          throw new Error('You must specify an id or email to find a user.');
+        }
+
+        return photon.users.findOne({ where: args });
+      },
+    });
+
     t.list.field('users', {
       type: 'User',
       async resolve(parent, args, { photon }) {

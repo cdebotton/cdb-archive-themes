@@ -18,6 +18,7 @@ type Profile {
 }
 
 type Query {
+  user(email: String, id: String): User!
   users: [User!]!
   viewer: User!
 }

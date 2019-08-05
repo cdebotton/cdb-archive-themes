@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 
 import { redirect } from '../../libs/redirect';
 
-import { Login, LoginVariables } from './__generated__/Login';
+import { Login, LoginVariables } from '../../__generated__/Login';
 
 type Values = { email: string; password: string };
 

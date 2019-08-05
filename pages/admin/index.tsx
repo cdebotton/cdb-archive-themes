@@ -1,14 +1,28 @@
 import React, { useCallback } from 'react';
 import { DocumentContext } from 'next/document';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient, useQuery } from '@apollo/react-hooks';
 import cookie from 'cookie';
+import gql from 'graphql-tag';
 
 import getViewer from '../../libs/getViewer';
 import { redirect } from '../../libs/redirect';
 
 type Props = {
-  pageProps: { viewer: unknown };
+  pageProps: { viewer: any };
 };
+
+const QUERY = gql`
+  query AdminIndexQuery($id: String, $email: String) {
+    user(id: $id, email: $email) {
+      id
+      email
+      profile {
+        firstName
+        lastName
+      }
+    }
+  }
+`;
 
 export default function AdminPage({ pageProps: { viewer } }: Props) {
   const client = useApolloClient();
@@ -24,13 +38,24 @@ export default function AdminPage({ pageProps: { viewer } }: Props) {
     redirect({}, '/admin/login');
   }, [client]);
 
+  const { data, error, loading, networkStatus } = useQuery(QUERY, {
+    variables: { id: viewer.id },
+  });
+
+  console.log(data);
+
   return (
-    <>
+    <div
+      css={{
+        width: '100vw',
+        minHeight: '100vh',
+        display: 'grid',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <button onClick={handleLogout}>Logout</button>
-      <pre>
-        <code>{JSON.stringify(viewer, null, 2)}</code>
-      </pre>
-    </>
+    </div>
   );
 }
 

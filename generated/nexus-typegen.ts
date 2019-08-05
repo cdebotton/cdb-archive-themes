@@ -52,6 +52,7 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User'] | null; // User
   }
   Query: { // field return type
+    user: NexusGenRootTypes['User']; // User!
     users: NexusGenRootTypes['User'][]; // [User!]!
     viewer: NexusGenRootTypes['User']; // User!
   }
@@ -75,6 +76,12 @@ export interface NexusGenArgTypes {
     login: { // args
       email: string; // String!
       password: string; // String!
+    }
+  }
+  Query: {
+    user: { // args
+      email?: string | null; // String
+      id?: string | null; // String
     }
   }
 }
