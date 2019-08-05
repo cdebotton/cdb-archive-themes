@@ -88,18 +88,6 @@ export function ViewerProvider({ children }: Props) {
   const stale = useRef(false);
 
   useEffect(() => {
-    if (!TOKEN_KEY) {
-      throw new Error(`process.env.TOKEN_KEY hasn't been set.`);
-    }
-
-    if (state.jwt) {
-      localStorage.setItem(TOKEN_KEY, state.jwt);
-    } else {
-      localStorage.removeItem(TOKEN_KEY);
-    }
-  }, [state.jwt]);
-
-  useEffect(() => {
     stale.current = false;
 
     async function getViewer(jwt: string) {

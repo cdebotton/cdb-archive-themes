@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { DocumentContext } from 'next/document';
 import { useApolloClient } from '@apollo/react-hooks';
+import cookie from 'cookie';
 
 import getViewer from '../../libs/getViewer';
 import { redirect } from '../../libs/redirect';
@@ -13,7 +14,10 @@ export default function AdminPage({ pageProps: { viewer } }: Props) {
   const client = useApolloClient();
 
   const handleLogout = useCallback(async () => {
-    localStorage.removeItem('token');
+    document.cookie = cookie.serialize('token', '', {
+      maxAge: -1,
+      secure: process.env.NODE_ENV === 'production',
+    });
 
     await client.resetStore();
 

@@ -10,4 +10,4 @@
 // END Enums and Input Objects
 //==============================================================
 
-export type Foo = string;
+export type Foo = unknown;
