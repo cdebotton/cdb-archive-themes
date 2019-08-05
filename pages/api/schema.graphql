@@ -19,7 +19,7 @@ type Profile {
 
 type Query {
   users: [User!]!
-  viewer(jwt: String!): User!
+  viewer: User!
 }
 
 type User {

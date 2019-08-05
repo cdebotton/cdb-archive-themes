@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { Formik, useField } from 'formik';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import cookie from 'cookie';
 import gql from 'graphql-tag';
 import { useRouter } from 'next/router';
 
-import { useSetSession, useViewer } from '../../components/Viewer';
+import { redirect } from '../../libs/redirect';
 
 import { Login, LoginVariables } from './__generated__/Login';
 
@@ -35,27 +36,26 @@ export default function LoginPage() {
     });
   }
 
-  const setSession = useSetSession();
-
-  useEffect(() => {
-    if (result.called && result.data) {
-      setSession(result.data.login);
-    }
-  }, [result, setSession]);
-
-  const viewer = useViewer();
+  const client = useApolloClient();
   const router = useRouter();
 
   useEffect(() => {
-    if (viewer) {
-      let { from } = router.query;
+    if (result.called && result.data) {
+      document.cookie = cookie.serialize('token', result.data.login, {
+        maxAge: 30 * 24 * 60 * 60,
+      });
 
-      if (Array.isArray(from)) {
-        from = from[0];
-      }
-      router.push(from || '/admin');
+      client.cache.reset().then(() => {
+        let { from } = router.query;
+
+        if (Array.isArray(from)) {
+          from = from[0];
+        }
+
+        redirect({}, from || '/admin');
+      });
     }
-  }, [viewer, router]);
+  }, [result, client, router]);
 
   return (
     <div>

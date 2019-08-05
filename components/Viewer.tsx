@@ -10,7 +10,6 @@ import React, {
 } from 'react';
 import gql from 'graphql-tag';
 import { useApolloClient } from '@apollo/react-hooks';
-import { useRouter } from 'next/router';
 
 import * as ApolloTypes from './__generated__/Viewer';
 
@@ -51,8 +50,8 @@ const ViewerDispatch = createContext<Dispatch<Action>>(() => {
 });
 
 const VIEWER_QUERY = gql`
-  query Viewer($jwt: String!) {
-    viewer(jwt: $jwt) {
+  query Viewer {
+    viewer {
       id
       email
       profile {
@@ -154,13 +153,6 @@ export function useSetSession() {
   );
 }
 
-export function useProtectedRoute() {
-  const router = useRouter();
-  const jwt = useContext(JWT);
-
-  useEffect(() => {
-    if (!jwt) {
-      router.replace(`/admin/login?from=${router.asPath}`, '/admin/login');
-    }
-  }, [router, jwt]);
+export function useJwt() {
+  return useContext(JWT);
 }

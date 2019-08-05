@@ -1,20 +1,24 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { DocumentContext } from 'next/document';
+import { useApolloClient } from '@apollo/react-hooks';
 
-import {
-  useSetSession,
-  useViewer,
-  useProtectedRoute,
-} from '../../components/Viewer';
+import getViewer from '../../libs/getViewer';
+import { redirect } from '../../libs/redirect';
 
-export default function AdminPage() {
-  const viewer = useViewer();
-  const setSession = useSetSession();
+type Props = {
+  pageProps: { viewer: unknown };
+};
 
-  useProtectedRoute();
+export default function AdminPage({ pageProps: { viewer } }: Props) {
+  const client = useApolloClient();
 
-  function handleLogout() {
-    setSession(null);
-  }
+  const handleLogout = useCallback(async () => {
+    localStorage.removeItem('token');
+
+    await client.resetStore();
+
+    redirect({}, '/admin/login');
+  }, [client]);
 
   return (
     <>
@@ -25,3 +29,14 @@ export default function AdminPage() {
     </>
   );
 }
+
+AdminPage.getInitialProps = async (context: DocumentContext) => {
+  // @ts-ignore
+  const { viewer } = await getViewer(context.apolloClient);
+
+  if (!viewer) {
+    redirect(context, '/admin/login');
+  }
+
+  return { viewer };
+};

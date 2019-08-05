@@ -47,15 +47,13 @@ const Query = queryType({
   definition(t) {
     t.field('viewer', {
       type: 'User',
-      args: {
-        jwt: stringArg({ required: true }),
-      },
-      async resolve(parent, args, { photon }) {
+
+      async resolve(parent, args, { photon, token }) {
         if (!JWT_SECRET) {
           throw new Error(`process.env.TOKEN_KEY hasn't been set.`);
         }
 
-        const userId = await jwt.verify(args.jwt, JWT_SECRET);
+        const userId = await jwt.verify(token, JWT_SECRET);
 
         if (typeof userId !== 'string') {
           throw new Error('Invalid JWT');
@@ -154,8 +152,10 @@ const schema = makeSchema({
 
 const server = new ApolloServer({
   schema,
-  context() {
-    return { photon };
+  context({ req }) {
+    const [, token] = req.headers.authorization.split(' ');
+
+    return { photon, token };
   },
 });
 

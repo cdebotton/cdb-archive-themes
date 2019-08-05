@@ -77,11 +77,6 @@ export interface NexusGenArgTypes {
       password: string; // String!
     }
   }
-  Query: {
-    viewer: { // args
-      jwt: string; // String!
-    }
-  }
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
