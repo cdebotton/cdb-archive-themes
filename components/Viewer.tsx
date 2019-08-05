@@ -103,10 +103,7 @@ export function ViewerProvider({ children }: Props) {
     stale.current = false;
 
     async function getViewer(jwt: string) {
-      const { data } = await client.query<
-        ApolloTypes.Viewer,
-        ApolloTypes.ViewerVariables
-      >({
+      const { data } = await client.query<ApolloTypes.Viewer>({
         query: VIEWER_QUERY,
         variables: { jwt },
       });
