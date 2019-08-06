@@ -20,19 +20,6 @@ type Props = {
   viewer: ViewerTypes.Viewer_viewer;
 };
 
-const QUERY = gql`
-  query AdminIndexQuery($id: String, $email: String) {
-    user(id: $id, email: $email) {
-      id
-      email
-      profile {
-        firstName
-        lastName
-      }
-    }
-  }
-`;
-
 export function AdminLayout({ children, viewer }: Props) {
   const client = useApolloClient();
 
@@ -47,27 +34,16 @@ export function AdminLayout({ children, viewer }: Props) {
     redirect({}, '/admin/login');
   }, [client]);
 
-  const { data, error, loading, networkStatus } = useQuery<
-    ApolloTypes.AdminIndexQuery,
-    ApolloTypes.AdminIndexQueryVariables
-  >(QUERY, {
-    variables: { id: viewer.id },
-  });
+  let name: string;
 
-  if (error) {
-    throw new Error(error.toString());
-  }
-
-  if (loading && networkStatus !== NetworkStatus.refetch) {
+  if (!viewer) {
     return <>Loading...</>;
   }
-
-  let name: string;
 
   const {
     email,
     profile: { firstName, lastName },
-  } = data.user;
+  } = viewer;
 
   if (firstName || lastName) {
     name = [firstName, lastName].join(' ');
@@ -99,15 +75,29 @@ export function AdminLayout({ children, viewer }: Props) {
   );
 }
 
+AdminLayout.fragments = {
+  viewer: gql`
+    fragment CurrentUser on User {
+      id
+      email
+      profile {
+        firstName
+        lastName
+      }
+    }
+  `,
+};
+
 // 💅 Styles
 
 const Page = styled.div`
   width: 100%;
   min-height: 100%;
   display: grid;
-  align-items: center;
+  align-items: start;
   grid-template-rows: repeat(2, min-content) auto;
   grid-template-columns: auto;
+  grid-gap: ${rem(16)};
 `;
 
 const Header = styled.header`
