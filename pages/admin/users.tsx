@@ -1,20 +1,24 @@
 import React from 'react';
 import { DocumentContext } from 'next/document';
 
+import { Text } from '../../components/Text';
 import getViewer from '../../libs/getViewer';
 import { redirect } from '../../libs/redirect';
-import * as ViewerTypes from '../../__generated__/Viewer';
 import { AdminLayout } from '../../components/AdminLayout';
 
 type Props = {
-  pageProps: ViewerTypes.Viewer;
+  pageProps: { viewer: any };
 };
 
-export default function AdminPage({ pageProps: { viewer } }: Props) {
-  return <AdminLayout viewer={viewer}>Hi!</AdminLayout>;
+export default function AdminUsersPage({ pageProps: { viewer } }: Props) {
+  return (
+    <AdminLayout viewer={viewer}>
+      <Text>Users</Text>
+    </AdminLayout>
+  );
 }
 
-AdminPage.getInitialProps = async (context: DocumentContext) => {
+AdminUsersPage.getInitialProps = async (context: DocumentContext) => {
   // @ts-ignore
   const { viewer } = await getViewer(context.apolloClient);
 

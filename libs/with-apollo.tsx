@@ -24,6 +24,7 @@ export default function withApollo(App: any) {
         AppTree,
         ctx: { req, res },
       } = ctx;
+
       const apolloClient = initApollo(
         {},
         { getToken: () => parseCookies(req).token },

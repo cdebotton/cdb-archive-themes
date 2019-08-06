@@ -74,7 +74,7 @@ const Query = queryType({
           throw new Error('You must specify an id or email to find a user.');
         }
 
-        return photon.users.findOne({ where: args });
+        return photon.users.findOne({ where: { id: args.id } });
       },
     });
 
@@ -168,7 +168,9 @@ const schema = makeSchema({
 const server = new ApolloServer({
   schema,
   context({ req }) {
-    const [, token] = req.headers.authorization.split(' ');
+    const [, token] = req.headers.authorization
+      ? req.headers.authorization.split(' ')
+      : '';
 
     return { photon, token };
   },
