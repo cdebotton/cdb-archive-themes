@@ -29,17 +29,6 @@ const User = objectType({
     t.model.email();
     t.model.createdAt();
     t.model.updatedAt();
-    t.model.profile();
-  },
-});
-
-const Profile = objectType({
-  name: 'Profile',
-  definition(t) {
-    t.model.id();
-    t.model.firstName();
-    t.model.lastName();
-    t.model.user();
   },
 });
 
@@ -109,12 +98,8 @@ const Mutation = mutationType({
           data: {
             password,
             email: args.email,
-            profile: {
-              create: {
-                firstName: args.firstName,
-                lastName: args.lastName,
-              },
-            },
+            firstName: args.firstName,
+            lastName: args.lastName,
           },
         });
       },
@@ -149,11 +134,14 @@ const Mutation = mutationType({
   },
 });
 
+const shouldGenerateArtifacts =
+  process.env.NODE_ENV === 'development' && Boolean(process.env.NEXUS_TYPEGEN);
+
 const schema = makeSchema({
-  types: [Query, Mutation, User, Profile, nexusPrisma],
+  types: [Query, Mutation, User, nexusPrisma],
   outputs: {
     schema: join(__dirname, './schema.graphql'),
-    typegen: join(__dirname, '../../generated/nexus-typegen.ts'),
+    typegen: join(__dirname, '../../__generated__/nexus-typegen.ts'),
   },
   typegenAutoConfig: {
     sources: [
@@ -162,7 +150,7 @@ const schema = makeSchema({
     ],
     contextType: 'ctx.Context',
   },
-  shouldGenerateArtifacts: process.env.BABEL_ENV === 'builder',
+  shouldGenerateArtifacts,
 });
 
 const server = new ApolloServer({

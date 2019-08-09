@@ -3,5 +3,4 @@
 # lift lockfile v1
 # Read more about conflict resolution here: TODO
 
-20190803202608-create-users-table
-20190804100628-add-last-login-to-user-table
+20190809080950-create-users-table

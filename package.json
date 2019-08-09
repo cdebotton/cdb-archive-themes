@@ -5,9 +5,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development next",
-    "xnow-build": "prisma2 lift up && next build",
+    "now-build": "prisma2 lift up && next build",
     "build": "NODE_ENV=production next build",
     "start": "NODE_ENV=production next start",
+    "nexus-typegen": "NODE_ENV=development NEXUS_TYPEGEN=true babel-node --no-config --presets=@babel/env,@babel/typescript --extensions=.ts ./pages/api/graphql",
     "postinstall": "prisma2 generate"
   },
   "devDependencies": {
@@ -26,9 +27,6 @@
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "babel-eslint": "^10.0.2",
-    "babel-loader": "^8.0.6",
-    "babel-plugin-styled-components": "^1.10.6",
-    "babel-preset-react-app": "^9.0.0",
     "dotenv-webpack": "^1.7.0",
     "eslint": "^5.0.0",
     "eslint-config-prettier": "^6.0.0",

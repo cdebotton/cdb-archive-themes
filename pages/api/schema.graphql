@@ -10,13 +10,6 @@ type Mutation {
   login(email: String!, password: String!): String!
 }
 
-type Profile {
-  firstName: String
-  id: ID!
-  lastName: String
-  user: User
-}
-
 type Query {
   user(email: String, id: String): User!
   users: [User!]!
@@ -27,6 +20,5 @@ type User {
   createdAt: DateTime!
   email: String!
   id: ID!
-  profile: Profile!
   updatedAt: DateTime!
 }
