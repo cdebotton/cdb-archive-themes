@@ -25,13 +25,9 @@ type Action =
     }
   | { type: 'SET_VIEWER'; payload: ApolloTypes.Viewer['viewer'] | null };
 
-const { TOKEN_KEY } = process.env;
+const { TOKEN_KEY = 'CDB_TOKEN' } = process.env;
 
 function readLocalToken(): string | null {
-  if (!TOKEN_KEY) {
-    throw new Error(`process.env.TOKEN_KEY hasn't been set.`);
-  }
-
   if (process.browser) {
     return localStorage.getItem(TOKEN_KEY) || null;
   }
