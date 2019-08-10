@@ -158,6 +158,7 @@ const schema = makeSchema({
 
 const server = new ApolloServer({
   schema,
+  introspection: true,
   context({ req }) {
     const [, token] = req.headers.authorization
       ? req.headers.authorization.split(' ')
