@@ -50,10 +50,8 @@ const VIEWER_QUERY = gql`
     viewer {
       id
       email
-      profile {
-        firstName
-        lastName
-      }
+      firstName
+      lastName
     }
   }
 `;

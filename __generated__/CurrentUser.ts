@@ -3,17 +3,13 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: Viewer
+// GraphQL fragment: CurrentUser
 // ====================================================
 
-export interface Viewer_viewer {
+export interface CurrentUser {
   __typename: "User";
   id: string;
   email: string;
   firstName: string | null;
   lastName: string | null;
-}
-
-export interface Viewer {
-  viewer: Viewer_viewer;
 }

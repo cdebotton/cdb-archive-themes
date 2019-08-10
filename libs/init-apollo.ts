@@ -14,7 +14,9 @@ if (!process.browser) {
   global.fetch = unfetch;
 }
 
-const { NOW_URL = '' } = process.env;
+const {
+  NOW_URL = process.env.browser ? '' : 'http://localhost:3000',
+} = process.env;
 
 type Options = {
   getToken(): string | null;

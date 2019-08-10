@@ -15,7 +15,7 @@ type Props = {
   className?: string;
 };
 
-export const SocialAppBar = styled(function SocialAppBar({ className }: Props) {
+export const SocialBar = styled(({ className }: Props) => {
   return (
     <div className={className}>
       <FALink icon={faGithub} href="//github.com/cdebotton" label="Github" />

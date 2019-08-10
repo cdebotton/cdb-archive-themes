@@ -52,7 +52,10 @@ export interface NexusGenFieldTypes {
   User: { // field return type
     createdAt: any; // DateTime!
     email: string; // String!
+    firstName: string | null; // String
     id: string; // ID!
+    lastLogin: any | null; // DateTime
+    lastName: string | null; // String
     updatedAt: any; // DateTime!
   }
 }

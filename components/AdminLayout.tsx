@@ -3,12 +3,10 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import gql from 'graphql-tag';
 import cookie from 'cookie';
-import { NetworkStatus } from 'apollo-boost';
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 import { rem } from 'polished';
 
 import { redirect } from '../libs/redirect';
-import * as ApolloTypes from '../__generated__/AdminIndexQuery';
 import * as ViewerTypes from '../__generated__/Viewer';
 
 import { Text } from './Text';
@@ -40,10 +38,7 @@ export function AdminLayout({ children, viewer }: Props) {
     return <>Loading...</>;
   }
 
-  const {
-    email,
-    profile: { firstName, lastName },
-  } = viewer;
+  const { email, firstName, lastName } = viewer;
 
   if (firstName || lastName) {
     name = [firstName, lastName].join(' ');
@@ -80,10 +75,8 @@ AdminLayout.fragments = {
     fragment CurrentUser on User {
       id
       email
-      profile {
-        firstName
-        lastName
-      }
+      firstName
+      lastName
     }
   `,
 };

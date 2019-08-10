@@ -18,10 +18,8 @@ const QUERY = gql`
     users {
       id
       email
-      profile {
-        firstName
-        lastName
-      }
+      firstName
+      lastName
     }
   }
 

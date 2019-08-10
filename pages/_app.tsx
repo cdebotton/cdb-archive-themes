@@ -1,14 +1,12 @@
 import React from 'react';
 import NextApp, { Container } from 'next/app';
 import Head from 'next/head';
-import { css } from 'styled-components';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient, NormalizedCacheObject } from 'apollo-boost';
 
 import { AppStyle } from '../components/AppStyle';
 import { Viewport } from '../components/Viewport';
 import { ThemeProvider } from '../components/Theme';
-import { SocialAppBar } from '../components/SocialAppBar';
 import withApollo from '../libs/with-apollo';
 import { ViewerProvider } from '../components/Viewer';
 
@@ -33,13 +31,6 @@ class App extends NextApp<Props> {
               <Viewport>
                 <AppStyle />
                 <Component {...pageProps} />
-                <SocialAppBar
-                  css={css`
-                    position: fixed;
-                    bottom: 0;
-                    right: 0;
-                  `}
-                />
               </Viewport>
             </ThemeProvider>
           </ViewerProvider>

@@ -29,6 +29,9 @@ const User = objectType({
     t.model.email();
     t.model.createdAt();
     t.model.updatedAt();
+    t.model.firstName();
+    t.model.lastName();
+    t.model.lastLogin();
   },
 });
 
