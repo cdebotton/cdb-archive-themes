@@ -4,3 +4,4 @@ node_modules
 ._*
 thumbs.db
 .env
+.env.build
