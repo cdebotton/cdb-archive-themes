@@ -158,6 +158,7 @@ const schema = makeSchema({
 
 const server = new ApolloServer({
   schema,
+  playground: true,
   introspection: true,
   context({ req }) {
     const [, token] = req.headers.authorization
