@@ -24,9 +24,10 @@ type Options = {
 function create(
   initialState: NormalizedCacheObject,
   { getToken, fetchOptions }: Options,
+  req?,
 ) {
   const httpLink = createHttpLink({
-    uri: `${process.browser ? '' : NOW_URL}/api/graphql`,
+    uri: `${req ? `http://${req.headers.host}` : ''}/api/graphql`,
     fetch: fetch,
     credentials: 'include',
     fetchOptions,
@@ -55,13 +56,14 @@ function create(
 export function initApollo(
   initialState: NormalizedCacheObject = {},
   options: Options,
+  req?,
 ) {
   if (!process.browser) {
-    return create(initialState, options);
+    return create(initialState, options, req);
   }
 
   if (!apolloClient) {
-    apolloClient = create(initialState, options);
+    apolloClient = create(initialState, options, req);
   }
 
   return apolloClient;

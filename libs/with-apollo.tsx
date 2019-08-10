@@ -28,6 +28,7 @@ export default function withApollo(App: any) {
       const apolloClient = initApollo(
         {},
         { getToken: () => parseCookies(req).token },
+        req,
       );
 
       // @ts-ignore
