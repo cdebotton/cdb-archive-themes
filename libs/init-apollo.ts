@@ -14,9 +14,7 @@ if (!process.browser) {
   global.fetch = unfetch;
 }
 
-const {
-  NOW_URL = process.env.browser ? '' : 'http://localhost:3000',
-} = process.env;
+const { NOW_URL = 'http://localhost:3000' } = process.env;
 
 type Options = {
   getToken(): string | null;
@@ -28,8 +26,9 @@ function create(
   { getToken, fetchOptions }: Options,
 ) {
   const httpLink = createHttpLink({
-    uri: `${NOW_URL}/api/graphql`,
+    uri: `${process.browser ? '' : NOW_URL}/api/graphql`,
     fetch: fetch,
+    credentials: 'include',
     fetchOptions,
   });
 
