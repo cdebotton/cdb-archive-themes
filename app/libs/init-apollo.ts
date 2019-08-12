@@ -25,7 +25,7 @@ function create(
   req?,
 ) {
   const httpLink = createHttpLink({
-    uri: `${req ? `http://${req.headers.host}` : ''}/api/graphql`,
+    uri: `${req ? `http://${req.headers.host}` : ''}/graphql`,
     fetch: fetch,
     credentials: 'include',
     fetchOptions,

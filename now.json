@@ -1,6 +1,16 @@
 {
   "version": 2,
-  "builds": [{ "src": "package.json", "use": "@now/next" }],
+  "builds": [
+    { "src": "app/package.json", "use": "@now/next" },
+    {
+      "src": "graphql/**/*.ts",
+      "use": "@now/node@canary",
+      "config": {
+        "includeFiles": [],
+        "maxLambdaSize": "25mb"
+      }
+    }
+  ],
   "build": {
     "env": {
       "POSTGRESQL_URL": "@postgresql-url",
