@@ -137,9 +137,6 @@ const Mutation = mutationType({
   },
 });
 
-const shouldGenerateArtifacts =
-  process.env.NODE_ENV === 'development' && Boolean(process.env.NEXUS_TYPEGEN);
-
 const schema = makeSchema({
   types: [Query, Mutation, User, nexusPrisma],
   outputs: {
@@ -153,7 +150,6 @@ const schema = makeSchema({
     ],
     contextType: 'ctx.Context',
   },
-  shouldGenerateArtifacts,
 });
 
 const server = new ApolloServer({
