@@ -6,13 +6,13 @@
       "use": "@now/next"
     },
     {
-      "src": "api/src/**/*.ts",
+      "src": "api/src/index.ts",
       "use": "@now/node@canary",
       "config": { "maxLambdaSize": "25mb" }
     }
   ],
   "routes": [
-    { "src": "/graphql", "dest": "/api/src/index.ts" },
+    { "src": "/graphql", "dest": "/api/src/**/*.ts" },
     {
       "src": "/(.*)",
       "dest": "/app/$1",
@@ -21,10 +21,11 @@
       }
     }
   ],
-
-  "env": {
-    "POSTGRESQL_URL": "@postgresql-url",
-    "JWT_SECRET": "@jwt-secret",
-    "TOKEN_KEY": "@token-key"
+  "build": {
+    "env": {
+      "POSTGRESQL_URL": "@postgresql-url",
+      "JWT_SECRET": "@jwt-secret",
+      "TOKEN_KEY": "@token-key"
+    }
   }
 }
