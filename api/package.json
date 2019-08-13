@@ -3,7 +3,6 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development nodemon --exec babel-node --require node_modules/dotenv/config --no-config --presets=@babel/env,@babel/typescript --extensions=.ts ./src/index",
-    "deploy": "now -e POSTGRESQL_URL=@postgresql-url",
     "postinstall": "prisma2 generate"
   },
   "engines": {
