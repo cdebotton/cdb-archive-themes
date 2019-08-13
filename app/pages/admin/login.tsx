@@ -43,6 +43,7 @@ export default function LoginPage() {
     if (result.called && result.data) {
       document.cookie = cookie.serialize('token', result.data.login, {
         maxAge: 30 * 24 * 60 * 60,
+        secure: process.env.NODE_ENV === 'production',
       });
 
       client.cache.reset().then(() => {

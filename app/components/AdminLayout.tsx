@@ -24,6 +24,7 @@ export function AdminLayout({ children, viewer }: Props) {
   const handleLogout = useCallback(async () => {
     document.cookie = cookie.serialize('token', '', {
       maxAge: -1,
+      secure: process.env.NODE_ENV === 'production',
     });
 
     await client.resetStore();
