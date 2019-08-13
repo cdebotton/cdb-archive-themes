@@ -2,7 +2,7 @@
   "name": "cdb-graphql",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development nodemon --exec babel-node --require node_modules/dotenv/config --no-config --presets=@babel/env,@babel/typescript --extensions=.ts ./src/index",
+    "dev": "NODE_ENV=development nodemon -w ./src --ext .ts --exec babel-node --require node_modules/dotenv/config --no-config --presets=@babel/env,@babel/typescript --extensions=.ts ./src/index",
     "postinstall": "prisma2 generate"
   },
   "engines": {
@@ -17,6 +17,7 @@
     "@types/jsonwebtoken": "^8.3.3",
     "@types/node": "12.7.1",
     "dotenv": "^8.0.0",
+    "isomorphic-unfetch": "^3.0.0",
     "nodemon": "^1.19.1",
     "prisma2": "^2.0.0-alpha.110",
     "typescript": "3.5.3"

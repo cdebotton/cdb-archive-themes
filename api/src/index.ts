@@ -1,9 +1,13 @@
 import Photon from '@generated/photon';
-import { ApolloServer, gql, addErrorLoggingToSchema } from 'apollo-server';
+import { ApolloServer, gql } from 'apollo-server';
 import { genSalt, hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import fetch from 'isomorphic-unfetch';
+import { getIntrospectionQuery } from 'graphql';
+import fs from 'fs';
 
 import { Context } from './types';
+import { join } from 'path';
 
 const { JWT_SECRET = 'SECRET' } = process.env;
 
@@ -35,6 +39,7 @@ const typeDefs = gql`
       firstName: String
       lastName: String
     ): User!
+
     login(email: String!, password: String!): String!
   }
 `;
@@ -119,7 +124,6 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  introspection: true,
   context({ req }) {
     const [, token] = req.headers.authorization
       ? req.headers.authorization.split(' ')
@@ -130,9 +134,18 @@ const server = new ApolloServer({
 });
 
 if (process.env.NODE_ENV === 'development') {
-  server.listen(4000, () =>
-    console.log(`🚀 Apollo Server is running at http://localhost:4000`),
-  );
+  server.listen(4000, async () => {
+    console.log(`🚀 Apollo Server is running at http://localhost:4000`);
+    const res = await fetch(
+      `http://localhost:4000?query=${getIntrospectionQuery()}`,
+    );
+    const json = await res.json();
+
+    fs.writeFileSync(
+      join(__dirname, '../__generated__/schema.json'),
+      JSON.stringify(json, null, 2),
+    );
+  });
 }
 
 export default server;

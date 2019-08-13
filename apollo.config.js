@@ -2,7 +2,7 @@ module.exports = {
   client: {
     service: {
       name: 'cdb',
-      localSchemaFile: './graphql/schema.graphql',
+      localSchemaFile: './api/__generated__/schema.json',
     },
   },
 };
