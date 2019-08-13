@@ -3,7 +3,8 @@
   "builds": [
     {
       "src": "app/package.json",
-      "use": "@now/static-build"
+      "use": "@now/static-build",
+      "config": { "distDir": "build" }
     },
     {
       "src": "api/src/**/*.ts",
@@ -13,13 +14,8 @@
   ],
   "routes": [
     { "src": "/graphql", "dest": "/api/src/index.ts" },
-    {
-      "src": "/(.*)",
-      "dest": "/app/build/index.html",
-      "headers": {
-        "x-request-path": "$1"
-      }
-    }
+    { "src": "/(.+)", "dest": "/app/$1" },
+    { "src": "/", "dest": "/app/index.html" }
   ],
   "build": {
     "env": {
