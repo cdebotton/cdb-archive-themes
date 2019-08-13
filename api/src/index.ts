@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 import { Context } from './types';
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET = 'SECRET' } = process.env;
 
 const photon = new Photon();
 
@@ -42,10 +42,6 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     async viewer(parent: unknown, args: any, { photon, token }: Context) {
-      if (!JWT_SECRET) {
-        throw new Error(`process.env.TOKEN_KEY hasn't been set.`);
-      }
-
       if (!token) {
         throw new Error('No token');
       }
@@ -103,10 +99,6 @@ const resolvers = {
       args: { email: string; password: string },
       { photon }: Context,
     ) {
-      if (!JWT_SECRET) {
-        throw new Error(`process.env.TOKEN_KEY hasn't been set.`);
-      }
-
       const user = await photon.users.findOne({
         where: { email: args.email },
       });

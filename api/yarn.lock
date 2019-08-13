@@ -718,13 +718,6 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@prisma/nexus@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@prisma/nexus/-/nexus-0.0.1.tgz#1b75b268f29714a8958e80d88d7141004a343650"
-  integrity sha512-eRAbVUOLPr0copaj7u7Q9w2hlPNHp77XuOMC+O7dmYiM/204Gl7Whp1SCmGq98hjb3NaJbNMJpq3lfJL4GTgqg==
-  dependencies:
-    tslib "^1.9.3"
-
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -2812,13 +2805,6 @@ negotiator@0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
   integrity sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
-
-nexus@0.12.0-beta.6:
-  version "0.12.0-beta.6"
-  resolved "https://registry.yarnpkg.com/nexus/-/nexus-0.12.0-beta.6.tgz#24829f4014365446972fdc066517893f36dd394e"
-  integrity sha512-6eqZslOSZFSMQ3RJSk5EAAkB6uOlg7aYK5AyLMLMVTYX5iY9Tm8GWTHso5+lhmwIqPZHw+kDOYux6rRcYi9heA==
-  dependencies:
-    tslib "^1.9.3"
 
 node-environment-flags@^1.0.5:
   version "1.0.6"
