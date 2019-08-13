@@ -131,14 +131,4 @@ const server = new ApolloServer({
   },
 });
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-if (process.env.NODE_ENV === 'development') {
-  server.listen(4000, () => console.log(`Listening on port 4000`));
-}
-
 export default server;
