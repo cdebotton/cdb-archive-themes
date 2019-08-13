@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "app/package.json",
-      "use": "@now/static"
+      "use": "@now/static-builds"
     },
     {
       "src": "api/src/**/*.ts",
@@ -15,7 +15,7 @@
     { "src": "/graphql", "dest": "/api/src/index.ts" },
     {
       "src": "/(.*)",
-      "dest": "/app/$1",
+      "dest": "/app/public",
       "headers": {
         "x-request-path": "$1"
       }
