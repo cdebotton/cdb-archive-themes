@@ -4,7 +4,7 @@
     { "src": "app/package.json", "use": "@now/next" },
     {
       "src": "graphql/**/*.ts",
-      "use": "@now/node@11.1",
+      "use": "@now/node@0.11.1",
       "config": {
         "includeFiles": [],
         "maxLambdaSize": "25mb"
