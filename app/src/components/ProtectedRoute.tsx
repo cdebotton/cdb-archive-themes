@@ -19,11 +19,13 @@ export default function ProtectedRoute({
   component: Component,
   render,
   children,
+  ...props
 }: Props) {
   const { data, loading } = useQuery<ApolloTypes.ProtectedRoute>(QUERY);
 
   return (
     <Route
+      {...props}
       render={routeProps => {
         if (loading) {
           return <>Loading...</>;
