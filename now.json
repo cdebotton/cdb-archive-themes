@@ -21,11 +21,10 @@
       }
     }
   ],
-  "build": {
-    "env": {
-      "POSTGRESQL_URL": "@postgresql-url",
-      "JWT_SECRET": "@jwt-secret",
-      "TOKEN_KEY": "@token-key"
-    }
+
+  "env": {
+    "POSTGRESQL_URL": "@postgresql-url",
+    "JWT_SECRET": "@jwt-secret",
+    "TOKEN_KEY": "@token-key"
   }
 }
