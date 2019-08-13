@@ -9,6 +9,7 @@ import ProtectedRoute from '../components/ProtectedRoute';
 const Login = lazy(() => import('./Login'));
 const Index = lazy(() => import('./Index'));
 const Admin = lazy(() => import('./Admin'));
+const NotFound = lazy(() => import('./NotFound'));
 
 function App() {
   const theme = useTheme();
@@ -21,7 +22,8 @@ function App() {
           <Switch>
             <Route path="/login" component={Login} />
             <ProtectedRoute path="/admin" component={Admin} />
-            <Route path="/" component={Index} />
+            <Route exact path="/" component={Index} />
+            <Route component={NotFound} />
           </Switch>
         </Suspense>
       </Container>
