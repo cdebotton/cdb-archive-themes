@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { redirect } from '../../libs/redirect';
 
 import { Login, LoginVariables } from '../../__generated__/Login';
+import { withApollo } from '../../libs/with-apollo';
 
 type Values = { email: string; password: string };
 
@@ -26,8 +27,7 @@ const LOGIN_MUTATION = gql`
     login(email: $email, password: $password)
   }
 `;
-
-export default function LoginPage() {
+function LoginPage() {
   const [mutate, result] = useMutation<Login, LoginVariables>(LOGIN_MUTATION);
 
   async function handleSubmit({ email, password }: Values) {
@@ -76,3 +76,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export default withApollo(LoginPage);

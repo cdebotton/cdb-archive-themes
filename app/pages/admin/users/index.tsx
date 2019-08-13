@@ -1,15 +1,12 @@
 import React from 'react';
-import { DocumentContext } from 'next/document';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import Link from 'next/link';
 
 import { Text } from '../../../components/Text';
-import getViewer from '../../../libs/getViewer';
-import { redirect } from '../../../libs/redirect';
 import { AdminLayout } from '../../../components/AdminLayout';
-import * as ViewerTypes from '../../../__generated__/Viewer';
 import * as ApolloTypes from '../../../__generated__/Users';
+import { withApollo } from '../../../libs/with-apollo';
 
 const QUERY = gql`
   query Users {
@@ -22,18 +19,11 @@ const QUERY = gql`
   }
 `;
 
-type Props = {
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  pageProps: { viewer: ViewerTypes.Viewer_viewer };
-};
-
-export default function AdminUsersPage({ pageProps: { viewer } }: Props) {
-  const { data, loading } = useQuery<ApolloTypes.Users>(QUERY, {
-    variables: { id: viewer.id },
-  });
+function AdminUsersPage() {
+  const { data, loading } = useQuery<ApolloTypes.Users>(QUERY);
 
   return (
-    <AdminLayout viewer={viewer}>
+    <AdminLayout>
       <Text>Users</Text>
       {!loading && (
         <ul>
@@ -53,13 +43,4 @@ export default function AdminUsersPage({ pageProps: { viewer } }: Props) {
   );
 }
 
-AdminUsersPage.getInitialProps = async (context: DocumentContext) => {
-  // @ts-ignore
-  const { viewer } = await getViewer(context.apolloClient);
-
-  if (!viewer) {
-    redirect(context, '/admin/login');
-  }
-
-  return { viewer };
-};
+export default withApollo(AdminUsersPage);

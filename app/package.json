@@ -35,24 +35,31 @@
   },
   "dependencies": {
     "@apollo/react-hooks": "^3.0.0",
+    "@apollo/react-common": "^3.0.0",
     "@apollo/react-ssr": "3.0.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-brands-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "apollo-boost": "^0.4.3",
+    "apollo-boost": "^0.4.4",
     "apollo-link-context": "^1.0.18",
     "apollo-link-http": "^1.5.15",
     "apollo-server-micro": "^2.8.1",
-    "aws-sdk": "^2.507.0",
+    "aws-sdk": "^2.508.0",
     "cookie": "^0.4.0",
     "dotenv": "^8.0.0",
     "formik": "^2.0.1-rc.12",
     "graphql": "^14.4.2",
     "next": "^9.0.3",
+    "next-apollo": "^3.0.3",
     "polished": "^3.4.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-is": "^16.9.0",
     "styled-components": "^4.3.2"
+  },
+  "resolutions": {
+    "@apollo/react-hooks": "^3.0.0",
+    "@apollo/react-common": "^3.0.0",
+    "@apollo/react-ssr": "3.0.0"
   }
 }

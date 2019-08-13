@@ -6,18 +6,15 @@ import { useApolloClient } from '@apollo/react-hooks';
 import { rem } from 'polished';
 
 import { redirect } from '../libs/redirect';
-import * as ViewerTypes from '../__generated__/Viewer';
 
 import { Text } from './Text';
 import { Button } from './Button';
 
 type Props = {
   children: ReactNode;
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  viewer: ViewerTypes.Viewer_viewer;
 };
 
-export function AdminLayout({ children, viewer }: Props) {
+export function AdminLayout({ children }: Props) {
   const client = useApolloClient();
 
   const handleLogout = useCallback(async () => {
@@ -33,17 +30,17 @@ export function AdminLayout({ children, viewer }: Props) {
 
   let name: string;
 
-  if (!viewer) {
-    return <>Loading...</>;
-  }
+  // if (!viewer) {
+  //   return <>Loading...</>;
+  // }
 
-  const { email, firstName, lastName } = viewer;
+  // const { email, firstName, lastName } = viewer;
 
-  if (firstName || lastName) {
-    name = [firstName, lastName].join(' ');
-  } else {
-    name = email;
-  }
+  // if (firstName || lastName) {
+  //   name = [firstName, lastName].join(' ');
+  // } else {
+  //   name = email;
+  // }
 
   return (
     <Page>
@@ -76,6 +73,7 @@ const Page = styled.div`
   min-height: 100%;
   display: grid;
   align-items: start;
+  align-content: flex-start;
   grid-template-rows: repeat(2, min-content) auto;
   grid-template-columns: auto;
   grid-gap: ${rem(16)};

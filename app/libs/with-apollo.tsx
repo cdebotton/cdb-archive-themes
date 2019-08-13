@@ -1,79 +1,31 @@
-import React, { Component } from 'react';
-import { AppContext, AppProps } from 'next/app';
-import Head from 'next/head';
-import { getDataFromTree } from '@apollo/react-ssr';
-import cookie, { CookieParseOptions } from 'cookie';
-import { ApolloClient, NormalizedCacheObject } from 'apollo-boost';
+import { withData } from 'next-apollo';
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import cookie from 'cookie';
 
-import { initApollo } from './init-apollo';
+export const withApollo = withData(ctx => {
+  const httpLink = createHttpLink({
+    uri: process.env.GRAPHQL_URL
+      ? process.env.GRAPHQL_URL
+      : `${ctx ? `http://${ctx.req.headers.host}` : ''}/graphql`,
+    fetch: fetch,
+    credentials: 'include',
+  });
 
-type Props = AppProps & { apolloState: NormalizedCacheObject };
+  const authLink = setContext((_, { headers }) => {
+    const token = ctx
+      ? ctx.req.headers.cookie.token
+      : cookie.parse(document.cookie).token;
 
-function parseCookies(req?, options: CookieParseOptions = {}) {
-  return cookie.parse(
-    req ? req.headers.cookie || {} : document.cookie,
-    options,
-  );
-}
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : '',
+      },
+    };
+  });
 
-export default function withApollo(App: any) {
-  return class WithApollo extends Component {
-    static displayName = `withApollo(${App.displayName})`;
-    static async getInitialProps(ctx: AppContext) {
-      const {
-        AppTree,
-        ctx: { req, res },
-      } = ctx;
-
-      const apolloClient = initApollo(
-        {},
-        { getToken: () => parseCookies(req).token },
-        req,
-      );
-
-      // @ts-ignore
-      ctx.ctx.apolloClient = apolloClient;
-
-      let appProps;
-
-      if (App.getInitialProps) {
-        appProps = await App.getInitialProps(ctx);
-      }
-
-      if (res && res.finished) {
-        return {};
-      }
-
-      if (!process.browser) {
-        try {
-          await getDataFromTree(
-            <AppTree {...appProps} apolloClient={apolloClient} />,
-          );
-        } catch (err) {
-          console.error('Error running `getDataFromTree`', err);
-        }
-
-        Head.rewind();
-      }
-
-      const apolloState = apolloClient.cache.extract();
-
-      return { ...appProps, apolloState };
-    }
-
-    apolloClient: ApolloClient<NormalizedCacheObject>;
-
-    constructor(props: Props) {
-      super(props);
-      this.apolloClient = initApollo(props.apolloState, {
-        getToken: () => {
-          return parseCookies().token;
-        },
-      });
-    }
-
-    render() {
-      return <App {...this.props} apolloClient={this.apolloClient} />;
-    }
+  return {
+    link: authLink.concat(httpLink),
   };
-}
+});
