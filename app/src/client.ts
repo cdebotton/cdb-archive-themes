@@ -5,10 +5,11 @@ import { setContext } from 'apollo-link-context';
 import cookie from 'cookie';
 
 export function createClient() {
-  const { GRAPHQL_URL = 'http://localhost:4000' } = process.env;
-
   const httpLink = createHttpLink({
-    uri: GRAPHQL_URL,
+    uri:
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:4000'
+        : '/graphql',
     credentials: 'include',
   });
 
