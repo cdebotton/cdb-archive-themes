@@ -1,16 +1,24 @@
-import React, { useReducer } from 'react';
-import { AppStyle } from '../components/AppStyle';
+import React, { lazy, Suspense, useReducer } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { Switch, Route } from 'react-router-dom';
+
+import { AppStyle } from '../components/AppStyle';
+
+const Admin = lazy(() => import('./Admin'));
+const Index = lazy(() => import('./Index'));
 
 function App() {
   const theme = useTheme();
 
   return (
     <ThemeProvider theme={theme}>
-      <>
+      <Suspense fallback={<>Loading...</>}>
         <AppStyle />
-        <h1>Hello, world</h1>
-      </>
+        <Switch>
+          <Route path="/admin" component={Admin} />
+          <Route path="/" component={Index} />
+        </Switch>
+      </Suspense>
     </ThemeProvider>
   );
 }
