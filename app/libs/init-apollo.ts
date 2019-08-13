@@ -28,7 +28,7 @@ function create(
     uri: `${req ? `http://${req.headers.host}` : ''}/graphql`,
     fetch: fetch,
     credentials: 'include',
-    fetchOptions: { method: 'GET', ...fetchOptions },
+    fetchOptions,
   });
 
   const authLink = setContext((_, { headers }) => {
