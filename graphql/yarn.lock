@@ -2803,10 +2803,10 @@ negotiator@0.6.2:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
   integrity sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
 
-nexus@0.11.7:
-  version "0.11.7"
-  resolved "https://registry.yarnpkg.com/nexus/-/nexus-0.11.7.tgz#db580f1d6feb5e590fe395d9cd218c969c46b9ed"
-  integrity sha512-d5iD9jKn8n8tfFerisxYmKlrJmj5omPS49+s1xv2O2q5GiagDH4ySxajg0vsf0EMT2K+OvlCuSxT0xarS1gqKw==
+nexus@0.12.0-beta.6:
+  version "0.12.0-beta.6"
+  resolved "https://registry.yarnpkg.com/nexus/-/nexus-0.12.0-beta.6.tgz#24829f4014365446972fdc066517893f36dd394e"
+  integrity sha512-6eqZslOSZFSMQ3RJSk5EAAkB6uOlg7aYK5AyLMLMVTYX5iY9Tm8GWTHso5+lhmwIqPZHw+kDOYux6rRcYi9heA==
   dependencies:
     tslib "^1.9.3"
 
@@ -3135,10 +3135,10 @@ prepend-http@^1.0.1:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
 
-prisma2@2.0.0-preview-6.1:
-  version "2.0.0-preview-6.1"
-  resolved "https://registry.yarnpkg.com/prisma2/-/prisma2-2.0.0-preview-6.1.tgz#528b12cd62e6d2d990a1dc6ba67916444b505f27"
-  integrity sha512-N8q7KqQEhcOrDLExSAm2pG0Haw2gw5RmlkOtq3UekM+ob150k0lyMvLvqHc3VxXfe0eDyid13uM6AMG+cTw4mQ==
+prisma2@2.0.0-preview-3.2:
+  version "2.0.0-preview-3.2"
+  resolved "https://registry.yarnpkg.com/prisma2/-/prisma2-2.0.0-preview-3.2.tgz#d10f9137e430850dd07d639d6d82c17d65afa45e"
+  integrity sha512-ReQBS9Gcg1VcvevNq8QhSHlZwfz2a4lnLGSBcQai4z/1ikKBZI75SOEwYzjYWqbq91QFi8Bg9ErA0QdYXO6Uqg==
 
 private@^0.1.6:
   version "0.1.8"
