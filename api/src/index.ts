@@ -1,5 +1,5 @@
 import Photon from '@generated/photon';
-import { ApolloServer, gql } from 'apollo-server-micro';
+import { ApolloServer, gql } from 'apollo-server';
 import { genSalt, hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import fetch from 'isomorphic-unfetch';
@@ -49,16 +49,6 @@ const typeDefs = gql`
   }
 `;
 
-const fakeUser = {
-  id: '3213123',
-  email: 'eqweqweq@ewqeq.com',
-  firstName: 'ewqeqweqw',
-  lastName: 'ewqeqweqw',
-  lastLogin: null,
-  createdAt: Date.now(),
-  updatedAt: Date.now(),
-};
-
 const resolvers = {
   Query: {
     async viewer(parent: unknown, args: any, { photon, token }: Context) {
@@ -66,14 +56,13 @@ const resolvers = {
         throw new Error('No token');
       }
 
-      // const userId = await jwt.verify(token, JWT_SECRET);
+      const userId = await jwt.verify(token, JWT_SECRET);
 
-      // if (typeof userId !== 'string') {
-      //   throw new Error('Invalid JWT');
-      // }
+      if (typeof userId !== 'string') {
+        throw new Error('Invalid JWT');
+      }
 
-      // return await photon.users.findOne({ where: { id: userId } });
-      return fakeUser;
+      return await photon.users.findOne({ where: { id: userId } });
     },
 
     user(
@@ -85,8 +74,7 @@ const resolvers = {
         throw new Error('You must specify an id or email to find a user.');
       }
 
-      // return photon.users.findOne({ where: { id: args.id } });
-      return fakeUser;
+      return photon.users.findOne({ where: { id: args.id } });
     },
 
     users(parent: unknown, args: any, { photon }: Context) {
@@ -104,40 +92,36 @@ const resolvers = {
       },
       { photon }: Context,
     ) {
-      // const salt = await genSalt(10);
-      // const password = await hash(args.password, salt);
+      const salt = await genSalt(10);
+      const password = await hash(args.password, salt);
 
-      // return photon.users.create({
-      //   data: {
-      //     password,
-      //     email: args.email,
-      //     firstName: args.firstName,
-      //     lastName: args.lastName,
-      //   },
-      // });
-      const { email, firstName, lastName } = args;
-      return { ...fakeUser, email, firstName, lastName };
+      return photon.users.create({
+        data: {
+          password,
+          email: args.email,
+          firstName: args.firstName,
+          lastName: args.lastName,
+        },
+      });
     },
     async login(
       parent: unknown,
       args: { email: string; password: string },
       { photon }: Context,
     ) {
-      // const user = await photon.users.findOne({
-      //   where: { email: args.email },
-      // });
+      const user = await photon.users.findOne({
+        where: { email: args.email },
+      });
 
-      // if (!user) {
-      //   throw new Error('Bad credentials');
-      // }
+      if (!user) {
+        throw new Error('Bad credentials');
+      }
 
-      // if (!(await compare(args.password, user.password))) {
-      //   throw new Error('Bad credentials');
-      // }
+      if (!(await compare(args.password, user.password))) {
+        throw new Error('Bad credentials');
+      }
 
-      // return jwt.sign(user.id, JWT_SECRET);
-
-      return '';
+      return jwt.sign(user.id, JWT_SECRET);
     },
   },
 };
@@ -160,19 +144,19 @@ const server = new ApolloServer({
   },
 });
 
-// if (process.env.NODE_ENV === 'development') {
-//   server.listen(4000, async () => {
-//     console.log(`🚀 Apollo Server is running at http://localhost:4000`);
-//     const res = await fetch(
-//       `http://localhost:4000?query=${getIntrospectionQuery()}`,
-//     );
-//     const json = await res.json();
+if (process.env.NODE_ENV === 'development') {
+  server.listen(4000, async () => {
+    console.log(`🚀 Apollo Server is running at http://localhost:4000`);
+    const res = await fetch(
+      `http://localhost:4000?query=${getIntrospectionQuery()}`,
+    );
+    const json = await res.json();
 
-//     fs.writeFileSync(
-//       join(__dirname, '../__generated__/schema.json'),
-//       JSON.stringify(json, null, 2),
-//     );
-//   });
-// }
+    fs.writeFileSync(
+      join(__dirname, '../__generated__/schema.json'),
+      JSON.stringify(json, null, 2),
+    );
+  });
+}
 
-export default server.createHandler({ path: '/graphql' });
+export default server;
