@@ -1,5 +1,5 @@
 import Photon from '@generated/photon';
-import { ApolloServer, gql } from 'apollo-server';
+import { ApolloServer, gql } from 'apollo-server-micro';
 import { genSalt, hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import fetch from 'isomorphic-unfetch';
@@ -144,19 +144,19 @@ const server = new ApolloServer({
   },
 });
 
-if (process.env.NODE_ENV === 'development') {
-  server.listen(4000, async () => {
-    console.log(`🚀 Apollo Server is running at http://localhost:4000`);
-    const res = await fetch(
-      `http://localhost:4000?query=${getIntrospectionQuery()}`,
-    );
-    const json = await res.json();
+// if (process.env.NODE_ENV === 'development') {
+//   server.listen(4000, async () => {
+//     console.log(`🚀 Apollo Server is running at http://localhost:4000`);
+//     const res = await fetch(
+//       `http://localhost:4000?query=${getIntrospectionQuery()}`,
+//     );
+//     const json = await res.json();
 
-    fs.writeFileSync(
-      join(__dirname, '../__generated__/schema.json'),
-      JSON.stringify(json, null, 2),
-    );
-  });
-}
+//     fs.writeFileSync(
+//       join(__dirname, '../__generated__/schema.json'),
+//       JSON.stringify(json, null, 2),
+//     );
+//   });
+// }
 
-export default server;
+export default server.createHandler({ path: '/graphql' });
