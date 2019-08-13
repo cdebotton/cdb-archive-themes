@@ -1,7 +1,6 @@
 import React, { ReactNode, useCallback } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import gql from 'graphql-tag';
 import cookie from 'cookie';
 import { useApolloClient } from '@apollo/react-hooks';
 import { rem } from 'polished';
@@ -69,17 +68,6 @@ export function AdminLayout({ children, viewer }: Props) {
     </Page>
   );
 }
-
-AdminLayout.fragments = {
-  viewer: gql`
-    fragment CurrentUser on User {
-      id
-      email
-      firstName
-      lastName
-    }
-  `,
-};
 
 // 💅 Styles
 

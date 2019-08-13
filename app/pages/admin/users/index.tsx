@@ -8,13 +8,11 @@ import { Text } from '../../../components/Text';
 import getViewer from '../../../libs/getViewer';
 import { redirect } from '../../../libs/redirect';
 import { AdminLayout } from '../../../components/AdminLayout';
+import * as ViewerTypes from '../../../__generated__/Viewer';
+import * as ApolloTypes from '../../../__generated__/Users';
 
 const QUERY = gql`
-  query AdminIndexQuery($id: String) {
-    user(id: $id) {
-      ...CurrentUser
-    }
-
+  query Users {
     users {
       id
       email
@@ -22,23 +20,20 @@ const QUERY = gql`
       lastName
     }
   }
-
-  ${AdminLayout.fragments.viewer}
 `;
 
 type Props = {
-  pageProps: { viewer: any };
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  pageProps: { viewer: ViewerTypes.Viewer_viewer };
 };
 
 export default function AdminUsersPage({ pageProps: { viewer } }: Props) {
-  const { data, error, networkStatus, loading } = useQuery(QUERY, {
+  const { data, loading } = useQuery<ApolloTypes.Users>(QUERY, {
     variables: { id: viewer.id },
   });
 
-  console.log(data);
-
   return (
-    <AdminLayout viewer={data && data.user}>
+    <AdminLayout viewer={viewer}>
       <Text>Users</Text>
       {!loading && (
         <ul>
