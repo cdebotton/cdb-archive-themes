@@ -22,7 +22,7 @@
     "typescript": "3.5.3"
   },
   "dependencies": {
-    "apollo-server": "2.8.1",
+    "apollo-server-micro": "2.8.1",
     "bcrypt": "^3.0.6",
     "cookie": "^0.4.0",
     "graphql": "^14.4.2",

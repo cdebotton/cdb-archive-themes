@@ -1,5 +1,5 @@
 import Photon from '@generated/photon';
-import { ApolloServer, gql, addErrorLoggingToSchema } from 'apollo-server';
+import { ApolloServer, gql } from 'apollo-server-micro';
 import { genSalt, hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -129,4 +129,4 @@ const server = new ApolloServer({
   },
 });
 
-export default server;
+export default server.createHandler({ path: '/graphql' });
