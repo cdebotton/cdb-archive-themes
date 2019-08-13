@@ -1,5 +1,5 @@
 import Photon from '@generated/photon';
-import { ApolloServer, gql } from 'apollo-server-micro';
+import { ApolloServer, gql, addErrorLoggingToSchema } from 'apollo-server';
 import { genSalt, hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -129,4 +129,10 @@ const server = new ApolloServer({
   },
 });
 
-export default server.createHandler({ path: '/graphql' });
+if (process.env.NODE_ENV === 'development') {
+  server.listen(4000, () =>
+    console.log(`🚀 Apollo Server is running at http://localhost:4000`),
+  );
+}
+
+export default server;
