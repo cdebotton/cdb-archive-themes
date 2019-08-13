@@ -7,7 +7,7 @@
     },
     {
       "src": "api/src/index.ts",
-      "use": "@now/node",
+      "use": "@now/node@canary",
       "config": { "maxLambdaSize": "20mb" }
     }
   ],
