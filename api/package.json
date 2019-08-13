@@ -16,10 +16,10 @@
     "@babel/preset-typescript": "^7.3.3",
     "@types/jsonwebtoken": "^8.3.3",
     "@types/bcrypt": "2.0.0",
-    "@types/node": "^11",
+    "@types/node": "12.7.1",
     "dotenv": "^8.0.0",
     "nodemon": "^1.19.1",
-    "prisma2": "2.0.0-preview-3.2",
+    "prisma2": "2.0.0-preview-6.1",
     "typescript": "3.5.3"
   },
   "dependencies": {

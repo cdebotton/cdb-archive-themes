@@ -900,7 +900,7 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.1.tgz#dc488842312a7f075149312905b5e3c0b054c79d"
   integrity sha512-FwI9gX75FgVBJ7ywgnq/P7tw+/o1GUbtP0KzbtusLigAOgIgNISRK0ZPl4qertvXSIE8YbsVJueQ90cDt9YYyw==
 
-"@types/node@*":
+"@types/node@*", "@types/node@12.7.1":
   version "12.7.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.7.1.tgz#3b5c3a26393c19b400844ac422bd0f631a94d69d"
   integrity sha512-aK9jxMypeSrhiYofWWBf/T7O+KwaiAHzM4sveCdWPn71lzUSMimRnKzhXDKfKwV1kWoBo2P1aGgaIYGLf9/ljw==
@@ -909,11 +909,6 @@
   version "10.14.15"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.14.15.tgz#e8f7729b631be1b02ae130ff0b61f3e018000640"
   integrity sha512-CBR5avlLcu0YCILJiDIXeU2pTw7UK/NIxfC63m7d7CVamho1qDEzXKkOtEauQRPMy6MI8mLozth+JJkas7HY6g==
-
-"@types/node@^11":
-  version "11.13.19"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-11.13.19.tgz#c7bd7009aa850464775d8a814e18138d633cd676"
-  integrity sha512-tLRDU1hmcWamtgRT2iVRdraAQVGFQGgtcqracSo9XyMN1VeZLSVGb8RJJxVqab7UGbijoUijGPVFMjmqzyZIUw==
 
 "@types/range-parser@*":
   version "1.2.3"
@@ -3131,10 +3126,10 @@ prepend-http@^1.0.1:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
 
-prisma2@2.0.0-preview-3.2:
-  version "2.0.0-preview-3.2"
-  resolved "https://registry.yarnpkg.com/prisma2/-/prisma2-2.0.0-preview-3.2.tgz#d10f9137e430850dd07d639d6d82c17d65afa45e"
-  integrity sha512-ReQBS9Gcg1VcvevNq8QhSHlZwfz2a4lnLGSBcQai4z/1ikKBZI75SOEwYzjYWqbq91QFi8Bg9ErA0QdYXO6Uqg==
+prisma2@2.0.0-preview-6.1:
+  version "2.0.0-preview-6.1"
+  resolved "https://registry.yarnpkg.com/prisma2/-/prisma2-2.0.0-preview-6.1.tgz#528b12cd62e6d2d990a1dc6ba67916444b505f27"
+  integrity sha512-N8q7KqQEhcOrDLExSAm2pG0Haw2gw5RmlkOtq3UekM+ob150k0lyMvLvqHc3VxXfe0eDyid13uM6AMG+cTw4mQ==
 
 private@^0.1.6:
   version "0.1.8"
