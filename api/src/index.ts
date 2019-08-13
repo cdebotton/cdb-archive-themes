@@ -49,6 +49,16 @@ const typeDefs = gql`
   }
 `;
 
+const fakeUser = {
+  id: '3213123',
+  email: 'eqweqweq@ewqeq.com',
+  firstName: 'ewqeqweqw',
+  lastName: 'ewqeqweqw',
+  lastLogin: null,
+  createdAt: Date.now(),
+  updatedAt: Date.now(),
+};
+
 const resolvers = {
   Query: {
     async viewer(parent: unknown, args: any, { photon, token }: Context) {
@@ -56,13 +66,14 @@ const resolvers = {
         throw new Error('No token');
       }
 
-      const userId = await jwt.verify(token, JWT_SECRET);
+      // const userId = await jwt.verify(token, JWT_SECRET);
 
-      if (typeof userId !== 'string') {
-        throw new Error('Invalid JWT');
-      }
+      // if (typeof userId !== 'string') {
+      //   throw new Error('Invalid JWT');
+      // }
 
-      return await photon.users.findOne({ where: { id: userId } });
+      // return await photon.users.findOne({ where: { id: userId } });
+      return fakeUser;
     },
 
     user(
@@ -74,7 +85,8 @@ const resolvers = {
         throw new Error('You must specify an id or email to find a user.');
       }
 
-      return photon.users.findOne({ where: { id: args.id } });
+      // return photon.users.findOne({ where: { id: args.id } });
+      return fakeUser;
     },
 
     users(parent: unknown, args: any, { photon }: Context) {
@@ -92,36 +104,40 @@ const resolvers = {
       },
       { photon }: Context,
     ) {
-      const salt = await genSalt(10);
-      const password = await hash(args.password, salt);
+      // const salt = await genSalt(10);
+      // const password = await hash(args.password, salt);
 
-      return photon.users.create({
-        data: {
-          password,
-          email: args.email,
-          firstName: args.firstName,
-          lastName: args.lastName,
-        },
-      });
+      // return photon.users.create({
+      //   data: {
+      //     password,
+      //     email: args.email,
+      //     firstName: args.firstName,
+      //     lastName: args.lastName,
+      //   },
+      // });
+      const { email, firstName, lastName } = args;
+      return { ...fakeUser, email, firstName, lastName };
     },
     async login(
       parent: unknown,
       args: { email: string; password: string },
       { photon }: Context,
     ) {
-      const user = await photon.users.findOne({
-        where: { email: args.email },
-      });
+      // const user = await photon.users.findOne({
+      //   where: { email: args.email },
+      // });
 
-      if (!user) {
-        throw new Error('Bad credentials');
-      }
+      // if (!user) {
+      //   throw new Error('Bad credentials');
+      // }
 
-      if (!(await compare(args.password, user.password))) {
-        throw new Error('Bad credentials');
-      }
+      // if (!(await compare(args.password, user.password))) {
+      //   throw new Error('Bad credentials');
+      // }
 
-      return jwt.sign(user.id, JWT_SECRET);
+      // return jwt.sign(user.id, JWT_SECRET);
+
+      return '';
     },
   },
 };
