@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "app/next.config.js",
+      "src": "app/package.json",
       "use": "@now/next"
     },
     {
