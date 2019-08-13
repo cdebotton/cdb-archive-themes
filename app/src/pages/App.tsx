@@ -3,22 +3,28 @@ import { ThemeProvider } from 'styled-components';
 import { Switch, Route } from 'react-router-dom';
 
 import { AppStyle } from '../components/AppStyle';
+import { Container } from '../components/Heading';
+import ProtectedRoute from '../components/ProtectedRoute';
 
-const Admin = lazy(() => import('./Admin'));
+const Login = lazy(() => import('./Login'));
 const Index = lazy(() => import('./Index'));
+const Admin = lazy(() => import('./Admin'));
 
 function App() {
   const theme = useTheme();
 
   return (
     <ThemeProvider theme={theme}>
-      <Suspense fallback={<>Loading...</>}>
-        <AppStyle />
-        <Switch>
-          <Route path="/admin" component={Admin} />
-          <Route path="/" component={Index} />
-        </Switch>
-      </Suspense>
+      <Container>
+        <Suspense fallback={<>Loading...</>}>
+          <AppStyle />
+          <Switch>
+            <Route path="/login" component={Login} />
+            <ProtectedRoute path="/admin" component={Admin} />
+            <Route path="/" component={Index} />
+          </Switch>
+        </Suspense>
+      </Container>
     </ThemeProvider>
   );
 }

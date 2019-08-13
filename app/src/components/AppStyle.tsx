@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import { normalize, transparentize, rem } from 'polished';
+import { normalize, transparentize, rem, modularScale, em } from 'polished';
 
 export const AppStyle = createGlobalStyle`
   ${normalize()};
@@ -37,10 +37,15 @@ export const AppStyle = createGlobalStyle`
   h6 {
     text-rendering: optimizeLegibility;
     max-width: 40ch;
-    line-height: 1;
   }
 
   p {
     max-width: 60ch;
+    font-size: ${modularScale(1)};
+    margin: 0;
+
+    & + p {
+      margin-top: ${em(5)};
+    }
   }
 `;
