@@ -23,13 +23,18 @@ const typeDefs = gql`
   }
 
   type Query {
-    viewer: User!;
+    viewer: User!
     user(id: String, email: String): User!
     users: [User!]!
   }
 
   type Mutation {
-    createUser(email: String!, password: String!, firstName: String, lastName: String): User!
+    createUser(
+      email: String!
+      password: String!
+      firstName: String
+      lastName: String
+    ): User!
     login(email: String!, password: String!): String!
   }
 `;
