@@ -16,6 +16,11 @@ const photon = new Photon();
 const typeDefs = gql`
   scalar DateTime
 
+  enum Role {
+    ADMIN
+    USER
+  }
+
   type User {
     id: String!
     email: String!
@@ -124,6 +129,12 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  ...(process.env.NODE_ENV === 'development' && {
+    cors: {
+      credentials: true,
+      origin: true,
+    },
+  }),
   context({ req }) {
     const [, token] = req.headers.authorization
       ? req.headers.authorization.split(' ')
