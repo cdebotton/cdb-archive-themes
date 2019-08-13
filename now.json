@@ -3,7 +3,7 @@
   "builds": [
     {
       "src": "app/package.json",
-      "use": "@now/static-builds"
+      "use": "@now/static-build"
     },
     {
       "src": "api/src/**/*.ts",
