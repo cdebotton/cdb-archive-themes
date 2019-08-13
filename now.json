@@ -1,13 +1,23 @@
 {
   "version": 2,
   "builds": [
-    { "src": "app/package.json", "use": "@now/next" },
     {
-      "src": "graphql/**/*.ts",
-      "use": "@now/node@0.11.1",
-      "config": {
-        "includeFiles": [],
-        "maxLambdaSize": "25mb"
+      "src": "app/next.config.js",
+      "use": "@now/next"
+    },
+    {
+      "src": "graphql/index.ts",
+      "use": "@now/node",
+      "config": { "maxLambdaSize": "20mb" }
+    }
+  ],
+  "routes": [
+    { "src": "/graphql", "dest": "/api/src/index.ts" },
+    {
+      "src": "/(.*)",
+      "dest": "/app/$1",
+      "headers": {
+        "x-request-path": "$1"
       }
     }
   ],
