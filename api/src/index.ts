@@ -119,10 +119,8 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  playground: true,
   introspection: true,
   context({ req }) {
-    // @ts-ignore
     const [, token] = req.headers.authorization
       ? req.headers.authorization.split(' ')
       : '';
