@@ -15,7 +15,7 @@
     { "src": "/graphql", "dest": "/api/src/index.ts" },
     {
       "src": "/(.*)",
-      "dest": "/app/public/index.html",
+      "dest": "/app/build/index.html",
       "headers": {
         "x-request-path": "$1"
       }
