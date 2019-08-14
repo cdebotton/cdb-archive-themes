@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import * as ApolloTypes from './__generated__/ProtectedRoute';
+import { Loading } from './Loading';
 
 type Props = RouteProps;
 
@@ -28,7 +29,7 @@ export default function ProtectedRoute({
       {...props}
       render={routeProps => {
         if (loading) {
-          return <>Loading...</>;
+          return <Loading />;
         }
 
         if (!data || !data.viewer) {

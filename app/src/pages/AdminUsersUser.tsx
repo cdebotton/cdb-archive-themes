@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { Container, Heading } from '../components/Heading';
 import { useRouter } from '../hooks/useRouter';
 import { Input } from '../components/Input';
+import { Loading } from '../components/Loading';
 
 import * as ApolloTypes from './__generated__/User';
 import * as MutationTypes from './__generated__/UpdateUser';
@@ -95,7 +96,7 @@ export default function AdminUsersIndex() {
   }
 
   if (!data || !data.user) {
-    return <>Loading...</>;
+    return <Loading />;
   }
 
   function onSubmit(values: Values) {

@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/macro';
+import { rem, modularScale } from 'polished';
 
 import { Heading } from '../components/Heading';
 import { Page } from '../components/Page';
 import { Vimeo } from '../components/Vimeo';
-import { rem, modularScale } from 'polished';
 
 export default function IndexPage() {
   return (

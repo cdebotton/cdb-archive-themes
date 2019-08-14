@@ -5,6 +5,7 @@ import { Page } from '../components/Page';
 import { Heading } from '../components/Heading';
 import { LogoutButton } from '../components/LogoutButton';
 import { useRouter } from '../hooks/useRouter';
+import { Loading } from '../components/Loading';
 
 const AdminDashboard = lazy(() => import('./AdminDashboard'));
 const AdminGalleries = lazy(() => import('./AdminGalleries'));
@@ -34,7 +35,7 @@ export default function Admin() {
         </nav>
         <LogoutButton />
       </header>
-      <Suspense fallback={<>Loading...</>}>
+      <Suspense fallback={<Loading />}>
         <Switch>
           <Route exact path={match.url} component={AdminDashboard} />
           <Route path={`${match.url}/galleries`} component={AdminGalleries} />

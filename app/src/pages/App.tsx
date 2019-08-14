@@ -6,6 +6,7 @@ import { AppStyle } from '../components/AppStyle';
 import { Container } from '../components/Heading';
 import ProtectedRoute from '../components/ProtectedRoute';
 import { Viewport } from '../components/Viewport';
+import { Loading } from '../components/Loading';
 
 const Login = lazy(() => import('./Login'));
 const Index = lazy(() => import('./Index'));
@@ -19,7 +20,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Viewport>
         <Container>
-          <Suspense fallback={<>Loading...</>}>
+          <Suspense fallback={<Loading />}>
             <AppStyle />
             <Switch>
               <Route path="/login" component={Login} />
