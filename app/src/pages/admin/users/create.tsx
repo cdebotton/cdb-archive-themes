@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useMutation } from '@apollo/react-hooks';
@@ -9,6 +9,7 @@ import { Input } from '../../../components/Input';
 import { Button } from '../../../components/Button';
 
 import * as ApolloTypes from './__generated__/CreateUser';
+import { useRouter } from '../../../hooks/useRouter';
 
 type Values = {
   email: string;
@@ -55,10 +56,20 @@ export default function AdminCreateUser() {
   const [createUser, createUserResult] = useMutation<
     ApolloTypes.CreateUser,
     ApolloTypes.CreateUserVariables
-  >(MUTATION);
+  >(MUTATION, {
+    refetchQueries: ['AdminUsersQuery'],
+  });
   function onSubmit(data: Values) {
     createUser({ variables: { data } });
   }
+
+  const { history } = useRouter();
+
+  useEffect(() => {
+    if (createUserResult.called) {
+      history.push('/admin/users');
+    }
+  }, [createUserResult, history]);
 
   return (
     <Container>

@@ -13,7 +13,7 @@ type Props = {
 };
 
 export function Input({ className, type, disabled, name, label }: Props) {
-  const [field] = useField(name);
+  const [field, meta] = useField(name);
 
   const getLabelOffset = useCallback(() => (field.value === '' ? 50 : 0), [
     field,
@@ -57,6 +57,7 @@ export function Input({ className, type, disabled, name, label }: Props) {
         name={name}
         {...field}
       />
+      {meta.touched && meta.error && <span>{meta.error}</span>}
     </Container>
   );
 }

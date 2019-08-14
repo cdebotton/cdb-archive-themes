@@ -41,6 +41,7 @@ const typeDefs = gql`
     createUser(data: CreateUserArgs!): User!
     updateUser(data: UpdateUserArgs!): User!
     login(data: LoginArgs!): String!
+    deleteUser(id: ID!): User!
   }
 
   input CreateUserArgs {
@@ -156,6 +157,23 @@ const resolvers = {
         where: { id: args.data.id },
         data,
       });
+    },
+    async deleteUser(
+      parent: unknown,
+      args: { id: string },
+      { photon, token }: Context,
+    ) {
+      if (!token) {
+        throw new Error('No token');
+      }
+
+      const userId = await jwt.verify(token, JWT_SECRET);
+
+      if (userId && userId === args.id) {
+        throw new Error(`You can't delete yourself`);
+      }
+
+      return await photon.users.delete({ where: { id: args.id } });
     },
     async login(
       parent: unknown,

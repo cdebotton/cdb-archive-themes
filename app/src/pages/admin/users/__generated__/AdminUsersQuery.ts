@@ -6,6 +6,11 @@
 // GraphQL query operation: AdminUsersQuery
 // ====================================================
 
+export interface AdminUsersQuery_viewer {
+  __typename: "User";
+  id: string;
+}
+
 export interface AdminUsersQuery_users {
   __typename: "User";
   id: string;
@@ -18,5 +23,6 @@ export interface AdminUsersQuery_users {
 }
 
 export interface AdminUsersQuery {
+  viewer: AdminUsersQuery_viewer;
   users: AdminUsersQuery_users[];
 }

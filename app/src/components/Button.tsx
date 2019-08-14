@@ -10,15 +10,21 @@ type Props = {
   onClick?: MouseEventHandler;
 };
 
-export function Button(props: Props) {
+export function Button({
+  onClick,
+  disabled,
+  className,
+  children,
+  type = 'button',
+}: Props) {
   return (
     <ButtonComponent
-      onClick={props.onClick}
-      disabled={props.disabled}
-      type={props.type}
-      className={props.className}
+      onClick={onClick}
+      disabled={disabled}
+      type={type}
+      className={className}
     >
-      {props.children}
+      {children}
     </ButtonComponent>
   );
 }
