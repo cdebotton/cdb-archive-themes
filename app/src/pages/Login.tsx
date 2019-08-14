@@ -17,8 +17,8 @@ type Values = {
 };
 
 const LOGIN_MUTATION = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password)
+  mutation Login($data: LoginArgs!) {
+    login(data: $data)
   }
 `;
 
@@ -34,7 +34,7 @@ export default function Admin() {
   const initialValues = useRef({ email: '', password: '' });
 
   function onSubmit({ email, password }: Values) {
-    login({ variables: { email, password } });
+    login({ variables: { data: { email, password } } });
   }
 
   useEffect(() => {

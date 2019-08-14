@@ -38,23 +38,31 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(
-      email: String!
-      password: String!
-      firstName: String
-      lastName: String
-    ): User!
+    createUser(data: CreateUserArgs!): User!
+    updateUser(data: UpdateUserArgs!): User!
+    login(data: LoginArgs!): String!
+  }
 
-    updateUser(
-      id: ID!
-      email: String!
-      password: String
-      repeatPassword: String
-      firstName: String
-      lastName: String
-    ): User!
+  input CreateUserArgs {
+    email: String!
+    password: String!
+    repeatPassword: String!
+    firstName: String
+    lastName: String
+  }
 
-    login(email: String!, password: String!): String!
+  input UpdateUserArgs {
+    id: ID!
+    email: String!
+    password: String
+    repeatPassword: String
+    firstName: String
+    lastName: String
+  }
+
+  input LoginArgs {
+    email: String!
+    password: String!
   }
 `;
 

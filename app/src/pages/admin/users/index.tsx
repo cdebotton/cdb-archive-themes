@@ -4,8 +4,9 @@ import { Switch, Route } from 'react-router-dom';
 import { Container, Heading } from '../../../components/Heading';
 import { useRouter } from '../../../hooks/useRouter';
 
-const AdminUsersIndex = lazy(() => import('./users'));
-const AdminUsersUser = lazy(() => import('./user'));
+const AdminUsersIndex = lazy(() => import('./list'));
+const AdminUsersUser = lazy(() => import('./edit'));
+const AdminCreateUser = lazy(() => import('./create'));
 
 export default function AdminUsers() {
   const { match } = useRouter();
@@ -14,8 +15,9 @@ export default function AdminUsers() {
     <Container>
       <Heading>Users</Heading>
       <Switch>
-        <Route exact path={match.url} component={AdminUsersIndex} />
+        <Route path={`${match.url}/new`} component={AdminCreateUser} />
         <Route path={`${match.url}/:userId`} component={AdminUsersUser} />
+        <Route path={match.url} component={AdminUsersIndex} />
         <Route />
       </Switch>
     </Container>

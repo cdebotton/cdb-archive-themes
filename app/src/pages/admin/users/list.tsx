@@ -29,7 +29,10 @@ export default function AdminUsersIndex() {
 
   return (
     <Container>
-      <Heading>List</Heading>
+      <header>
+        <Heading>List</Heading>
+        <Link to={`${match.url}/new`}>New user</Link>
+      </header>
       {loading && <Loading />}
       {error && <pre>{JSON.stringify(error)}</pre>}
       {data && data.users && (

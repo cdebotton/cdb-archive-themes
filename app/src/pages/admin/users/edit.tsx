@@ -30,22 +30,8 @@ const QUERY = gql`
 `;
 
 const UPDATE_USER_MUTATION = gql`
-  mutation UpdateUser(
-    $id: ID!
-    $email: String!
-    $firstName: String
-    $lastName: String
-    $password: String
-    $repeatPassword: String
-  ) {
-    updateUser(
-      id: $id
-      email: $email
-      firstName: $firstName
-      lastName: $lastName
-      password: $password
-      repeatPassword: $repeatPassword
-    ) {
+  mutation UpdateUser($data: UpdateUserArgs!) {
+    updateUser(data: $data) {
       id
       email
       firstName
@@ -110,7 +96,7 @@ export default function AdminUsersIndex() {
     }
 
     updateUser({
-      variables: { id: data.user.id, ...values },
+      variables: { data: { id: data.user.id, ...values } },
     });
   }
 
