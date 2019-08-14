@@ -8,6 +8,7 @@ import { Heading } from '../components/Heading';
 import { Page } from '../components/Page';
 import { Input } from '../components/Input';
 import { useRouter } from '../hooks/useRouter';
+import { Button } from '../components/Button';
 
 import * as ApolloTypes from './__generated__/Login';
 
@@ -60,7 +61,7 @@ export default function Admin() {
           <form onSubmit={handleSubmit}>
             <Input type="email" name="email" />
             <Input type="password" name="password" />
-            <button type="submit">Login</button>
+            <Button type="submit">Login</Button>
           </form>
         )}
       </Formik>

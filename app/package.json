@@ -76,5 +76,10 @@
     "@types/styled-components": "^4.1.18",
     "@types/yup": "^0.26.22",
     "prettier": "^1.18.2"
+  },
+  "babelMacros": {
+    "styledComponents": {
+      "pure": true
+    }
   }
 }
