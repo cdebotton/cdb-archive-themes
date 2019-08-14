@@ -102,71 +102,75 @@ const resolvers = {
     async createUser(
       parent: unknown,
       args: {
-        email: string;
-        password: string;
-        firstName?: string;
-        lastName?: string;
+        data: {
+          email: string;
+          password: string;
+          firstName?: string;
+          lastName?: string;
+        };
       },
       { photon }: Context,
     ) {
       const salt = await genSalt(10);
-      const password = await hash(args.password, salt);
+      const password = await hash(args.data.password, salt);
 
       return photon.users.create({
         data: {
           password,
-          email: args.email,
-          firstName: args.firstName,
-          lastName: args.lastName,
+          email: args.data.email,
+          firstName: args.data.firstName,
+          lastName: args.data.lastName,
         },
       });
     },
     async updateUser(
       parent: unknown,
       args: {
-        id: string;
-        email: string;
-        password?: string;
-        repeatPassword?: string;
-        firstName?: string;
-        lastName?: string;
+        data: {
+          id: string;
+          email: string;
+          password?: string;
+          repeatPassword?: string;
+          firstName?: string;
+          lastName?: string;
+        };
       },
       { photon }: Context,
     ) {
       const data: Record<string, string | undefined> = {
-        email: args.email,
-        firstName: args.firstName,
-        lastName: args.lastName,
+        email: args.data.email,
+        firstName: args.data.firstName,
+        lastName: args.data.lastName,
       };
 
       if (
-        args.password &&
-        args.password.trim() !== '' &&
-        args.password === args.repeatPassword
+        args.data.password &&
+        args.data.password.trim() !== '' &&
+        args.data.password === args.data.repeatPassword
       ) {
         const salt = await genSalt(10);
-        data.password = await hash(args.password, salt);
+        data.password = await hash(args.data.password, salt);
       }
 
       return await photon.users.update({
-        where: { id: args.id },
+        where: { id: args.data.id },
         data,
       });
     },
     async login(
       parent: unknown,
-      args: { email: string; password: string },
+      args: { data: { email: string; password: string } },
       { photon }: Context,
     ) {
       const user = await photon.users.findOne({
-        where: { email: args.email },
+        where: { email: args.data.email },
       });
 
       if (!user) {
         throw new Error('Bad credentials');
       }
 
-      if (!(await compare(args.password, user.password))) {
+      if (!(await compare(args.data.password, user.password))) {
         throw new Error('Bad credentials');
       }
 
