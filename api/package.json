@@ -2,6 +2,7 @@
   "name": "cdb-graphql",
   "private": true,
   "scripts": {
+    "now-deploy": "prisma2 lift up",
     "dev": "NODE_ENV=development nodemon -w ./src --ext .ts --exec babel-node --require node_modules/dotenv/config --no-config --presets=@babel/env,@babel/typescript --extensions=.ts ./src/index",
     "postinstall": "prisma2 generate"
   },
