@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { Formik } from 'formik';
@@ -72,17 +72,27 @@ const schema = yup.object({
 });
 
 export default function AdminUsersIndex() {
-  const { match } = useRouter<Params>();
+  const { match, history } = useRouter<Params>();
 
-  const { data, error, loading } = useQuery<
-    ApolloTypes.User,
-    ApolloTypes.UserVariables
-  >(QUERY, { variables: { id: match.params.userId } });
+  const { data, error } = useQuery<ApolloTypes.User, ApolloTypes.UserVariables>(
+    QUERY,
+    { variables: { id: match.params.userId } },
+  );
 
   const [updateUser, updateUserResult] = useMutation<
     MutationTypes.UpdateUser,
     MutationTypes.UpdateUserVariables
   >(UPDATE_USER_MUTATION);
+
+  useEffect(() => {
+    if (updateUserResult.called && updateUserResult.data) {
+      history.push('/admin/users');
+    }
+  }, [updateUserResult, history]);
+
+  if (error) {
+    throw error;
+  }
 
   if (!data || !data.user) {
     return <>Loading...</>;

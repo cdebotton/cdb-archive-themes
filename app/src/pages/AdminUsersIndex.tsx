@@ -36,7 +36,9 @@ export default function AdminUsersIndex() {
           {data.users.map(user => {
             return (
               <li key={user.id}>
-                <Link to={`${match.url}/${user.id}`}>{user.email}</Link>
+                <Link to={`${match.url}/${user.id}`}>
+                  {user.firstName} {user.lastName} - {user.email}
+                </Link>
               </li>
             );
           })}
