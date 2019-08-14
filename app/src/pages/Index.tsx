@@ -56,7 +56,7 @@ export default function IndexPage() {
         <SocialLink
           target="_BLANK"
           rel="noopener noreferrer"
-          href="//instagram.com/cdebotton"
+          href="//twitter.com/cdebotton"
         >
           Twitter
         </SocialLink>
