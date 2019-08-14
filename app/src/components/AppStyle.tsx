@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components/macro';
 import { normalize, transparentize, rem, modularScale, em } from 'polished';
 
 export const AppStyle = createGlobalStyle`

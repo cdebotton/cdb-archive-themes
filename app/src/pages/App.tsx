@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useReducer } from 'react';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components/macro';
 import { Switch, Route } from 'react-router-dom';
 
 import { AppStyle } from '../components/AppStyle';

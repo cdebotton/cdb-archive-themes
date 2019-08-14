@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { Container, Heading } from '../components/Heading';
 import { useRouter } from '../hooks/useRouter';
 import { Input } from '../components/Input';
+
 import * as ApolloTypes from './__generated__/User';
 import * as MutationTypes from './__generated__/UpdateUser';
 
@@ -131,9 +132,6 @@ export default function AdminUsersIndex() {
           );
         }}
       </Formik>
-      <pre>
-        <code>{JSON.stringify(updateUserResult, null, 2)}</code>
-      </pre>
     </Container>
   );
 }

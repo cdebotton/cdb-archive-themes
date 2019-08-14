@@ -4,8 +4,9 @@ import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 
 import { useRouter } from '../hooks/useRouter';
-import * as ApolloTypes from './__generated__/AdminUsersQuery';
 import { Container, Heading } from '../components/Heading';
+
+import * as ApolloTypes from './__generated__/AdminUsersQuery';
 
 const QUERY = gql`
   query AdminUsersQuery {

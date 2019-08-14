@@ -1,11 +1,10 @@
 import React, { lazy, Suspense } from 'react';
+import { NavLink, Switch, Route } from 'react-router-dom';
 
 import { Page } from '../components/Page';
 import { Heading } from '../components/Heading';
 import { LogoutButton } from '../components/LogoutButton';
 import { useRouter } from '../hooks/useRouter';
-
-import { NavLink, Switch, Route } from 'react-router-dom';
 
 const AdminDashboard = lazy(() => import('./AdminDashboard'));
 const AdminGalleries = lazy(() => import('./AdminGalleries'));

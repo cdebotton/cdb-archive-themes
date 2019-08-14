@@ -22,6 +22,7 @@
     "react-is": "^16.9.0",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.0",
+    "react-spring": "^9.0.0-beta.31",
     "styled-components": "4.3.2",
     "typescript": "3.5.3",
     "yup": "^0.27.0"
@@ -33,7 +34,29 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "import/order": [
+        "error",
+        {
+          "newlines-between": "always-and-inside-groups"
+        }
+      ],
+      "no-restricted-imports": [
+        "error",
+        {
+          "paths": [
+            {
+              "name": "styled-components",
+              "message": "Please import from styled-components/macro."
+            }
+          ],
+          "patterns": [
+            "!styled-components/macro"
+          ]
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
