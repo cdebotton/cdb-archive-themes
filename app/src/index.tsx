@@ -3,7 +3,7 @@ import { unstable_createRoot } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
 
-import App from './pages/App';
+import App from './pages/app';
 import * as serviceWorker from './serviceWorker';
 import { createClient } from './client';
 

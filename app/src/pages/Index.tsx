@@ -11,7 +11,7 @@ export default function IndexPage() {
     <Page css="height: 100%; display: grid; grid-auto-flow: row; grid-template-rows: auto min-content;">
       <Content>
         <p>Oh, hello!</p>
-        <Heading scale={4}>My name's Christian</Heading>
+        <Heading>My name's Christian</Heading>
         <p>
           I'm a web application engineer at{' '}
           <a target="_BLANK" rel="noopener noreferrer" href="//vimeo.com">

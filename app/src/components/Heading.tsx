@@ -14,12 +14,26 @@ type Props = {
   scale?: number;
 };
 
-export const Heading = styled(({ children, ...props }: Props) => {
+export function Heading({ children, ...props }: Props) {
   const level = useContext(LevelContext);
+  return (
+    <AutoHeading level={level} {...props}>
+      {children}
+    </AutoHeading>
+  );
+}
 
-  return createElement(`h${level}`, props, children);
-})`
-  font-size: ${({ scale = 0 }) => modularScale(scale)};
+type AutoHeadingProps = {
+  level: number;
+};
+
+const AutoHeading = styled(
+  ({ level, scale: _, children, ...props }: Props & AutoHeadingProps) => {
+    return createElement(`h${level}`, props, children);
+  },
+)`
+  font-size: ${({ scale = 0, level }) =>
+    modularScale(scale ? scale : 6 - level)};
   ${margin('0.25em', 0)};
 `;
 

@@ -9,7 +9,7 @@ export default function NotFoundPage() {
 
   return (
     <Page>
-      <Heading scale={4}>Page not found</Heading>
+      <Heading>Page not found</Heading>
       <p>
         The page at <code>{router.location.pathname}</code> could not be found.
       </p>

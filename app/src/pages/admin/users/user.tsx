@@ -3,14 +3,17 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import 'styled-components/macro';
+import { rem } from 'polished';
 
-import { Container, Heading } from '../components/Heading';
-import { useRouter } from '../hooks/useRouter';
-import { Input } from '../components/Input';
-import { Loading } from '../components/Loading';
+import { Container, Heading } from '../../../components/Heading';
+import { useRouter } from '../../../hooks/useRouter';
+import { Input } from '../../../components/Input';
+import { Button } from '../../../components/Button';
+import { Loading } from '../../../components/Loading';
 
-import * as ApolloTypes from './__generated__/User';
 import * as MutationTypes from './__generated__/UpdateUser';
+import * as ApolloTypes from './__generated__/User';
 
 const QUERY = gql`
   query User($id: String) {
@@ -66,7 +69,9 @@ const schema = yup.object({
   email: yup.string().required(),
   firstName: yup.string(),
   lastName: yup.string(),
-  password: yup.string(),
+  password: yup
+    .string()
+    .oneOf([yup.ref('repeatPassword'), ''], 'Passwords must match'),
   repeatPassword: yup
     .string()
     .oneOf([yup.ref('password'), ''], 'Passwords must match'),
@@ -111,7 +116,7 @@ export default function AdminUsersIndex() {
 
   return (
     <Container>
-      <Heading scale={2}>Edit {data.user.email}</Heading>
+      <Heading>Edit {data.user.email}</Heading>
       <Formik<Values>
         initialValues={{
           email: data.user.email,
@@ -125,20 +130,52 @@ export default function AdminUsersIndex() {
       >
         {({ handleSubmit, isValid }) => {
           return (
-            <form onSubmit={handleSubmit}>
-              <Input label="Email" disabled type="email" name="email" />
-              <Input label="First name" type="text" name="firstName" />
-              <Input label="Last name" type="text" name="lastName" />
-              <Input label="Password" type="password" name="password" />
+            <form
+              onSubmit={handleSubmit}
+              css={{
+                display: 'grid',
+                grid:
+                  "'a b c' min-content 'd e .' min-content '. f g' min-content / 1fr 1fr 1fr ",
+                gridGap: rem(16),
+              }}
+            >
               <Input
+                css={{ gridArea: 'a' }}
+                label="Email"
+                disabled
+                type="email"
+                name="email"
+              />
+              <Input
+                css={{ gridArea: 'b' }}
+                label="First name"
+                type="text"
+                name="firstName"
+              />
+              <Input
+                css={{ gridArea: 'c' }}
+                label="Last name"
+                type="text"
+                name="lastName"
+              />
+              <Input
+                css={{ gridArea: 'd' }}
+                label="Password"
+                type="password"
+                name="password"
+              />
+              <Input
+                css={{ gridArea: 'e' }}
                 label="Repeat Password"
                 type="password"
                 name="repeatPassword"
               />
-              <button disabled={!isValid} type="submit">
+              <Button css={{ gridArea: 'f' }} disabled={!isValid} type="submit">
                 Save
-              </button>
-              <button type="reset">Cancel</button>
+              </Button>
+              <Button css={{ gridArea: 'g' }} type="reset">
+                Cancel
+              </Button>
             </form>
           );
         }}

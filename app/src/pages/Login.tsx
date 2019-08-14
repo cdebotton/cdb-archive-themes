@@ -54,7 +54,7 @@ export default function Admin() {
 
   return (
     <Page>
-      <Heading scale={4}>Login</Heading>
+      <Heading>Login</Heading>
       <Formik<Values> initialValues={initialValues.current} onSubmit={onSubmit}>
         {({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>

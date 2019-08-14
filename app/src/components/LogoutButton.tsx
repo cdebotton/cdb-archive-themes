@@ -4,6 +4,8 @@ import cookie from 'cookie';
 
 import { useRouter } from '../hooks/useRouter';
 
+import { Button } from './Button';
+
 export function LogoutButton() {
   const client = useApolloClient();
   const router = useRouter();
@@ -18,5 +20,5 @@ export function LogoutButton() {
     });
   }
 
-  return <button onClick={handleClick}>Log out</button>;
+  return <Button onClick={handleClick}>Log out</Button>;
 }

@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback } from 'react';
 import { useField } from 'formik';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { useSpring, animated } from 'react-spring';
-import { modularScale, rem } from 'polished';
+import { modularScale, rem, padding } from 'polished';
 
 type Props = {
   className?: string;
@@ -12,14 +12,8 @@ type Props = {
   disabled?: boolean;
 };
 
-export const Input = styled(function Input<Values = {}>({
-  className,
-  type,
-  disabled,
-  name,
-  label,
-}: Props) {
-  const [field] = useField<Values>(name);
+export function Input({ className, type, disabled, name, label }: Props) {
+  const [field] = useField(name);
 
   const getLabelOffset = useCallback(() => (field.value === '' ? 50 : 0), [
     field,
@@ -43,9 +37,10 @@ export const Input = styled(function Input<Values = {}>({
   }, [getLabelOffset, getLabelOpacity, set]);
 
   return (
-    <span className={className}>
+    <Container className={className}>
       {label && (
         <InputLabel
+          htmlFor={name}
           style={{
             opacity,
             transform: y.to(y => `translate3d(0, ${y}%, 0)`),
@@ -55,30 +50,43 @@ export const Input = styled(function Input<Values = {}>({
         </InputLabel>
       )}
       <InputText
+        id={name}
         placeholder={label}
         disabled={disabled}
         type={type}
         name={name}
         {...field}
       />
-    </span>
+    </Container>
   );
-})`
+}
+
+const Container = styled.span`
   position: relative;
   display: inline-grid;
 `;
 
 const InputLabel = styled(animated.label)`
   position: relative;
-  pointer-events: none;
   left: ${rem(2)};
   font-weight: 800;
   font-size: ${modularScale(-2)};
   text-transform: uppercase;
+  cursor: pointer;
+  ${padding(rem(4), 0)};
 `;
 
 const InputText = styled.input`
+  ${padding(rem(8))}
+  border-radius: 3px;
+  border: 1px solid #ccc;
+
   &:focus {
     outline: none;
+  }
+
+  &[disabled] {
+    color: #ccc;
+    border-color: #eee;
   }
 `;

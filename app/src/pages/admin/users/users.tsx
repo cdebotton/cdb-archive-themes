@@ -3,9 +3,9 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 
-import { useRouter } from '../hooks/useRouter';
-import { Container, Heading } from '../components/Heading';
-import { Loading } from '../components/Loading';
+import { useRouter } from '../../../hooks/useRouter';
+import { Container, Heading } from '../../../components/Heading';
+import { Loading } from '../../../components/Loading';
 
 import * as ApolloTypes from './__generated__/AdminUsersQuery';
 
@@ -29,7 +29,7 @@ export default function AdminUsersIndex() {
 
   return (
     <Container>
-      <Heading scale={2}>List</Heading>
+      <Heading>List</Heading>
       {loading && <Loading />}
       {error && <pre>{JSON.stringify(error)}</pre>}
       {data && data.users && (

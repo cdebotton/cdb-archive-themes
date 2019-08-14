@@ -3,15 +3,14 @@ import { ThemeProvider } from 'styled-components/macro';
 import { Switch, Route } from 'react-router-dom';
 
 import { AppStyle } from '../components/AppStyle';
-import { Container } from '../components/Heading';
 import ProtectedRoute from '../components/ProtectedRoute';
 import { Viewport } from '../components/Viewport';
 import { Loading } from '../components/Loading';
 
-const Login = lazy(() => import('./Login'));
-const Index = lazy(() => import('./Index'));
-const Admin = lazy(() => import('./Admin'));
-const NotFound = lazy(() => import('./NotFound'));
+const Login = lazy(() => import('./login'));
+const Index = lazy(() => import('./index'));
+const Admin = lazy(() => import('./admin'));
+const NotFound = lazy(() => import('./not-found'));
 
 function App() {
   const theme = useTheme();
@@ -19,17 +18,15 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Viewport>
-        <Container>
-          <Suspense fallback={<Loading />}>
-            <AppStyle />
-            <Switch>
-              <Route path="/login" component={Login} />
-              <ProtectedRoute path="/admin" component={Admin} />
-              <Route exact path="/" component={Index} />
-              <Route component={NotFound} />
-            </Switch>
-          </Suspense>
-        </Container>
+        <Suspense fallback={<Loading />}>
+          <AppStyle />
+          <Switch>
+            <Route path="/login" component={Login} />
+            <ProtectedRoute path="/admin" component={Admin} />
+            <Route exact path="/" component={Index} />
+            <Route component={NotFound} />
+          </Switch>
+        </Suspense>
       </Viewport>
     </ThemeProvider>
   );
