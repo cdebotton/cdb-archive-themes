@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import { AppStyle } from '../components/AppStyle';
 import { Container } from '../components/Heading';
 import ProtectedRoute from '../components/ProtectedRoute';
+import { Viewport } from '../components/Viewport';
 
 const Login = lazy(() => import('./Login'));
 const Index = lazy(() => import('./Index'));
@@ -16,17 +17,19 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container>
-        <Suspense fallback={<>Loading...</>}>
-          <AppStyle />
-          <Switch>
-            <Route path="/login" component={Login} />
-            <ProtectedRoute path="/admin" component={Admin} />
-            <Route exact path="/" component={Index} />
-            <Route component={NotFound} />
-          </Switch>
-        </Suspense>
-      </Container>
+      <Viewport>
+        <Container>
+          <Suspense fallback={<>Loading...</>}>
+            <AppStyle />
+            <Switch>
+              <Route path="/login" component={Login} />
+              <ProtectedRoute path="/admin" component={Admin} />
+              <Route exact path="/" component={Index} />
+              <Route component={NotFound} />
+            </Switch>
+          </Suspense>
+        </Container>
+      </Viewport>
     </ThemeProvider>
   );
 }
