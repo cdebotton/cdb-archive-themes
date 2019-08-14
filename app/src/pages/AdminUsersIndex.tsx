@@ -1,0 +1,46 @@
+import { useQuery } from '@apollo/react-hooks';
+import React from 'react';
+import gql from 'graphql-tag';
+import { Link } from 'react-router-dom';
+
+import { useRouter } from '../hooks/useRouter';
+import * as ApolloTypes from './__generated__/AdminUsersQuery';
+import { Container, Heading } from '../components/Heading';
+
+const QUERY = gql`
+  query AdminUsersQuery {
+    users {
+      id
+      email
+      firstName
+      lastName
+      createdAt
+      updatedAt
+      lastLogin
+    }
+  }
+`;
+
+export default function AdminUsersIndex() {
+  const { data, loading, error } = useQuery<ApolloTypes.AdminUsersQuery>(QUERY);
+  const { match } = useRouter();
+
+  return (
+    <Container>
+      <Heading scale={2}>List</Heading>
+      {loading && <>Loading...</>}
+      {error && <pre>{JSON.stringify(error)}</pre>}
+      {data && data.users && (
+        <ul>
+          {data.users.map(user => {
+            return (
+              <li key={user.id}>
+                <Link to={`${match.url}/${user.id}`}>{user.email}</Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </Container>
+  );
+}

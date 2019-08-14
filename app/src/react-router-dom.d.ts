@@ -3,5 +3,5 @@ import { Context } from 'react';
 
 declare module 'react-router-dom' {
   import { RouteComponentProps } from 'react-router-dom';
-  export const __RouterContext: Context<RouteComponentProps>;
+  export const __RouterContext: Context<RouteComponentProps<any>>;
 }

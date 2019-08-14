@@ -22,7 +22,7 @@ const typeDefs = gql`
   }
 
   type User {
-    id: String!
+    id: ID!
     email: String!
     createdAt: DateTime!
     updatedAt: DateTime!
@@ -41,6 +41,15 @@ const typeDefs = gql`
     createUser(
       email: String!
       password: String!
+      firstName: String
+      lastName: String
+    ): User!
+
+    updateUser(
+      id: ID!
+      email: String!
+      password: String
+      repeatPassword: String
       firstName: String
       lastName: String
     ): User!
@@ -102,6 +111,38 @@ const resolvers = {
           firstName: args.firstName,
           lastName: args.lastName,
         },
+      });
+    },
+    async updateUser(
+      parent: unknown,
+      args: {
+        id: string;
+        email: string;
+        password?: string;
+        repeatPassword?: string;
+        firstName?: string;
+        lastName?: string;
+      },
+      { photon }: Context,
+    ) {
+      const data: Record<string, string | undefined> = {
+        email: args.email,
+        firstName: args.firstName,
+        lastName: args.lastName,
+      };
+
+      if (
+        args.password &&
+        args.password.trim() !== '' &&
+        args.password === args.repeatPassword
+      ) {
+        const salt = await genSalt(10);
+        data.password = await hash(args.password, salt);
+      }
+
+      return await photon.users.update({
+        where: { id: args.id },
+        data,
       });
     },
     async login(

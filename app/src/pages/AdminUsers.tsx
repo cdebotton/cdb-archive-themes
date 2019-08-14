@@ -1,46 +1,23 @@
-import React from 'react';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
-import { Link } from 'react-router-dom';
+import React, { lazy } from 'react';
+import { Switch, Route } from 'react-router-dom';
 
-import { Heading, Container } from '../components/Heading';
-import * as ApolloTypes from './__generated__/AdminUsersQuery';
+import { Container, Heading } from '../components/Heading';
 import { useRouter } from '../hooks/useRouter';
 
-const QUERY = gql`
-  query AdminUsersQuery {
-    users {
-      id
-      email
-      firstName
-      lastName
-      createdAt
-      updatedAt
-      lastLogin
-    }
-  }
-`;
+const AdminUsersIndex = lazy(() => import('./AdminUsersIndex'));
+const AdminUsersUser = lazy(() => import('./AdminUsersUser'));
 
 export default function AdminUsers() {
-  const { data, loading, error } = useQuery<ApolloTypes.AdminUsersQuery>(QUERY);
   const { match } = useRouter();
 
   return (
     <Container>
-      <Heading scale={3}>AdminUsers</Heading>
-      {loading && <>Loading...</>}
-      {error && <pre>{JSON.stringify(error)}</pre>}
-      {data && data.users && (
-        <ul>
-          {data.users.map(user => {
-            return (
-              <li key={user.id}>
-                <Link to={`${match.url}/${user.id}`}>{user.email}</Link>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      <Heading scale={3}>Users</Heading>
+      <Switch>
+        <Route exact path={match.url} component={AdminUsersIndex} />
+        <Route path={`${match.url}/:userId`} component={AdminUsersUser} />
+        <Route />
+      </Switch>
     </Container>
   );
 }

@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import { Page } from '../components/Page';
 import { Heading } from '../components/Heading';
@@ -35,12 +35,14 @@ export default function Admin() {
         </nav>
         <LogoutButton />
       </header>
-      <Switch>
-        <Route exact path={match.url} component={AdminDashboard} />
-        <Route path={`${match.url}/galleries`} component={AdminGalleries} />
-        <Route path={`${match.url}/media`} component={AdminMedia} />
-        <Route path={`${match.url}/users`} component={AdminUsers} />
-      </Switch>
+      <Suspense fallback={<>Loading...</>}>
+        <Switch>
+          <Route exact path={match.url} component={AdminDashboard} />
+          <Route path={`${match.url}/galleries`} component={AdminGalleries} />
+          <Route path={`${match.url}/media`} component={AdminMedia} />
+          <Route path={`${match.url}/users`} component={AdminUsers} />
+        </Switch>
+      </Suspense>
     </Page>
   );
 }

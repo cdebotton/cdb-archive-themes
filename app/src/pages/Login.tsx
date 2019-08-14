@@ -1,14 +1,15 @@
 import React, { useRef, useEffect } from 'react';
-import { Formik, useField } from 'formik';
+import { Formik } from 'formik';
 import gql from 'graphql-tag';
 import cookie from 'cookie';
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
 
 import { Heading } from '../components/Heading';
 import { Page } from '../components/Page';
-import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import { Input } from '../components/Input';
+import { useRouter } from '../hooks/useRouter';
 
 import * as ApolloTypes from './__generated__/Login';
-import { useRouter } from '../hooks/useRouter';
 
 type Values = {
   email: string;
@@ -65,15 +66,4 @@ export default function Admin() {
       </Formik>
     </Page>
   );
-}
-
-type InputProps = {
-  type?: string;
-  name: string;
-};
-
-function Input({ type, name }: InputProps) {
-  const [field] = useField<Values>(name);
-
-  return <input type={type} name={name} {...field} />;
 }
