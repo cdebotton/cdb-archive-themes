@@ -52,5 +52,5 @@
     "TOKEN_KEY": "@token-key",
     "ENGINE_API_KEY": "@engine-api-key"
   },
-  "regions": ["cle", "chs"]
+  "regions": ["iad", "cle", "chs"]
 }
