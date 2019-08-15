@@ -31,6 +31,18 @@ const typeDefs = gql`
     lastLogin: DateTime
   }
 
+  type Gallery {
+    id: ID!
+    uri: String!
+    title: String!
+    description: String!
+    author: User
+    deleted: Boolean
+    publishedAt: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
+  }
+
   type Query {
     viewer: User!
     user(id: String, email: String): User!
@@ -40,8 +52,9 @@ const typeDefs = gql`
   type Mutation {
     createUser(data: CreateUserArgs!): User!
     updateUser(data: UpdateUserArgs!): User!
-    login(data: LoginArgs!): String!
     deleteUser(id: ID!): User!
+    createGallery(data: CreateGalleryArgs!): Gallery!
+    login(data: LoginArgs!): String!
   }
 
   input CreateUserArgs {
@@ -64,6 +77,14 @@ const typeDefs = gql`
   input LoginArgs {
     email: String!
     password: String!
+  }
+
+  input CreateGalleryArgs {
+    uri: String!
+    title: String!
+    description: String!
+    authorId: ID!
+    publishedAt: DateTime
   }
 `;
 
@@ -193,6 +214,13 @@ const resolvers = {
       }
 
       return jwt.sign(user.id, JWT_SECRET);
+    },
+    async createGallery(
+      parent: unknown,
+      args: { data: {} },
+      { photon }: Context,
+    ) {
+      console.log(photon);
     },
   },
 };
