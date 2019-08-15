@@ -1,0 +1,11 @@
+{
+  "version": "0.1.26",
+  "steps": [
+    {
+      "stepType": "UpdateField",
+      "model": "Gallery",
+      "name": "author",
+      "arity": "optional"
+    }
+  ]
+}
