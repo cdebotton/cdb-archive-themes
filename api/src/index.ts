@@ -293,6 +293,7 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  playground: true,
   ...(process.env.NODE_ENV === 'development' && {
     cors: {
       credentials: true,
