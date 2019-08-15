@@ -6,6 +6,13 @@
 // START Enums and Input Objects
 //==============================================================
 
+export interface CreateGalleryArgs {
+  uri: string;
+  title: string;
+  description: string;
+  publishedAt?: any | null;
+}
+
 export interface CreateUserArgs {
   email: string;
   password: string;

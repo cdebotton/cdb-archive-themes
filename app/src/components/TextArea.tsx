@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, ChangeEventHandler } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useField } from 'formik';
 import styled from 'styled-components/macro';
 import { useSpring, animated } from 'react-spring';
@@ -6,21 +6,12 @@ import { modularScale, rem, padding } from 'polished';
 
 type Props = {
   className?: string;
-  type?: string;
   label?: string;
   name: string;
   disabled?: boolean;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
 };
 
-export function Input({
-  className,
-  type,
-  disabled,
-  name,
-  label,
-  onChange,
-}: Props) {
+export function TextArea({ className, disabled, name, label }: Props) {
   const [field, meta] = useField(name);
 
   const getLabelOffset = useCallback(() => (field.value === '' ? 50 : 0), [
@@ -47,7 +38,7 @@ export function Input({
   return (
     <Container className={className}>
       {label && (
-        <InputLabel
+        <TextAreaLabel
           htmlFor={name}
           style={{
             opacity,
@@ -55,21 +46,14 @@ export function Input({
           }}
         >
           {label}
-        </InputLabel>
+        </TextAreaLabel>
       )}
-      <InputText
+      <TextAreaText
         id={name}
         placeholder={label}
         disabled={disabled}
-        type={type}
         name={name}
         {...field}
-        onChange={event => {
-          field.onChange(event);
-          if (onChange) {
-            onChange(event);
-          }
-        }}
       />
       {meta.touched && meta.error && <span>{meta.error}</span>}
     </Container>
@@ -81,7 +65,7 @@ const Container = styled.span`
   display: inline-grid;
 `;
 
-const InputLabel = styled(animated.label)`
+const TextAreaLabel = styled(animated.label)`
   position: relative;
   left: ${rem(2)};
   font-weight: 800;
@@ -91,10 +75,11 @@ const InputLabel = styled(animated.label)`
   ${padding(rem(4), 0)};
 `;
 
-const InputText = styled.input`
+const TextAreaText = styled.textarea`
   ${padding(rem(8))}
   border-radius: 3px;
   border: 1px solid #ccc;
+  resize: none;
 
   &:focus {
     outline: none;

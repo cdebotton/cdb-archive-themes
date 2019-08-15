@@ -45,6 +45,7 @@ const typeDefs = gql`
 
   type Query {
     viewer: User!
+    galleries(where: GalleryWhereArgs): [Gallery!]!
     user(id: String, email: String): User!
     users: [User!]!
   }
@@ -79,11 +80,14 @@ const typeDefs = gql`
     password: String!
   }
 
+  input GalleryWhereArgs {
+    deleted: Boolean
+  }
+
   input CreateGalleryArgs {
     uri: String!
     title: String!
     description: String!
-    authorId: ID!
     publishedAt: DateTime
   }
 `;
@@ -118,6 +122,34 @@ const resolvers = {
 
     users(parent: unknown, args: any, { photon }: Context) {
       return photon.users.findMany();
+    },
+
+    async galleries(
+      parent: unknown,
+      args: { where: { deleted?: boolean } } | null,
+      { photon, token }: Context,
+    ) {
+      if (!token) {
+        throw new Error('No token');
+      }
+
+      const userId = await jwt.verify(token, JWT_SECRET);
+
+      let deleted = false;
+      if (
+        args &&
+        args.where &&
+        args.where.deleted &&
+        typeof userId !== 'string'
+      ) {
+        deleted = args.where.deleted;
+      }
+
+      if (!userId) {
+        deleted = false;
+      }
+
+      return photon.galleries.findMany({ where: { deleted } });
     },
   },
   Mutation: {
@@ -217,10 +249,41 @@ const resolvers = {
     },
     async createGallery(
       parent: unknown,
-      args: { data: {} },
-      { photon }: Context,
+      args: {
+        data: {
+          title: string;
+          description: string;
+          uri: string;
+          publishedAt: string | null;
+        };
+      },
+      { photon, token }: Context,
     ) {
-      console.log(photon);
+      if (!token) {
+        throw new Error('No token');
+      }
+
+      const userId = await jwt.verify(token, JWT_SECRET);
+
+      if (typeof userId !== 'string') {
+        throw new Error('Invalid token');
+      }
+
+      try {
+        const gallery = await photon.galleries.create({
+          data: {
+            title: args.data.title,
+            description: args.data.description,
+            uri: args.data.uri,
+            publishedAt: args.data.publishedAt,
+            author: { connect: { id: userId } },
+          },
+        });
+
+        return gallery;
+      } catch (err) {
+        console.warn(err);
+      }
     },
   },
 };

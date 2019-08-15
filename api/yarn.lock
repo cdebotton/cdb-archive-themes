@@ -3134,7 +3134,7 @@ prepend-http@^1.0.1:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
 
-prisma2@^2.0.0-preview.6.1:
+prisma2@^2.0.0-preview.3.2:
   version "2.0.0-preview-6.1"
   resolved "https://registry.yarnpkg.com/prisma2/-/prisma2-2.0.0-preview-6.1.tgz#528b12cd62e6d2d990a1dc6ba67916444b505f27"
   integrity sha512-N8q7KqQEhcOrDLExSAm2pG0Haw2gw5RmlkOtq3UekM+ob150k0lyMvLvqHc3VxXfe0eDyid13uM6AMG+cTw4mQ==

@@ -20,7 +20,7 @@
     "dotenv": "^8.0.0",
     "isomorphic-unfetch": "^3.0.0",
     "nodemon": "^1.19.1",
-    "prisma2": "^2.0.0-preview.6.1",
+    "prisma2": "^2.0.0-preview.3.2",
     "typescript": "3.5.3"
   },
   "dependencies": {
