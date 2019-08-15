@@ -20,6 +20,7 @@
       "dest": "/app/static/$1"
     },
     { "src": "/favicon.ico", "dest": "/app/favicon.ico" },
+    { "src": "/logo192.png", "dest": "/app/logo192.png" },
     {
       "src": "/asset-manifest.json",
       "dest": "/app/asset-manifest.json"
