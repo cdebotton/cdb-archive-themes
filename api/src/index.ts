@@ -275,7 +275,9 @@ const resolvers = {
             title: args.data.title,
             description: args.data.description,
             uri: args.data.uri,
-            publishedAt: args.data.publishedAt,
+            publishedAt: args.data.publishedAt || new Date(),
+            createdAt: new Date(),
+            updatedAt: new Date(),
             author: { connect: { id: userId } },
           },
         });

@@ -3,9 +3,4 @@
 # lift lockfile v1
 # Read more about conflict resolution here: TODO
 
-20190809080950-create-users-table
-20190814172605-add-media-tables
-20190814183534-make-deleted-optional
-20190814213348-add-media-to-gallery
-20190814214026-make-author-optional-on-gallery
-20190814214137-make-author-required
+20190814222257-initial-schema

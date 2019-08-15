@@ -1,6 +1,11 @@
 {
-  "version": "0.1.29",
+  "version": "0.1.26",
   "steps": [
+    {
+      "stepType": "CreateModel",
+      "name": "User",
+      "embedded": false
+    },
     {
       "stepType": "CreateModel",
       "name": "Gallery",
@@ -19,11 +24,112 @@
     {
       "stepType": "CreateField",
       "model": "User",
+      "name": "id",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": true,
+      "id": {
+        "strategy": "Auto",
+        "sequence": null
+      },
+      "default": {
+        "Expression": [
+          "cuid",
+          "String",
+          []
+        ]
+      }
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "email",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": true
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "password",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "firstName",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "optional",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "lastName",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "optional",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
       "name": "deleted",
       "type": {
         "Base": "Boolean"
       },
       "arity": "required",
+      "isUnique": false,
+      "default": {
+        "Boolean": false
+      }
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "createdAt",
+      "type": {
+        "Base": "DateTime"
+      },
+      "arity": "required",
+      "isUnique": false,
+      "default": {
+        "Expression": [
+          "now",
+          "DateTime",
+          []
+        ]
+      }
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "updatedAt",
+      "type": {
+        "Base": "DateTime"
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "lastLogin",
+      "type": {
+        "Base": "DateTime"
+      },
+      "arity": "optional",
       "isUnique": false
     },
     {
@@ -110,29 +216,15 @@
     {
       "stepType": "CreateField",
       "model": "Gallery",
-      "name": "author",
-      "type": {
-        "Relation": {
-          "to": "User",
-          "to_fields": [
-            "id"
-          ],
-          "name": "GalleryToUser",
-          "on_delete": "None"
-        }
-      },
-      "arity": "required",
-      "isUnique": false
-    },
-    {
-      "stepType": "CreateField",
-      "model": "Gallery",
       "name": "deleted",
       "type": {
         "Base": "Boolean"
       },
       "arity": "required",
-      "isUnique": false
+      "isUnique": false,
+      "default": {
+        "Boolean": false
+      }
     },
     {
       "stepType": "CreateField",
@@ -181,18 +273,33 @@
     {
       "stepType": "CreateField",
       "model": "Gallery",
-      "name": "galleryMedia",
+      "name": "media",
       "type": {
         "Relation": {
           "to": "GalleryMedia",
-          "to_fields": [
-            "id"
-          ],
+          "to_fields": [],
           "name": "GalleryToGalleryMedia",
           "on_delete": "None"
         }
       },
-      "arity": "optional",
+      "arity": "list",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Gallery",
+      "name": "author",
+      "type": {
+        "Relation": {
+          "to": "User",
+          "to_fields": [
+            "id"
+          ],
+          "name": "GalleryToUser",
+          "on_delete": "None"
+        }
+      },
+      "arity": "required",
       "isUnique": false
     },
     {
@@ -223,7 +330,9 @@
       "type": {
         "Relation": {
           "to": "Gallery",
-          "to_fields": [],
+          "to_fields": [
+            "id"
+          ],
           "name": "GalleryToGalleryMedia",
           "on_delete": "None"
         }
@@ -256,7 +365,10 @@
         "Base": "Boolean"
       },
       "arity": "required",
-      "isUnique": false
+      "isUnique": false,
+      "default": {
+        "Boolean": false
+      }
     },
     {
       "stepType": "CreateField",
@@ -348,7 +460,10 @@
         "Base": "Boolean"
       },
       "arity": "required",
-      "isUnique": false
+      "isUnique": false,
+      "default": {
+        "Boolean": false
+      }
     },
     {
       "stepType": "CreateField",

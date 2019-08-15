@@ -81,6 +81,7 @@ export default function AdminUsersIndex() {
                   {user.firstName} {user.lastName} - {user.email}
                 </Link>
                 <Button
+                  disabled={user.id === data.viewer.id}
                   onClick={() => deleteUser({ variables: { id: user.id } })}
                 >
                   Delete
