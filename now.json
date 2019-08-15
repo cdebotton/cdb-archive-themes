@@ -51,5 +51,6 @@
     "JWT_SECRET": "@jwt-secret",
     "TOKEN_KEY": "@token-key",
     "ENGINE_API_KEY": "@engine-api-key"
-  }
+  },
+  "regions": ["cle1"]
 }
