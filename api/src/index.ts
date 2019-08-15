@@ -8,6 +8,7 @@ import fs from 'fs';
 
 import { Context } from './types';
 import { join } from 'path';
+import { IResolvers } from './__generated__/graphql';
 
 const { JWT_SECRET = 'SECRET' } = process.env;
 
@@ -45,8 +46,9 @@ const typeDefs = gql`
 
   type Query {
     viewer: User!
+    gallery(id: ID!): Gallery!
     galleries(where: GalleryWhereArgs): [Gallery!]!
-    user(id: String, email: String): User!
+    user(id: ID!, email: String): User!
     users: [User!]!
   }
 
@@ -55,6 +57,8 @@ const typeDefs = gql`
     updateUser(data: UpdateUserArgs!): User!
     deleteUser(id: ID!): User!
     createGallery(data: CreateGalleryArgs!): Gallery!
+    updateGallery(data: UpdateGalleryArgs!, where: GalleryWhereArgs!): Gallery!
+    deleteGallery(id: ID!): Gallery!
     login(data: LoginArgs!): String!
   }
 
@@ -82,6 +86,7 @@ const typeDefs = gql`
 
   input GalleryWhereArgs {
     deleted: Boolean
+    id: ID
   }
 
   input CreateGalleryArgs {
@@ -90,11 +95,18 @@ const typeDefs = gql`
     description: String!
     publishedAt: DateTime
   }
+
+  input UpdateGalleryArgs {
+    uri: String!
+    title: String!
+    description: String!
+    publishedAt: DateTime
+  }
 `;
 
-const resolvers = {
+const resolvers: IResolvers<Context> = {
   Query: {
-    async viewer(parent: unknown, args: any, { photon, token }: Context) {
+    async viewer(parent, args, { photon, token }) {
       if (!token) {
         throw new Error('No token');
       }
@@ -108,11 +120,7 @@ const resolvers = {
       return await photon.users.findOne({ where: { id: userId } });
     },
 
-    user(
-      parent: unknown,
-      args: { id?: string; email?: string },
-      { photon }: Context,
-    ) {
+    user(parent, args, { photon }) {
       if (!(args.id || args.email)) {
         throw new Error('You must specify an id or email to find a user.');
       }
@@ -120,15 +128,16 @@ const resolvers = {
       return photon.users.findOne({ where: { id: args.id } });
     },
 
-    users(parent: unknown, args: any, { photon }: Context) {
+    users(parent, args, { photon }) {
       return photon.users.findMany();
     },
-
-    async galleries(
-      parent: unknown,
-      args: { where: { deleted?: boolean } } | null,
-      { photon, token }: Context,
-    ) {
+    async gallery(parent, args, { photon }) {
+      const gallery = await photon.galleries.findOne({
+        where: { id: args.id },
+      });
+      return gallery;
+    },
+    async galleries(parent, args, { photon, token }) {
       if (!token) {
         throw new Error('No token');
       }
@@ -153,18 +162,7 @@ const resolvers = {
     },
   },
   Mutation: {
-    async createUser(
-      parent: unknown,
-      args: {
-        data: {
-          email: string;
-          password: string;
-          firstName?: string;
-          lastName?: string;
-        };
-      },
-      { photon }: Context,
-    ) {
+    async createUser(parent, args, { photon }) {
       const salt = await genSalt(10);
       const password = await hash(args.data.password, salt);
 
@@ -177,21 +175,8 @@ const resolvers = {
         },
       });
     },
-    async updateUser(
-      parent: unknown,
-      args: {
-        data: {
-          id: string;
-          email: string;
-          password?: string;
-          repeatPassword?: string;
-          firstName?: string;
-          lastName?: string;
-        };
-      },
-      { photon }: Context,
-    ) {
-      const data: Record<string, string | undefined> = {
+    async updateUser(parent, args, { photon }) {
+      const data: Record<string, string | null | undefined> = {
         email: args.data.email,
         firstName: args.data.firstName,
         lastName: args.data.lastName,
@@ -211,11 +196,7 @@ const resolvers = {
         data,
       });
     },
-    async deleteUser(
-      parent: unknown,
-      args: { id: string },
-      { photon, token }: Context,
-    ) {
+    async deleteUser(parent, args, { photon, token }) {
       if (!token) {
         throw new Error('No token');
       }
@@ -247,18 +228,7 @@ const resolvers = {
 
       return jwt.sign(user.id, JWT_SECRET);
     },
-    async createGallery(
-      parent: unknown,
-      args: {
-        data: {
-          title: string;
-          description: string;
-          uri: string;
-          publishedAt: string | null;
-        };
-      },
-      { photon, token }: Context,
-    ) {
+    async createGallery(parent, args, { photon, token }) {
       if (!token) {
         throw new Error('No token');
       }
@@ -269,29 +239,35 @@ const resolvers = {
         throw new Error('Invalid token');
       }
 
-      try {
-        const gallery = await photon.galleries.create({
-          data: {
-            title: args.data.title,
-            description: args.data.description,
-            uri: args.data.uri,
-            publishedAt: args.data.publishedAt || new Date(),
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            author: { connect: { id: userId } },
-          },
-        });
+      const gallery = await photon.galleries.create({
+        data: {
+          title: args.data.title,
+          description: args.data.description,
+          uri: args.data.uri,
+          publishedAt: args.data.publishedAt,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          author: { connect: { id: userId } },
+        },
+      });
 
-        return gallery;
-      } catch (err) {
-        console.warn(err);
-      }
+      return gallery;
+    },
+    updateGallery(parent, { data, where }, { photon }) {
+      return photon.galleries.update({ where: { id: where.id }, data });
+    },
+    async deleteGallery(parent, args, { photon }) {
+      return await photon.galleries.update({
+        where: { id: args.id },
+        data: { deleted: true },
+      });
     },
   },
 };
 
 const server = new ApolloServer({
   typeDefs,
+  // @ts-ignore
   resolvers,
   playground: true,
   ...(process.env.NODE_ENV === 'development' && {

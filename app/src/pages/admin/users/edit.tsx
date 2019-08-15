@@ -16,7 +16,7 @@ import * as MutationTypes from './__generated__/UpdateUser';
 import * as ApolloTypes from './__generated__/User';
 
 const QUERY = gql`
-  query User($id: String) {
+  query User($id: ID!) {
     user(id: $id) {
       id
       email
@@ -63,7 +63,7 @@ const schema = yup.object({
     .oneOf([yup.ref('password'), ''], 'Passwords must match'),
 });
 
-export default function AdminUsersIndex() {
+export default function AdminEditUserPage() {
   const { match, history } = useRouter<Params>();
 
   const { data, error } = useQuery<ApolloTypes.User, ApolloTypes.UserVariables>(

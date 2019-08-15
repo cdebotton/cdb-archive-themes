@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 import { Formik } from 'formik';
 import { rem } from 'polished';
 import gql from 'graphql-tag';
@@ -9,6 +9,7 @@ import { Container, Heading } from '../../../components/Heading';
 import { Input } from '../../../components/Input';
 import { TextArea } from '../../../components/TextArea';
 import { Button } from '../../../components/Button';
+import { useRouter } from '../../../hooks/useRouter';
 
 import * as ApolloTypes from './__generated__/CreateGallery';
 
@@ -32,6 +33,8 @@ const MUTATION = gql`
 `;
 
 export default function AdminUserNewPage() {
+  const { history } = useRouter();
+
   const [createGallery, createGalleryResult] = useMutation<
     ApolloTypes.CreateGallery,
     ApolloTypes.CreateGalleryVariables
@@ -42,6 +45,12 @@ export default function AdminUserNewPage() {
   function onSubmit(data: Values) {
     createGallery({ variables: { data } });
   }
+
+  useEffect(() => {
+    if (createGalleryResult.called) {
+      history.push('/admin/galleries');
+    }
+  }, [createGalleryResult, history]);
 
   return (
     <Container>

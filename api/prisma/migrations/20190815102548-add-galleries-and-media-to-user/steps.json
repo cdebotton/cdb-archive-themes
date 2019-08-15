@@ -1,0 +1,31 @@
+{
+  "version": "0.1.26",
+  "steps": [
+    {
+      "stepType": "CreateField",
+      "model": "User",
+      "name": "galleries",
+      "type": {
+        "Relation": {
+          "to": "Gallery",
+          "to_fields": [],
+          "name": "GalleryToUser",
+          "on_delete": "None"
+        }
+      },
+      "arity": "list",
+      "isUnique": false
+    },
+    {
+      "stepType": "DeleteField",
+      "model": "User",
+      "name": "gallery"
+    },
+    {
+      "stepType": "UpdateField",
+      "model": "User",
+      "name": "media",
+      "arity": "list"
+    }
+  ]
+}

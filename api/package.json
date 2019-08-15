@@ -3,7 +3,10 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development nodemon -w ./src --ext .ts --exec babel-node --require node_modules/dotenv/config --no-config --presets=@babel/env,@babel/typescript --extensions=.ts ./src/index",
-    "postinstall": "prisma2 generate"
+    "postdeploy": "prisma2 lift up && npm run seed",
+    "postinstall": "prisma2 generate",
+    "gqlgen": "graphql-codegen --config codegen.yml",
+    "seed": "node -r dotenv/config prisma/seed"
   },
   "engines": {
     "node": "10.x"
@@ -13,13 +16,17 @@
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-typescript": "^7.3.3",
+    "@graphql-codegen/cli": "^1.5.0",
+    "@graphql-codegen/typescript": "1.5.0",
+    "@graphql-codegen/typescript-resolvers": "1.5.0",
     "@types/bcrypt": "3.0.0",
     "@types/jsonwebtoken": "^8.3.3",
     "@types/node": "12.7.2",
     "dotenv": "^8.0.0",
+    "graphql-codegen-typescript-resolvers": "^0.18.2",
     "isomorphic-unfetch": "^3.0.0",
     "nodemon": "^1.19.1",
-    "prisma2": "^2.0.0-preview.6.1",
+    "prisma2": "^2.0.0-alpha.115",
     "typescript": "3.5.3"
   },
   "dependencies": {

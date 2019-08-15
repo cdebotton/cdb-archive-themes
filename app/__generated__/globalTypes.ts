@@ -21,9 +21,21 @@ export interface CreateUserArgs {
   lastName?: string | null;
 }
 
+export interface GalleryWhereArgs {
+  deleted?: boolean | null;
+  id?: string | null;
+}
+
 export interface LoginArgs {
   email: string;
   password: string;
+}
+
+export interface UpdateGalleryArgs {
+  uri: string;
+  title: string;
+  description: string;
+  publishedAt?: any | null;
 }
 
 export interface UpdateUserArgs {
