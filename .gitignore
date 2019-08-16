@@ -6,3 +6,4 @@ thumbs.db
 .env
 .env.build
 *.code-workspace
+yarn-error.log
