@@ -345,6 +345,14 @@ const resolvers: IResolvers<Context> = {
         throw new Error('Invalid JWT');
       }
 
+      console.log({
+        JWT_SECRET,
+        SPACES_SPACE,
+        SPACES_SECRET,
+        SPACES_KEY,
+        SPACES_ENDPOINT,
+      });
+
       const file = await data.file;
 
       const stream = file.createReadStream();
