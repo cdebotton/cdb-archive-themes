@@ -188,6 +188,7 @@ const resolvers: IResolvers<Context> = {
     async gallery(parent, args, { photon }) {
       const gallery = await photon.galleries.findOne({
         where: { id: args.id },
+        include: { media: true },
       });
       return gallery;
     },

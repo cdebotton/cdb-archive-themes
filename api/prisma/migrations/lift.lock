@@ -8,3 +8,4 @@
 20190815201158-update-media-fields
 20190815202847-change-media-filename-to-key
 20190815210341-add-etag-to-media
+20190816000411-fix-many-to-many-on-media-and-galleries

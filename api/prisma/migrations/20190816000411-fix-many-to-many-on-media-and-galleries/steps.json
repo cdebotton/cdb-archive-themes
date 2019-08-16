@@ -1,0 +1,46 @@
+{
+  "version": "0.2.1",
+  "steps": [
+    {
+      "stepType": "DeleteModel",
+      "name": "GalleryMedia"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Media",
+      "name": "gallery",
+      "type": {
+        "Relation": {
+          "to": "Gallery",
+          "to_fields": [
+            "id"
+          ],
+          "name": "GalleryToMedia",
+          "on_delete": "None"
+        }
+      },
+      "arity": "list",
+      "isUnique": false
+    },
+    {
+      "stepType": "DeleteField",
+      "model": "Media",
+      "name": "galleryMedia"
+    },
+    {
+      "stepType": "UpdateField",
+      "model": "Gallery",
+      "name": "media",
+      "type": {
+        "Relation": {
+          "to": "Media",
+          "to_fields": [
+            "id"
+          ],
+          "name": "GalleryToMedia",
+          "on_delete": "None"
+        }
+      }
+    }
+  ]
+}
