@@ -30,7 +30,6 @@
     "typescript": "3.5.3"
   },
   "dependencies": {
-    "@nodelib/fs.stat": "^2.0.1",
     "apollo-server": "2.8.1",
     "aws-sdk": "^2.511.0",
     "bcrypt": "^3.0.6",
