@@ -6,7 +6,7 @@ import fetch from 'isomorphic-unfetch';
 import { getIntrospectionQuery } from 'graphql';
 import fs from 'fs';
 import { generate } from '@graphql-codegen/cli';
-import { S3 } from 'aws-sdk';
+// import { S3 } from 'aws-sdk';
 import { PassThrough } from 'stream';
 
 import { Context } from './types';
@@ -29,11 +29,11 @@ if (!SPACES_SPACE) {
   throw new Error(`process.env.SPACES_SPACE is undefined`);
 }
 
-const s3 = new S3({
-  endpoint: process.env.SPACES_ENDPOINT,
-  secretAccessKey: SPACES_SECRET,
-  accessKeyId: SPACES_KEY,
-});
+// const s3 = new S3({
+//   endpoint: process.env.SPACES_ENDPOINT,
+//   secretAccessKey: SPACES_SECRET,
+//   accessKeyId: SPACES_KEY,
+// });
 
 const photon = new Photon();
 
@@ -220,10 +220,11 @@ const resolvers: IResolvers<Context> = {
       return media.map(media => {
         return {
           id: media.id,
-          url: s3.getSignedUrl('getObject', {
-            Key: media.key,
-            Bucket: media.bucket,
-          }),
+          // url: s3.getSignedUrl('getObject', {
+          //   Key: media.key,
+          //   Bucket: media.bucket,
+          // }),
+          url: '',
           deleted: media.deleted,
           createdAt: media.createdAt,
           updatedAt: media.updatedAt,
@@ -355,13 +356,16 @@ const resolvers: IResolvers<Context> = {
         Body: pass,
       };
 
-      const { Bucket, Key, ETag } = await s3.upload(config).promise();
+      // const { Bucket, Key, ETag } = await s3.upload(config).promise();
 
       const media = await photon.media.create({
         data: {
-          bucket: Bucket,
-          key: Key,
-          etag: ETag,
+          // bucket: Bucket,
+          bucket: '',
+          // key: Key,
+          key: '',
+          // etag: ETag,
+          etag: '',
           mimetype: file.mimetype,
           encoding: file.encoding,
           author: { connect: { id: userId } },
