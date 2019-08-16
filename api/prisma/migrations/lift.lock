@@ -5,3 +5,6 @@
 
 20190814222257-initial-schema
 20190815102548-add-galleries-and-media-to-user
+20190815201158-update-media-fields
+20190815202847-change-media-filename-to-key
+20190815210341-add-etag-to-media

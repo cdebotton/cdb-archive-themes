@@ -50,7 +50,11 @@
     "POSTGRESQL_URL": "@postgresql-url",
     "JWT_SECRET": "@jwt-secret",
     "TOKEN_KEY": "@token-key",
-    "ENGINE_API_KEY": "@engine-api-key"
+    "ENGINE_API_KEY": "@engine-api-key",
+    "SPACES_KEY": "@spaces-key",
+    "SPACES_SECRET": "@spaces-secret",
+    "SPACES_ENDPOINT": "@spaces-endpoint",
+    "SPACES_SPACE": "@spaces-space"
   },
   "regions": ["iad1", "cle1"]
 }

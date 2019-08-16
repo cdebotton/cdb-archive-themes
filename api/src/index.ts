@@ -5,17 +5,42 @@ import jwt from 'jsonwebtoken';
 import fetch from 'isomorphic-unfetch';
 import { getIntrospectionQuery } from 'graphql';
 import fs from 'fs';
+import { generate } from '@graphql-codegen/cli';
+import AWS, { S3 } from 'aws-sdk';
+import { PassThrough } from 'stream';
 
 import { Context } from './types';
 import { join } from 'path';
 import { IResolvers } from './__generated__/graphql';
 
-const { JWT_SECRET = 'SECRET' } = process.env;
+const {
+  JWT_SECRET = 'SECRET',
+  SPACES_SPACE,
+  SPACES_SECRET,
+  SPACES_KEY,
+  SPACES_ENDPOINT,
+} = process.env;
+
+AWS.config.update({
+  secretAccessKey: SPACES_SECRET,
+  accessKeyId: SPACES_KEY,
+});
+
+if (!SPACES_ENDPOINT) {
+  throw new Error(`process.env.SPACES_ENDPOINT is undefined`);
+}
+
+if (!SPACES_SPACE) {
+  throw new Error(`process.env.SPACES_SPACE is undefined`);
+}
+
+const s3 = new S3({ endpoint: process.env.SPACES_ENDPOINT });
 
 const photon = new Photon();
 
 const typeDefs = gql`
   scalar DateTime
+  scalar File
 
   enum Role {
     ADMIN
@@ -30,6 +55,27 @@ const typeDefs = gql`
     firstName: String
     lastName: String
     lastLogin: DateTime
+  }
+
+  type Media {
+    id: ID!
+    author: User!
+    key: String!
+    etag: String!
+    bucket: String!
+    mimetype: String!
+    encoding: String!
+    deleted: Boolean!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+  }
+
+  type SignedMedia {
+    id: ID!
+    url: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    deleted: Boolean!
   }
 
   type Gallery {
@@ -49,6 +95,7 @@ const typeDefs = gql`
     gallery(id: ID!): Gallery!
     galleries(where: GalleryWhereArgs): [Gallery!]!
     user(id: ID!, email: String): User!
+    allMedia: [SignedMedia!]!
     users: [User!]!
   }
 
@@ -60,6 +107,7 @@ const typeDefs = gql`
     updateGallery(data: UpdateGalleryArgs!, where: GalleryWhereArgs!): Gallery!
     deleteGallery(id: ID!): Gallery!
     login(data: LoginArgs!): String!
+    createMedia(data: CreateMediaArgs!): Media!
   }
 
   input CreateUserArgs {
@@ -101,6 +149,11 @@ const typeDefs = gql`
     title: String!
     description: String!
     publishedAt: DateTime
+  }
+
+  input CreateMediaArgs {
+    title: String!
+    file: File!
   }
 `;
 
@@ -159,6 +212,24 @@ const resolvers: IResolvers<Context> = {
       }
 
       return photon.galleries.findMany({ where: { deleted } });
+    },
+    async allMedia(parent, args, { photon }) {
+      const media = await photon.media.findMany({
+        include: { author: true },
+      });
+
+      return media.map(media => {
+        return {
+          id: media.id,
+          url: s3.getSignedUrl('getObject', {
+            Key: media.key,
+            Bucket: media.bucket,
+          }),
+          deleted: media.deleted,
+          createdAt: media.createdAt,
+          updatedAt: media.updatedAt,
+        };
+      });
     },
   },
   Mutation: {
@@ -262,6 +333,45 @@ const resolvers: IResolvers<Context> = {
         data: { deleted: true },
       });
     },
+    async createMedia(parent, { data }, { photon, token }) {
+      if (!token) {
+        throw new Error('No token');
+      }
+
+      const userId = await jwt.verify(token, JWT_SECRET);
+
+      if (typeof userId !== 'string') {
+        throw new Error('Invalid JWT');
+      }
+
+      const file = await data.file;
+
+      const stream = file.createReadStream();
+      const pass = new PassThrough();
+      stream.pipe(pass);
+
+      const config = {
+        Bucket: SPACES_SPACE,
+        Key: file.filename,
+        Body: pass,
+      };
+
+      const { Bucket, Key, ETag } = await s3.upload(config).promise();
+
+      const media = await photon.media.create({
+        data: {
+          bucket: Bucket,
+          key: Key,
+          etag: ETag,
+          mimetype: file.mimetype,
+          encoding: file.encoding,
+          author: { connect: { id: userId } },
+        },
+        include: { author: true },
+      });
+
+      return media;
+    },
   },
 };
 
@@ -297,6 +407,28 @@ if (process.env.NODE_ENV === 'development') {
       join(__dirname, '../__generated__/schema.json'),
       JSON.stringify(json, null, 2),
     );
+    try {
+      const [output] = await generate({
+        overwrite: true,
+        schema: 'http://localhost:4000',
+        generates: {
+          './__generated__/graphql.ts': {
+            plugins: ['typescript', 'typescript-resolvers'],
+          },
+        },
+        silent: true,
+        config: {
+          scalars: {
+            DateTime: 'string',
+            JSON: '{ [key: string]: any }',
+          },
+          useIndexSignature: true,
+        },
+      });
+      fs.writeFileSync(join(__dirname, output.filename), output.content);
+    } catch (err) {
+      console.error(err);
+    }
   });
 }
 

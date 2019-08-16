@@ -1,0 +1,20 @@
+{
+  "version": "0.2.1",
+  "steps": [
+    {
+      "stepType": "CreateField",
+      "model": "Media",
+      "name": "key",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "DeleteField",
+      "model": "Media",
+      "name": "filename"
+    }
+  ]
+}

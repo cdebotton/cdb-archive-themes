@@ -1,0 +1,15 @@
+{
+  "version": "0.2.1",
+  "steps": [
+    {
+      "stepType": "CreateField",
+      "model": "Media",
+      "name": "etag",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": false
+    }
+  ]
+}

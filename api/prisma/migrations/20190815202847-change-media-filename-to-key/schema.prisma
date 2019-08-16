@@ -18,6 +18,8 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   lastLogin DateTime?
+  galleries Gallery[]
+  media     Media[]
 }
 
 model Gallery {
@@ -45,13 +47,12 @@ model GalleryMedia {
 
 model Media {
   id        String   @default(cuid()) @unique @id
+  author    User
   key       String
-  etag      String
   bucket    String
   mimetype  String
   encoding  String
   deleted   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  author    User
 }

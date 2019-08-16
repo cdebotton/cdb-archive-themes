@@ -13,6 +13,11 @@ export interface CreateGalleryArgs {
   publishedAt?: any | null;
 }
 
+export interface CreateMediaArgs {
+  title: string;
+  file: any;
+}
+
 export interface CreateUserArgs {
   email: string;
   password: string;

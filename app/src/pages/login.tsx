@@ -3,8 +3,9 @@ import { Formik } from 'formik';
 import gql from 'graphql-tag';
 import cookie from 'cookie';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import * as yup from 'yup';
 
-import { Heading } from '../components/Heading';
+import { Heading, Container } from '../components/Heading';
 import { Page } from '../components/Page';
 import { Input } from '../components/Input';
 import { useRouter } from '../hooks/useRouter';
@@ -22,6 +23,14 @@ const LOGIN_MUTATION = gql`
     login(data: $data)
   }
 `;
+
+const schema = yup.object({
+  email: yup
+    .string()
+    .required()
+    .email(),
+  password: yup.string().required(),
+});
 
 export default function Admin() {
   const [login, loginResult] = useMutation<
@@ -55,16 +64,24 @@ export default function Admin() {
 
   return (
     <Page>
-      <Heading>Login</Heading>
-      <Formik<Values> initialValues={initialValues.current} onSubmit={onSubmit}>
-        {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <Input type="email" name="email" />
-            <Input type="password" name="password" />
-            <Button type="submit">Login</Button>
-          </form>
-        )}
-      </Formik>
+      <Container>
+        <Heading>Login</Heading>
+        <Formik<Values>
+          initialValues={initialValues.current}
+          onSubmit={onSubmit}
+          validationSchema={schema}
+        >
+          {({ handleSubmit, isValid }) => (
+            <form onSubmit={handleSubmit}>
+              <Input type="email" name="email" />
+              <Input type="password" name="password" />
+              <Button type="submit" disabled={!isValid}>
+                Login
+              </Button>
+            </form>
+          )}
+        </Formik>
+      </Container>
     </Page>
   );
 }

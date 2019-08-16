@@ -5,3 +5,4 @@ node_modules
 thumbs.db
 .env
 .env.build
+*.code-workspace

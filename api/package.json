@@ -2,7 +2,7 @@
   "name": "cdb-graphql",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development nodemon -w ./src --ext .ts --exec babel-node --require node_modules/dotenv/config --no-config --presets=@babel/env,@babel/typescript --extensions=.ts ./src/index",
+    "dev": "NODE_ENV=development nodemon -i ./src/__generated__ -w ./src --ext .ts --exec babel-node --require node_modules/dotenv/config --no-config --presets=@babel/env,@babel/typescript --extensions=.ts ./src/index",
     "postdeploy": "prisma2 lift up && npm run seed",
     "postinstall": "prisma2 generate",
     "gqlgen": "graphql-codegen --config codegen.yml",
@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "apollo-server": "2.8.1",
+    "aws-sdk": "^2.511.0",
     "bcrypt": "^3.0.6",
     "cookie": "^0.4.0",
     "graphql": "^14.4.2",

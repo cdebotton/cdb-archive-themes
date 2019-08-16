@@ -1,11 +1,11 @@
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import cookie from 'cookie';
+import { createUploadLink } from 'apollo-upload-client';
 
 export function createClient() {
-  const httpLink = createHttpLink({
+  const httpLink = createUploadLink({
     uri:
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:4000'

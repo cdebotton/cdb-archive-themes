@@ -1,0 +1,55 @@
+{
+  "version": "0.2.1",
+  "steps": [
+    {
+      "stepType": "CreateField",
+      "model": "Media",
+      "name": "filename",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Media",
+      "name": "bucket",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Media",
+      "name": "mimetype",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Media",
+      "name": "encoding",
+      "type": {
+        "Base": "String"
+      },
+      "arity": "required",
+      "isUnique": false
+    },
+    {
+      "stepType": "DeleteField",
+      "model": "Media",
+      "name": "filetype"
+    },
+    {
+      "stepType": "DeleteField",
+      "model": "Media",
+      "name": "path"
+    }
+  ]
+}
