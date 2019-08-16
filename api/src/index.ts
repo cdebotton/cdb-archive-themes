@@ -8,6 +8,7 @@ import microCors from 'micro-cors';
 
 import { Context } from './types';
 import { IResolvers } from './__generated__/graphql';
+import { IncomingMessage, ServerResponse } from 'http';
 
 const {
   JWT_SECRET = 'SECRET',
@@ -103,6 +104,7 @@ const typeDefs = gql`
     deleteGallery(id: ID!): Gallery!
     login(data: LoginArgs!): String!
     createMedia(data: CreateMediaArgs!): Media!
+    deleteMedia(where: MediaWhereArgs!): Media!
   }
 
   input CreateUserArgs {
@@ -149,6 +151,10 @@ const typeDefs = gql`
   input CreateMediaArgs {
     title: String!
     file: File!
+  }
+
+  input MediaWhereArgs {
+    id: ID!
   }
 `;
 
@@ -367,12 +373,14 @@ const resolvers: IResolvers<Context> = {
 
       return media;
     },
+    async deleteMedia(parent, { where }, { photon }) {
+      return photon.media.delete({ where, include: { author: true } });
+    },
   },
 };
 
 const server = new ApolloServer({
   typeDefs,
-  // @ts-ignore
   resolvers,
   context({ req }) {
     const [, token] = req.headers.authorization
@@ -383,6 +391,20 @@ const server = new ApolloServer({
   },
 });
 
-const cors = microCors({ origin: '*' });
+const cors = microCors();
+const apolloHandler = server.createHandler({ path: '/graphql' });
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
-export default cors(server.createHandler({ path: '/graphql' }));
+function optionsHandler(req: IncomingMessage, res: ServerResponse) {
+  if (req.method === 'OPTIONS') {
+    res.end();
+    return;
+  }
+  return apolloHandler(req, res);
+}
+
+export default cors(optionsHandler);

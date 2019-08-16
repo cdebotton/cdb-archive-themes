@@ -2,8 +2,7 @@
   "name": "cdb-graphql",
   "private": true,
   "scripts": {
-    "serve-dev": "babel-node --require node_modules/dotenv/config --no-config --presets=@babel/env,@babel/typescript --extensions=.ts node_modules/.bin/micro-dev ./src/index.ts --watch ./src --ignore ./src/__generated__ --port 4000",
-    "dev": "npm-run-all --parallel 'serve-dev' 'build-schema'",
+    "dev": "babel-node --require node_modules/dotenv/config --no-config --presets=@babel/env,@babel/typescript --extensions=.ts node_modules/.bin/micro-dev ./src/index.ts --watch ./src --ignore ./src/__generated__ --port 4000",
     "build-schema": "NODE_ENV=development nodemon -i ./src/__generated__ -w ./src --ext .ts --exec babel-node --require node_modules/dotenv/config --no-config --presets=@babel/env,@babel/typescript --extensions=.ts ./buildSchema",
     "postdeploy": "prisma2 lift up && npm run seed",
     "postinstall": "prisma2 generate",
@@ -32,8 +31,7 @@
     "nodemon": "^1.19.1",
     "npm-run-all": "^4.1.5",
     "prisma2": "^2.0.0-alpha.115",
-    "typescript": "3.5.3",
-    "wait-on": "^3.3.0"
+    "typescript": "3.5.3"
   },
   "dependencies": {
     "apollo-server-micro": "2.8.1",

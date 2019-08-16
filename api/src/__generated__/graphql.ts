@@ -80,6 +80,10 @@ export type Media = {
   updatedAt: Scalars['DateTime'];
 };
 
+export type MediaWhereArgs = {
+  id: Scalars['ID'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createUser: User;
@@ -90,6 +94,7 @@ export type Mutation = {
   deleteGallery: Gallery;
   login: Scalars['String'];
   createMedia: Media;
+  deleteMedia: Media;
 };
 
 export type MutationCreateUserArgs = {
@@ -123,6 +128,10 @@ export type MutationLoginArgs = {
 
 export type MutationCreateMediaArgs = {
   data: CreateMediaArgs;
+};
+
+export type MutationDeleteMediaArgs = {
+  where: MediaWhereArgs;
 };
 
 export type Query = {
@@ -280,6 +289,7 @@ export type ResolversTypes = ResolversObject<{
   CreateMediaArgs: CreateMediaArgs;
   File: ResolverTypeWrapper<Scalars['File']>;
   Media: ResolverTypeWrapper<Media>;
+  MediaWhereArgs: MediaWhereArgs;
   CacheControlScope: CacheControlScope;
   Role: Role;
   Upload: ResolverTypeWrapper<Scalars['Upload']>;
@@ -306,6 +316,7 @@ export type ResolversParentTypes = ResolversObject<{
   CreateMediaArgs: CreateMediaArgs;
   File: Scalars['File'];
   Media: Media;
+  MediaWhereArgs: MediaWhereArgs;
   CacheControlScope: CacheControlScope;
   Role: Role;
   Upload: Scalars['Upload'];
@@ -426,6 +437,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     MutationCreateMediaArgs
+  >;
+  deleteMedia?: Resolver<
+    ResolversTypes['Media'],
+    ParentType,
+    ContextType,
+    MutationDeleteMediaArgs
   >;
 }>;
 
