@@ -2,21 +2,20 @@ import React, {
   DragEvent as ReactDragEvent,
   useEffect,
   useReducer,
-  useMemo,
+  ChangeEvent,
 } from 'react';
+import { useMutation } from '@apollo/react-hooks';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components/macro';
-import { padding, rem, size, modularScale } from 'polished';
+import { padding, rem, size, modularScale, position } from 'polished';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
 import gql from 'graphql-tag';
-import { useMutation } from '@apollo/react-hooks';
 
 import { usePortal } from '../hooks/usePortal';
 
 import { Container, Heading } from './Heading';
 import { Modal } from './Modal';
-import { Button } from './Button';
 
 import { CreateMedia, CreateMediaVariables } from './__generated__/CreateMedia';
 
@@ -29,42 +28,62 @@ const CREATE_MEDIA_MUTATION = gql`
 `;
 
 type Props = {
-  onFilesDropped?: (files: FileList) => void;
+  onFilesDropped?: (files: File[]) => void;
 };
 
 type State = {
-  fileList: FileList | null;
+  files: File[] | null;
 };
 
-type SetFileListAction = {
-  type: 'SET_FILE_LIST';
-  payload: FileList;
+type SetFilesAction = {
+  type: 'SET_FILES';
+  payload: File[];
 };
 
-type ClearFileListAction = {
-  type: 'CLEAR_FILE_LIST';
+type ClearFilesAction = {
+  type: 'CLEAR_FILES';
 };
 
-type Action = SetFileListAction | ClearFileListAction;
+type RemoveFileAction = {
+  type: 'REMOVE_FILE';
+  payload: File;
+};
+
+type Action = SetFilesAction | ClearFilesAction | RemoveFileAction;
 
 export function FileUpload({ onFilesDropped }: Props) {
-  const [createMedia, createMediaCalled] = useMutation<
-    CreateMedia,
-    CreateMediaVariables
-  >(CREATE_MEDIA_MUTATION);
+  const [createMedia] = useMutation<CreateMedia, CreateMediaVariables>(
+    CREATE_MEDIA_MUTATION,
+  );
 
   function reducer(state: State, action: Action): State {
     switch (action.type) {
-      case 'SET_FILE_LIST':
-        return { ...state, fileList: action.payload };
-      case 'CLEAR_FILE_LIST':
-        return { ...state, fileList: null };
+      case 'SET_FILES':
+        return { ...state, files: action.payload };
+      case 'CLEAR_FILES':
+        return { ...state, files: null };
+      case 'REMOVE_FILE': {
+        if (!state.files) {
+          return state;
+        }
+
+        const files = state.files.filter(file => file !== action.payload);
+
+        if (files.length === 0) {
+          return { ...state, files: null };
+        }
+
+        return {
+          ...state,
+          files,
+        };
+      }
       default:
         return state;
     }
   }
 
-  const [state, dispatch] = useReducer(reducer, { fileList: null });
+  const [state, dispatch] = useReducer(reducer, { files: null });
 
   useEffect(() => {
     function handleDragOrDrop(event: DragEvent) {
@@ -80,63 +99,60 @@ export function FileUpload({ onFilesDropped }: Props) {
     };
   }, []);
 
+  function uploadFiles(fileList: FileList) {
+    const files: File[] = [];
+    for (const file of fileList) {
+      files.push(file);
+    }
+
+    dispatch({ type: 'SET_FILES', payload: files });
+
+    files.forEach(async file => {
+      await createMedia({ variables: { data: { file, title: file.name } } });
+      dispatch({ type: 'REMOVE_FILE', payload: file });
+    });
+
+    if (onFilesDropped) {
+      onFilesDropped(files);
+    }
+  }
+
   function handleDrop(event: ReactDragEvent<HTMLDivElement>) {
     if (!event.dataTransfer.files) {
       return;
     }
 
-    dispatch({ type: 'SET_FILE_LIST', payload: event.dataTransfer.files });
+    uploadFiles(event.dataTransfer.files);
+  }
 
-    if (onFilesDropped) {
-      onFilesDropped(event.dataTransfer.files);
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    if (!event.target.files) {
+      return;
     }
+
+    uploadFiles(event.target.files);
   }
 
   const portal = usePortal();
-  const files = useMemo(() => {
-    if (!state.fileList) {
-      return [];
-    }
-
-    const files: File[] = [];
-    for (const file of state.fileList) {
-      files.push(file);
-    }
-
-    return files;
-  }, [state.fileList]);
 
   return (
     <DropTarget onDrop={handleDrop}>
+      <HiddenInputFile type="file" onChange={handleInputChange} />
       <span css={{ fontSize: modularScale(-1) }}>Drag files</span>
       <FontAwesomeIcon
         css="color: hsla(212, 50%, 50%, 1.0)"
         size="3x"
         icon={faCloudUploadAlt}
       />
-      {state.fileList &&
+      {state.files &&
         createPortal(
-          <Modal
-            onClickOutside={() => void dispatch({ type: 'CLEAR_FILE_LIST' })}
-          >
+          <Modal onClickOutside={() => void dispatch({ type: 'CLEAR_FILES' })}>
             <Container>
-              <Heading>Upload {state.fileList.length} file(s)</Heading>
-              {files.map(file => {
+              <Heading>Upload {state.files.length} file(s)</Heading>
+              {state.files.map(file => {
                 return (
                   <div>
-                    <span>
-                      {file.name} - {file.size}{' '}
-                      <Button
-                        type="button"
-                        onClick={() =>
-                          createMedia({
-                            variables: { data: { file, title: file.name } },
-                          })
-                        }
-                      >
-                        Upload
-                      </Button>
-                    </span>
+                    {file.name} - {file.size}{' '}
                   </div>
                 );
               })}
@@ -168,4 +184,11 @@ const DropTarget = styled.div`
     ${size(`calc(100% - ${rem(16)})`)};
     border: 1px dashed black;
   }
+`;
+
+const HiddenInputFile = styled.input`
+  ${position('absolute', 0, 0)};
+  ${size('100%')};
+  opacity: 0;
+  cursor: pointer;
 `;
