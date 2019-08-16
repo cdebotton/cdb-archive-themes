@@ -6,7 +6,7 @@ import fetch from 'isomorphic-unfetch';
 import { getIntrospectionQuery } from 'graphql';
 import fs from 'fs';
 import { generate } from '@graphql-codegen/cli';
-import AWS, { S3 } from 'aws-sdk';
+import { S3 } from 'aws-sdk';
 import { PassThrough } from 'stream';
 
 import { Context } from './types';
@@ -21,11 +21,6 @@ const {
   SPACES_ENDPOINT,
 } = process.env;
 
-AWS.config.update({
-  secretAccessKey: SPACES_SECRET,
-  accessKeyId: SPACES_KEY,
-});
-
 if (!SPACES_ENDPOINT) {
   throw new Error(`process.env.SPACES_ENDPOINT is undefined`);
 }
@@ -34,7 +29,11 @@ if (!SPACES_SPACE) {
   throw new Error(`process.env.SPACES_SPACE is undefined`);
 }
 
-const s3 = new S3({ endpoint: process.env.SPACES_ENDPOINT });
+const s3 = new S3({
+  endpoint: process.env.SPACES_ENDPOINT,
+  secretAccessKey: SPACES_SECRET,
+  accessKeyId: SPACES_KEY,
+});
 
 const photon = new Photon();
 
