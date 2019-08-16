@@ -2,15 +2,10 @@ import Photon from '@generated/photon';
 import { ApolloServer, gql } from 'apollo-server';
 import { genSalt, hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import fetch from 'isomorphic-unfetch';
-import { getIntrospectionQuery } from 'graphql';
-import fs from 'fs';
-import { generate } from '@graphql-codegen/cli';
-// import { S3 } from 'aws-sdk';
+import { S3 } from 'aws-sdk';
 import { PassThrough } from 'stream';
 
 import { Context } from './types';
-import { join } from 'path';
 import { IResolvers } from './__generated__/graphql';
 
 const {
@@ -29,11 +24,11 @@ if (!SPACES_SPACE) {
   throw new Error(`process.env.SPACES_SPACE is undefined`);
 }
 
-// const s3 = new S3({
-//   endpoint: process.env.SPACES_ENDPOINT,
-//   secretAccessKey: SPACES_SECRET,
-//   accessKeyId: SPACES_KEY,
-// });
+const s3 = new S3({
+  endpoint: process.env.SPACES_ENDPOINT,
+  secretAccessKey: SPACES_SECRET,
+  accessKeyId: SPACES_KEY,
+});
 
 const photon = new Photon();
 
@@ -220,11 +215,10 @@ const resolvers: IResolvers<Context> = {
       return media.map(media => {
         return {
           id: media.id,
-          // url: s3.getSignedUrl('getObject', {
-          //   Key: media.key,
-          //   Bucket: media.bucket,
-          // }),
-          url: '',
+          url: s3.getSignedUrl('getObject', {
+            Key: media.key,
+            Bucket: media.bucket,
+          }),
           deleted: media.deleted,
           createdAt: media.createdAt,
           updatedAt: media.updatedAt,
@@ -356,16 +350,13 @@ const resolvers: IResolvers<Context> = {
         Body: pass,
       };
 
-      // const { Bucket, Key, ETag } = await s3.upload(config).promise();
+      const { Bucket, Key, ETag } = await s3.upload(config).promise();
 
       const media = await photon.media.create({
         data: {
-          // bucket: Bucket,
-          bucket: '',
-          // key: Key,
-          key: '',
-          // etag: ETag,
-          etag: '',
+          bucket: Bucket,
+          key: Key,
+          etag: ETag,
           mimetype: file.mimetype,
           encoding: file.encoding,
           author: { connect: { id: userId } },
@@ -397,42 +388,5 @@ const server = new ApolloServer({
     return { photon, token };
   },
 });
-
-if (process.env.NODE_ENV === 'development') {
-  server.listen(4000, async () => {
-    console.log(`🚀 Apollo Server is running at http://localhost:4000`);
-    const res = await fetch(
-      `http://localhost:4000?query=${getIntrospectionQuery()}`,
-    );
-    const json = await res.json();
-
-    fs.writeFileSync(
-      join(__dirname, '../__generated__/schema.json'),
-      JSON.stringify(json, null, 2),
-    );
-    try {
-      const [output] = await generate({
-        overwrite: true,
-        schema: 'http://localhost:4000',
-        generates: {
-          './__generated__/graphql.ts': {
-            plugins: ['typescript', 'typescript-resolvers'],
-          },
-        },
-        silent: true,
-        config: {
-          scalars: {
-            DateTime: 'string',
-            JSON: '{ [key: string]: any }',
-          },
-          useIndexSignature: true,
-        },
-      });
-      fs.writeFileSync(join(__dirname, output.filename), output.content);
-    } catch (err) {
-      console.error(err);
-    }
-  });
-}
 
 export default server;
