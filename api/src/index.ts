@@ -1,9 +1,10 @@
 import Photon from '@generated/photon';
-import { ApolloServer, gql } from 'apollo-server';
+import { ApolloServer, gql } from 'apollo-server-micro';
 import { genSalt, hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { S3 } from 'aws-sdk';
 import { PassThrough } from 'stream';
+import microCors from 'micro-cors';
 
 import { Context } from './types';
 import { IResolvers } from './__generated__/graphql';
@@ -373,13 +374,6 @@ const server = new ApolloServer({
   typeDefs,
   // @ts-ignore
   resolvers,
-  playground: true,
-  ...(process.env.NODE_ENV === 'development' && {
-    cors: {
-      credentials: true,
-      origin: true,
-    },
-  }),
   context({ req }) {
     const [, token] = req.headers.authorization
       ? req.headers.authorization.split(' ')
@@ -389,4 +383,6 @@ const server = new ApolloServer({
   },
 });
 
-export default server;
+const cors = microCors({ origin: '*' });
+
+export default cors(server.createHandler({ path: '/graphql' }));
