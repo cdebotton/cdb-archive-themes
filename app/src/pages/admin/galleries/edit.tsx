@@ -32,6 +32,9 @@ const QUERY = gql`
       description
       createdAt
       updatedAt
+      media {
+        id
+      }
     }
 
     allMedia {

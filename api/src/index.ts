@@ -72,6 +72,7 @@ const typeDefs = gql`
     createdAt: DateTime!
     updatedAt: DateTime!
     deleted: Boolean!
+    author: User!
   }
 
   type Gallery {
@@ -84,6 +85,7 @@ const typeDefs = gql`
     publishedAt: DateTime
     createdAt: DateTime
     updatedAt: DateTime
+    media: [Media!]!
   }
 
   type Query {
@@ -188,7 +190,7 @@ const resolvers: IResolvers<Context> = {
     async gallery(parent, args, { photon }) {
       const gallery = await photon.galleries.findOne({
         where: { id: args.id },
-        include: { media: true },
+        include: { media: { include: { author: true } }, author: true },
       });
       return gallery;
     },
@@ -213,7 +215,10 @@ const resolvers: IResolvers<Context> = {
         deleted = false;
       }
 
-      return photon.galleries.findMany({ where: { deleted } });
+      return photon.galleries.findMany({
+        include: { media: { include: { author: true } } },
+        where: { deleted },
+      });
     },
     async allMedia(parent, args, { photon }) {
       const media = await photon.media.findMany({
@@ -230,6 +235,7 @@ const resolvers: IResolvers<Context> = {
           deleted: media.deleted,
           createdAt: media.createdAt,
           updatedAt: media.updatedAt,
+          author: media.author,
         };
       });
     },
@@ -322,17 +328,23 @@ const resolvers: IResolvers<Context> = {
           updatedAt: new Date(),
           author: { connect: { id: userId } },
         },
+        include: { media: { include: { author: true } } },
       });
 
       return gallery;
     },
     updateGallery(parent, { data, where }, { photon }) {
-      return photon.galleries.update({ where: { id: where.id }, data });
+      return photon.galleries.update({
+        where: { id: where.id },
+        data,
+        include: { media: { include: { author: true } } },
+      });
     },
     async deleteGallery(parent, args, { photon }) {
       return await photon.galleries.update({
         where: { id: args.id },
         data: { deleted: true },
+        include: { media: { include: { author: true } } },
       });
     },
     async createMedia(parent, { data }, { photon, token }) {

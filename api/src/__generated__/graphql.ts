@@ -54,6 +54,7 @@ export type Gallery = {
   publishedAt?: Maybe<Scalars['DateTime']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
+  media: Array<Media>;
 };
 
 export type GalleryWhereArgs = {
@@ -169,6 +170,7 @@ export type SignedMedia = {
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
   deleted: Scalars['Boolean'];
+  author: User;
 };
 
 export type UpdateGalleryArgs = {
@@ -278,6 +280,7 @@ export type ResolversTypes = ResolversObject<{
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Gallery: ResolverTypeWrapper<Gallery>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Media: ResolverTypeWrapper<Media>;
   GalleryWhereArgs: GalleryWhereArgs;
   SignedMedia: ResolverTypeWrapper<SignedMedia>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -288,7 +291,6 @@ export type ResolversTypes = ResolversObject<{
   LoginArgs: LoginArgs;
   CreateMediaArgs: CreateMediaArgs;
   File: ResolverTypeWrapper<Scalars['File']>;
-  Media: ResolverTypeWrapper<Media>;
   MediaWhereArgs: MediaWhereArgs;
   CacheControlScope: CacheControlScope;
   Role: Role;
@@ -305,6 +307,7 @@ export type ResolversParentTypes = ResolversObject<{
   DateTime: Scalars['DateTime'];
   Gallery: Gallery;
   Boolean: Scalars['Boolean'];
+  Media: Media;
   GalleryWhereArgs: GalleryWhereArgs;
   SignedMedia: SignedMedia;
   Mutation: {};
@@ -315,7 +318,6 @@ export type ResolversParentTypes = ResolversObject<{
   LoginArgs: LoginArgs;
   CreateMediaArgs: CreateMediaArgs;
   File: Scalars['File'];
-  Media: Media;
   MediaWhereArgs: MediaWhereArgs;
   CacheControlScope: CacheControlScope;
   Role: Role;
@@ -368,6 +370,7 @@ export type GalleryResolvers<
     ParentType,
     ContextType
   >;
+  media?: Resolver<Array<ResolversTypes['Media']>, ParentType, ContextType>;
 }>;
 
 export type MediaResolvers<
@@ -486,6 +489,7 @@ export type SignedMediaResolvers<
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   deleted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  author?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 }>;
 
 export interface UploadScalarConfig
