@@ -1,62 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { ChangeEvent } from 'react';
 import gql from 'graphql-tag';
 import styled from 'styled-components/macro';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Formik } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { rem } from 'polished';
 
-import { Container, Heading } from '../../../components/Heading';
 import { useRouter } from '../../../hooks/useRouter';
-import { Loading } from '../../../components/Loading';
 import { Input } from '../../../components/Input';
-import { TextArea } from '../../../components/TextArea';
 import { Button } from '../../../components/Button';
-import { MediaSelectionInput } from '../../../components/MediaSelectionInput';
+import { Loading } from '../../../components/Loading';
+import { TextArea } from '../../../components/TextArea';
+import { Container, Heading } from '../../../components/Heading';
 
+import { Gallery, GalleryVariables } from './__generated__/Gallery';
 import {
   UpdateGallery,
   UpdateGalleryVariables,
 } from './__generated__/UpdateGallery';
-import { Gallery, GalleryVariables } from './__generated__/Gallery';
 
 type Params = {
   galleryId: string;
 };
-
-const QUERY = gql`
-  query Gallery($id: ID!) {
-    gallery(id: $id) {
-      id
-      title
-      uri
-      description
-      createdAt
-      updatedAt
-      media {
-        id
-      }
-    }
-
-    allMedia {
-      ...MediaDetails
-    }
-  }
-  ${MediaSelectionInput.fragments.media}
-`;
-
-const UPDATE_GALLERY_MUTATION = gql`
-  mutation UpdateGallery($data: UpdateGalleryArgs!, $where: GalleryWhereArgs!) {
-    updateGallery(data: $data, where: $where) {
-      id
-      title
-      description
-      uri
-      publishedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
 
 type Values = {
   title: string;
@@ -65,83 +29,127 @@ type Values = {
   mediaIds: string[];
 };
 
+/**
+ * ⚛️ Components
+ */
+
+const encodeUri = (title: string) =>
+  title
+    .toLowerCase()
+    .replace(/[^\w\d\s-]/g, '')
+    .replace(/\s+/g, '-');
+
+function Form({
+  handleSubmit,
+  handleReset,
+  handleChange,
+  setFieldValue,
+}: FormikProps<Values>) {
+  function handleTitleChange(event: ChangeEvent<HTMLInputElement>) {
+    const uri = encodeUri(event.target.value);
+    setFieldValue('uri', uri);
+    handleChange(event);
+  }
+  return (
+    <FormLayout onSubmit={handleSubmit}>
+      <Input
+        css="grid-row: 1 / span 1; grid-column: 1 / span 1;"
+        onChange={handleTitleChange}
+        name="title"
+        label="Title"
+      />
+      <Input
+        css="grid-row: 1 / span 1; grid-column: 2 / span 1;"
+        name="uri"
+        label="URI"
+      />
+      <TextArea
+        css="grid-row: 2 / span 1; grid-column: 1 / span 2;"
+        name="description"
+        label="Description"
+      />
+      <Button css="grid-row: 3 / span 1;" type="submit">
+        Save
+      </Button>
+      <Button css="grid-row: 3 / span 1;" onClick={handleReset}>
+        Cancel
+      </Button>
+    </FormLayout>
+  );
+}
+
+Form.fragments = {
+  galleryForm: gql`
+    fragment GalleryForm on Gallery {
+      id
+      title
+      description
+      uri
+      media {
+        id
+      }
+    }
+  `,
+};
+
+export const GALLERY_QUERY = gql`
+  query Gallery($where: GalleryWhereArgs!) {
+    gallery(where: $where) {
+      ...GalleryForm
+    }
+  }
+  ${Form.fragments.galleryForm}
+`;
+
+export const UPDATE_GALLERY_MUTATION = gql`
+  mutation UpdateGallery($where: GalleryWhereArgs!, $data: UpdateGalleryArgs!) {
+    updateGallery(where: $where, data: $data) {
+      ...GalleryForm
+    }
+  }
+  ${Form.fragments.galleryForm}
+`;
+
 export default function AdminEditGalleryPage() {
-  const { match, history } = useRouter<Params>();
-
-  const { data, error, loading } = useQuery<Gallery, GalleryVariables>(QUERY, {
-    variables: { id: match.params.galleryId },
-  });
-
+  const { match } = useRouter<Params>();
+  const { data, error, loading } = useQuery<Gallery, GalleryVariables>(
+    GALLERY_QUERY,
+    {
+      variables: { where: { id: match.params.galleryId } },
+    },
+  );
   const [updateGallery, updateGalleryResult] = useMutation<
     UpdateGallery,
     UpdateGalleryVariables
-  >(UPDATE_GALLERY_MUTATION, {
-    refetchQueries: ['Galleries'],
-  });
+  >(UPDATE_GALLERY_MUTATION);
 
-  useEffect(() => {
-    if (updateGalleryResult.called) {
-      history.push('/admin/galleries');
-    }
-  }, [updateGalleryResult, history]);
+  function onSubmit(values: Values) {
+    updateGallery({
+      variables: { data: values, where: { id: match.params.galleryId } },
+    });
+  }
 
   if (error) {
     throw error;
   }
 
-  if (loading || !data) {
+  if (!data || !data.gallery) {
     return <Loading />;
-  }
-
-  function onSubmit(data: Values) {
-    updateGallery({
-      variables: { data, where: { id: match.params.galleryId } },
-    });
   }
 
   return (
     <Container>
-      <Heading>Edit {data.gallery.title}</Heading>
-      <Formik<Values>
+      <Heading>Edit Gallery {data.gallery.title}</Heading>
+      <Formik
         initialValues={{
           title: data.gallery.title,
-          description: data.gallery.description,
           uri: data.gallery.uri,
-          mediaIds: [],
+          description: data.gallery.description,
+          mediaIds: data.gallery.media.map(media => media.id),
         }}
         onSubmit={onSubmit}
-      >
-        {({ handleSubmit, handleReset, values }) => {
-          return (
-            <>
-              <Form onSubmit={handleSubmit}>
-                <Input
-                  css="grid-area: a"
-                  type="text"
-                  label="Title"
-                  name="title"
-                />
-                <Input css="grid-area: b" type="text" label="URI" name="uri" />
-                <TextArea
-                  css="grid-area: c"
-                  label="Description"
-                  name="description"
-                />
-                <MediaSelectionInput name="mediaIds" allMedia={data.allMedia} />
-                <Button css="grid-area: d" type="submit">
-                  Save
-                </Button>
-                <Button css="grid-area: e" type="reset" onClick={handleReset}>
-                  Reset
-                </Button>
-              </Form>
-              <pre>
-                <code>{JSON.stringify(values, null, 2)}</code>
-              </pre>
-            </>
-          );
-        }}
-      </Formik>
+        component={Form}
+      />
     </Container>
   );
 }
@@ -150,13 +158,9 @@ export default function AdminEditGalleryPage() {
  * 💅 Styles
  */
 
-const Form = styled.form`
-  max-width: 80ch;
+const FormLayout = styled.form`
   display: grid;
-  grid:
-    'a b b .' min-content
-    'c c c .' min-content
-    'm m m m' 1fr
-    '. . d e' min-content / 2fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: min-content;
   grid-gap: ${rem(16)};
 `;

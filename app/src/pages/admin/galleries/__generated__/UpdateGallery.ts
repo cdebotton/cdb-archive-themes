@@ -2,11 +2,16 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
-import { UpdateGalleryArgs, GalleryWhereArgs } from "./../../../../../__generated__/globalTypes";
+import { GalleryWhereArgs, UpdateGalleryArgs } from "./../../../../../__generated__/globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: UpdateGallery
 // ====================================================
+
+export interface UpdateGallery_updateGallery_media {
+  __typename: "Media";
+  id: string;
+}
 
 export interface UpdateGallery_updateGallery {
   __typename: "Gallery";
@@ -14,9 +19,7 @@ export interface UpdateGallery_updateGallery {
   title: string;
   description: string;
   uri: string;
-  publishedAt: any | null;
-  createdAt: any | null;
-  updatedAt: any | null;
+  media: UpdateGallery_updateGallery_media[];
 }
 
 export interface UpdateGallery {
@@ -24,6 +27,6 @@ export interface UpdateGallery {
 }
 
 export interface UpdateGalleryVariables {
-  data: UpdateGalleryArgs;
   where: GalleryWhereArgs;
+  data: UpdateGalleryArgs;
 }

@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/react-hooks": "^3.0.0",
+    "@apollo/react-hooks": "^3.0.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-brands-svg-icons": "^5.10.1",
     "@fortawesome/free-regular-svg-icons": "^5.10.1",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "@types/jest": "24.0.17",
+    "@types/jest": "24.0.18",
     "@types/node": "12.7.2",
     "@types/react": "16.9.1",
     "@types/react-dom": "16.8.5",
@@ -38,7 +38,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "codegen": "apollo codegen:generate --target=typescript"
+    "codegen": "apollo codegen:generate --target=typescript",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -78,11 +80,17 @@
     ]
   },
   "devDependencies": {
+    "@apollo/react-testing": "^3.0.1",
+    "@storybook/addon-actions": "^5.2.0-beta.38",
+    "@storybook/addon-links": "^5.2.0-beta.38",
+    "@storybook/addons": "^5.2.0-beta.38",
+    "@storybook/react": "^5.2.0-beta.38",
     "@types/apollo-upload-client": "^8.1.2",
     "@types/cookie": "^0.3.3",
     "@types/react-router-dom": "^4.3.4",
     "@types/styled-components": "^4.1.18",
-    "@types/yup": "^0.26.22",
+    "@types/yup": "^0.26.23",
+    "jest-fetch-mock": "2.1.2",
     "prettier": "^1.18.2"
   },
   "babelMacros": {
