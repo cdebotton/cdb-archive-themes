@@ -1,4 +1,4 @@
-import Photon from '@generated/photon';
+import Photon, { MediaArgs, FindManyMediaArgs } from '@generated/photon';
 import { ApolloServer, gql } from 'apollo-server-micro';
 import { genSalt, hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -90,10 +90,10 @@ const typeDefs = gql`
 
   type Query {
     viewer: User!
-    gallery(id: ID!): Gallery!
+    gallery(where: GalleryWhereArgs!): Gallery!
     galleries(where: GalleryWhereArgs): [Gallery!]!
     user(id: ID!, email: String): User!
-    allMedia: [SignedMedia!]!
+    allMedia(where: MediaWhereArgs): [SignedMedia!]!
     users: [User!]!
   }
 
@@ -156,7 +156,8 @@ const typeDefs = gql`
   }
 
   input MediaWhereArgs {
-    id: ID!
+    id: ID
+    in: [ID!]
   }
 `;
 
@@ -187,9 +188,9 @@ const resolvers: IResolvers<Context> = {
     users(parent, args, { photon }) {
       return photon.users.findMany();
     },
-    async gallery(parent, args, { photon }) {
+    async gallery(parent, { where }, { photon }) {
       const gallery = await photon.galleries.findOne({
-        where: { id: args.id },
+        where,
         include: { media: { include: { author: true } }, author: true },
       });
       return gallery;
@@ -220,10 +221,20 @@ const resolvers: IResolvers<Context> = {
         where: { deleted },
       });
     },
-    async allMedia(parent, args, { photon }) {
-      const media = await photon.media.findMany({
+    async allMedia(parent, { where }, { photon }) {
+      const lookup: FindManyMediaArgs = {
         include: { author: true },
-      });
+      };
+
+      if (where && where.id) {
+        lookup.where = { id: where.id };
+      }
+
+      if (where && where.in) {
+        lookup.where = { id: { in: where.in } };
+      }
+
+      const media = await photon.media.findMany(lookup);
 
       return media.map(media => {
         return {

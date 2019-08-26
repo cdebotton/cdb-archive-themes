@@ -23,6 +23,9 @@ async function run() {
         './src/__generated__/graphql.ts': {
           plugins: ['typescript', 'typescript-resolvers'],
         },
+        './src/__generated__/fragmentTypes.json': {
+          plugins: ['fragment-matcher'],
+        },
       },
       silent: true,
       config: {

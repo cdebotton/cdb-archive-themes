@@ -3,8 +3,7 @@
   "builds": [
     {
       "src": "app/package.json",
-      "use": "@now/static-build",
-      "config": { "distDir": "build" }
+      "use": "@now/next"
     },
     {
       "src": "api/src/**/*.ts",
@@ -12,35 +11,7 @@
       "config": { "maxLambdaSize": "25mb" }
     }
   ],
-  "routes": [
-    { "src": "/graphql", "dest": "/api/src/index.ts" },
-    {
-      "src": "/static/(.*)",
-      "headers": { "cache-control": "s-maxage=31536000,immutable" },
-      "dest": "/app/static/$1"
-    },
-    { "src": "/favicon.ico", "dest": "/app/favicon.ico" },
-    { "src": "/logo192.png", "dest": "/app/logo192.png" },
-    {
-      "src": "/asset-manifest.json",
-      "dest": "/app/asset-manifest.json"
-    },
-    { "src": "/manifest.json", "dest": "/app/manifest.json" },
-    {
-      "src": "/precache-manifest.(.*)",
-      "dest": "/app/precache-manifest.$1"
-    },
-    {
-      "src": "/service-worker.js",
-      "headers": { "cache-control": "s-maxage=0" },
-      "dest": "/app/service-worker.js"
-    },
-    {
-      "src": "/(.*)",
-      "headers": { "cache-control": "s-maxage=0" },
-      "dest": "/app/index.html"
-    }
-  ],
+  "routes": [{ "src": "/graphql", "dest": "/api/src/index.ts" }],
   "build": {
     "env": {
       "POSTGRESQL_URL": "@postgresql-url"

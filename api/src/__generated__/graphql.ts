@@ -82,7 +82,8 @@ export type Media = {
 };
 
 export type MediaWhereArgs = {
-  id: Scalars['ID'];
+  id?: Maybe<Scalars['ID']>;
+  in?: Maybe<Array<Scalars['ID']>>;
 };
 
 export type Mutation = {
@@ -146,7 +147,7 @@ export type Query = {
 };
 
 export type QueryGalleryArgs = {
-  id: Scalars['ID'];
+  where: GalleryWhereArgs;
 };
 
 export type QueryGalleriesArgs = {
@@ -156,6 +157,10 @@ export type QueryGalleriesArgs = {
 export type QueryUserArgs = {
   id: Scalars['ID'];
   email?: Maybe<Scalars['String']>;
+};
+
+export type QueryAllMediaArgs = {
+  where?: Maybe<MediaWhereArgs>;
 };
 
 export enum Role {
@@ -278,10 +283,11 @@ export type ResolversTypes = ResolversObject<{
   ID: ResolverTypeWrapper<Scalars['ID']>;
   String: ResolverTypeWrapper<Scalars['String']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
-  Gallery: ResolverTypeWrapper<Gallery>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
-  Media: ResolverTypeWrapper<Media>;
   GalleryWhereArgs: GalleryWhereArgs;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Gallery: ResolverTypeWrapper<Gallery>;
+  Media: ResolverTypeWrapper<Media>;
+  MediaWhereArgs: MediaWhereArgs;
   SignedMedia: ResolverTypeWrapper<SignedMedia>;
   Mutation: ResolverTypeWrapper<{}>;
   CreateUserArgs: CreateUserArgs;
@@ -291,7 +297,6 @@ export type ResolversTypes = ResolversObject<{
   LoginArgs: LoginArgs;
   CreateMediaArgs: CreateMediaArgs;
   File: ResolverTypeWrapper<Scalars['File']>;
-  MediaWhereArgs: MediaWhereArgs;
   CacheControlScope: CacheControlScope;
   Role: Role;
   Upload: ResolverTypeWrapper<Scalars['Upload']>;
@@ -305,10 +310,11 @@ export type ResolversParentTypes = ResolversObject<{
   ID: Scalars['ID'];
   String: Scalars['String'];
   DateTime: Scalars['DateTime'];
-  Gallery: Gallery;
-  Boolean: Scalars['Boolean'];
-  Media: Media;
   GalleryWhereArgs: GalleryWhereArgs;
+  Boolean: Scalars['Boolean'];
+  Gallery: Gallery;
+  Media: Media;
+  MediaWhereArgs: MediaWhereArgs;
   SignedMedia: SignedMedia;
   Mutation: {};
   CreateUserArgs: CreateUserArgs;
@@ -318,7 +324,6 @@ export type ResolversParentTypes = ResolversObject<{
   LoginArgs: LoginArgs;
   CreateMediaArgs: CreateMediaArgs;
   File: Scalars['File'];
-  MediaWhereArgs: MediaWhereArgs;
   CacheControlScope: CacheControlScope;
   Role: Role;
   Upload: Scalars['Upload'];
@@ -475,7 +480,8 @@ export type QueryResolvers<
   allMedia?: Resolver<
     Array<ResolversTypes['SignedMedia']>,
     ParentType,
-    ContextType
+    ContextType,
+    QueryAllMediaArgs
   >;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
 }>;

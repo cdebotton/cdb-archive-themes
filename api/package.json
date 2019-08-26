@@ -18,6 +18,7 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-typescript": "^7.3.3",
     "@graphql-codegen/cli": "^1.5.0",
+    "@graphql-codegen/fragment-matcher": "^1.6.1",
     "@graphql-codegen/typescript": "1.5.0",
     "@graphql-codegen/typescript-resolvers": "1.5.0",
     "@types/bcrypt": "3.0.0",
