@@ -1,0 +1,29 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@prisma/nexus": "^0.0.1",
+    "@types/node": "^12.7.2",
+    "apollo-server-micro": "2.9.0",
+    "aws-sdk": "^2.511.0",
+    "bcrypt": "^3.0.6",
+    "cookie": "^0.4.0",
+    "graphql": "^14.5.3",
+    "isomorphic-unfetch": "^3.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "nexus": "^0.12.0-beta.7",
+    "typescript": "3.5.3"
+  },
+  "scripts": {
+    "postinstall": "prisma2 generate"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/cookie": "^0.3.3",
+    "@types/jsonwebtoken": "^8.3.3",
+    "dotenv": "^8.1.0",
+    "eslint": "^6.2.2",
+    "prisma2": "^2.0.0-preview-8"
+  }
+}

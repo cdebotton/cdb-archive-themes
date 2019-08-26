@@ -10,9 +10,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.10.2",
     "@fortawesome/free-solid-svg-icons": "^5.10.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "@prisma/nexus": "^0.0.1",
     "@types/jest": "24.0.18",
-    "@types/node": "^12.7.2",
     "@types/react": "16.9.2",
     "@types/react-dom": "16.9.0",
     "apollo": "^2.18.0",
@@ -20,17 +18,12 @@
     "apollo-client": "^2.6.4",
     "apollo-link-context": "^1.0.18",
     "apollo-link-http": "^1.5.15",
-    "apollo-server-micro": "2.8.1",
     "apollo-upload-client": "^11.0.0",
-    "aws-sdk": "^2.511.0",
-    "bcrypt": "^3.0.6",
     "cookie": "^0.4.0",
     "formik": "^2.0.1-rc.12",
     "graphql": "^14.5.3",
     "graphql-tag": "^2.10.1",
     "isomorphic-unfetch": "^3.0.0",
-    "jsonwebtoken": "^8.5.1",
-    "nexus": "^0.12.0-beta.7",
     "polished": "^3.4.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -47,8 +40,7 @@
     "test": "jest",
     "codegen": "apollo codegen:generate --target=typescript --addTypename --outputFlat",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public",
-    "postinstall": "prisma2 generate"
+    "build-storybook": "build-storybook -s public"
   },
   "browserslist": {
     "production": [
