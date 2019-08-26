@@ -11,7 +11,10 @@
       "config": { "maxLambdaSize": "25mb" }
     }
   ],
-  "routes": [{ "src": "/graphql", "dest": "/api/src/index.ts" }],
+  "routes": [
+    { "src": "/graphql", "dest": "/api/src/index.ts" },
+    { "src": "/(.*)", "dest": "/app/package.json" }
+  ],
   "build": {
     "env": {
       "POSTGRESQL_URL": "@postgresql-url"
