@@ -3,6 +3,10 @@ generator photon {
   platforms = ["native", "linux-glibc-libssl1.0.1"]
 }
 
+generator nexus_prisma {
+  provider = "nexus-prisma"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("POSTGRESQL_URL")

@@ -1,20 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "app/package.json",
-      "use": "@now/next"
-    },
-    {
-      "src": "api/src/**/*.ts",
-      "use": "@now/node@canary",
-      "config": { "maxLambdaSize": "25mb" }
-    }
-  ],
-  "routes": [
-    { "src": "/graphql", "dest": "/api/src/index.ts" },
-    { "src": "/.*", "dest": "/app" }
-  ],
   "build": {
     "env": {
       "POSTGRESQL_URL": "@postgresql-url"

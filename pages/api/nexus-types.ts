@@ -3,8 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as ctx from "../src/types"
-import * as photon from "@generated/photon"
+import * as ctx from "./types"
 import { core } from "nexus"
 
 declare global {
@@ -25,9 +24,7 @@ export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
-  Mutation: {};
   Query: {};
-  User: photon.User;
   String: string;
   Int: number;
   Float: number;
@@ -40,45 +37,12 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 }
 
 export interface NexusGenFieldTypes {
-  Mutation: { // field return type
-    createUser: NexusGenRootTypes['User']; // User!
-    login: string; // String!
-  }
   Query: { // field return type
-    user: NexusGenRootTypes['User']; // User!
-    users: NexusGenRootTypes['User'][]; // [User!]!
-    viewer: NexusGenRootTypes['User']; // User!
-  }
-  User: { // field return type
-    createdAt: any; // DateTime!
-    email: string; // String!
-    firstName: string | null; // String
-    id: string; // ID!
-    lastLogin: any | null; // DateTime
-    lastName: string | null; // String
-    updatedAt: any; // DateTime!
+    sayHello: string; // String!
   }
 }
 
 export interface NexusGenArgTypes {
-  Mutation: {
-    createUser: { // args
-      email: string; // String!
-      firstName?: string | null; // String
-      lastName?: string | null; // String
-      password: string; // String!
-    }
-    login: { // args
-      email: string; // String!
-      password: string; // String!
-    }
-  }
-  Query: {
-    user: { // args
-      email?: string | null; // String
-      id?: string | null; // String
-    }
-  }
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
@@ -86,7 +50,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Mutation" | "Query" | "User";
+export type NexusGenObjectNames = "Query";
 
 export type NexusGenInputNames = never;
 

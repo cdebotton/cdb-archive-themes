@@ -10,6 +10,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.10.2",
     "@fortawesome/free-solid-svg-icons": "^5.10.2",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "@prisma/nexus": "^0.0.1",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.2",
     "@types/react": "16.9.2",
@@ -19,12 +20,17 @@
     "apollo-client": "^2.6.4",
     "apollo-link-context": "^1.0.18",
     "apollo-link-http": "^1.5.15",
+    "apollo-server-micro": "2.8.1",
     "apollo-upload-client": "^11.0.0",
+    "aws-sdk": "^2.511.0",
+    "bcrypt": "^3.0.6",
     "cookie": "^0.4.0",
     "formik": "^2.0.1-rc.12",
     "graphql": "^14.5.3",
     "graphql-tag": "^2.10.1",
     "isomorphic-unfetch": "^3.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "nexus": "^0.12.0-beta.7",
     "polished": "^3.4.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -41,7 +47,8 @@
     "test": "jest",
     "codegen": "apollo codegen:generate --target=typescript --addTypename --outputFlat",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "postinstall": "prisma2 generate"
   },
   "browserslist": {
     "production": [
@@ -64,7 +71,9 @@
     "@storybook/addons": "^5.1.11",
     "@storybook/react": "^5.1.11",
     "@types/apollo-upload-client": "^8.1.2",
+    "@types/bcrypt": "^3.0.0",
     "@types/cookie": "^0.3.3",
+    "@types/jsonwebtoken": "^8.3.3",
     "@types/react-router-dom": "^4.3.5",
     "@types/styled-components": "^4.1.18",
     "@types/yup": "^0.26.23",
@@ -76,7 +85,8 @@
     "eslint-config-react-app": "^5.0.1",
     "jest-fetch-mock": "2.1.2",
     "next": "^9.0.5",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "prisma2": "^2.0.0-preview-8"
   },
   "babelMacros": {
     "styledComponents": {
