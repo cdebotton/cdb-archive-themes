@@ -246,7 +246,7 @@ const resolvers: IResolvers<Context> = {
           deleted: media.deleted,
           createdAt: media.createdAt,
           updatedAt: media.updatedAt,
-          author: media.author,
+          author: (media as any).author,
         };
       });
     },

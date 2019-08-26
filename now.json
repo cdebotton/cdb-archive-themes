@@ -13,7 +13,7 @@
   ],
   "routes": [
     { "src": "/graphql", "dest": "/api/src/index.ts" },
-    { "src": "/(.*)", "dest": "/app/package.json" }
+    { "src": "/.*", "dest": "/app" }
   ],
   "build": {
     "env": {
