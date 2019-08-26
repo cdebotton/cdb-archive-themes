@@ -4,6 +4,7 @@
  */
 
 import * as ctx from "./types"
+import * as photon from "@generated/photon"
 import { core } from "nexus"
 
 declare global {
@@ -25,6 +26,7 @@ export interface NexusGenEnums {
 
 export interface NexusGenRootTypes {
   Query: {};
+  User: photon.User;
   String: string;
   Int: number;
   Float: number;
@@ -39,6 +41,16 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 export interface NexusGenFieldTypes {
   Query: { // field return type
     sayHello: string; // String!
+    users: NexusGenRootTypes['User'][]; // [User!]!
+  }
+  User: { // field return type
+    createdAt: any; // DateTime!
+    email: string; // String!
+    firstName: string | null; // String
+    id: string; // ID!
+    lastLogin: any | null; // DateTime
+    lastName: string | null; // String
+    updatedAt: any; // DateTime!
   }
 }
 
@@ -50,7 +62,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Query";
+export type NexusGenObjectNames = "Query" | "User";
 
 export type NexusGenInputNames = never;
 

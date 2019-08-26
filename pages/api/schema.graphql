@@ -7,4 +7,15 @@ scalar DateTime
 
 type Query {
   sayHello: String!
+  users: [User!]!
+}
+
+type User {
+  createdAt: DateTime!
+  email: String!
+  firstName: String
+  id: ID!
+  lastLogin: DateTime
+  lastName: String
+  updatedAt: DateTime!
 }
