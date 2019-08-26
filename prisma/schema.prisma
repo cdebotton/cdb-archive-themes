@@ -3,7 +3,8 @@ generator photon {
 }
 
 generator nexus_prisma {
-  provider = "nexus-prisma"
+  provider  = "nexus-prisma"
+  platforms = ["native"]
 }
 
 datasource db {
