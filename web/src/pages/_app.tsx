@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }: Props) {
         gl={{ alpha: true }}
         onCreated={({ events, gl }) => {
           setEvents(events);
-          gl.setClearColor(colors.values.background[mode]);
+          gl.setClearColor(colors.values.background800[mode]);
         }}
       >
         <Background />
@@ -70,7 +70,7 @@ function Background() {
   const mode = useMode();
 
   useEffect(() => {
-    gl.setClearColor(colors.values.background[mode]);
+    gl.setClearColor(colors.values.background800[mode]);
   }, [gl, mode]);
 
   return null;

@@ -14,8 +14,8 @@ export function GlobalStyle() {
           fontSize: `calc(14px + 0.3vw)`,
         },
         body: {
-          backgroundColor: colors.vars.background,
-          color: colors.vars.text,
+          backgroundColor: colors.vars.background800,
+          color: colors.vars.text400,
           margin: space[0].rem,
           fontFamily: fonts.body,
           lineHeight: lineHeights.body,
@@ -27,7 +27,7 @@ export function GlobalStyle() {
         },
         a: {
           textDecoration: 'none',
-          color: colors.vars.text,
+          color: colors.vars.text800,
           fontWeight: fontWeights.bold,
         },
         ':root ': {

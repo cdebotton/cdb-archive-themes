@@ -2,7 +2,7 @@ import facepaint from 'facepaint';
 import { rem, em, lighten, darken } from 'polished';
 
 export function toCssVar(str: string) {
-  const cssCase = str.replace(/([a-z])([A-Z\d])/g, (_group, m1, m2, i, str) => {
+  const cssCase = str.replace(/([a-z])([A-Z\d])/g, (_group, m1, m2) => {
     return m1 + '-' + m2.toLowerCase();
   });
 
@@ -52,7 +52,7 @@ export function createTheme<T>(config: T): Theme<T> {
     values: config,
   };
 }
-export const space = measure([0, 4, 8, 16, 32, 64, 128, 256, 512]);
+export const space = measure([0, 4, 8, 16, 32, 64, 128, 256, 512, 1024]);
 
 export const fonts = {
   body:
@@ -61,41 +61,49 @@ export const fonts = {
     "source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace",
 };
 
+const black = [
+  lighten(0.2, '#2f2f2f'),
+  lighten(0.15, '#2f2f2f'),
+  lighten(0.1, '#2f2f2f'),
+  lighten(0.05, '#2f2f2f'),
+  lighten(0, '#2f2f2f'),
+  darken(0.05, '#2f2f2f'),
+  darken(0.1, '#2f2f2f'),
+  darken(0.15, '#2f2f2f'),
+  darken(0.2, '#2f2f2f'),
+];
+
+const white = [
+  darken(0.2, '#d0d0d0'),
+  darken(0.15, '#d0d0d0'),
+  darken(0.1, '#d0d0d0'),
+  darken(0.05, '#d0d0d0'),
+  darken(0, '#d0d0d0'),
+  lighten(0.05, '#d0d0d0'),
+  lighten(0.1, '#d0d0d0'),
+  lighten(0.15, '#d0d0d0'),
+  lighten(0.2, '#d0d0d0'),
+];
+
 export const colors = createTheme({
-  background: { dark: '#1f1f1f', light: '#e8e8e8' },
-  background100: {
-    dark: lighten(0.9, '#1f1f1f'),
-    light: darken(0.9, '#e8e8e8'),
-  },
-  background200: {
-    dark: lighten(0.8, '#1f1f1f'),
-    light: darken(0.8, '#e8e8e8'),
-  },
-  background300: {
-    dark: lighten(0.7, '#1f1f1f'),
-    light: darken(0.7, '#e8e8e8'),
-  },
-  background400: {
-    dark: lighten(0.6, '#1f1f1f'),
-    light: darken(0.6, '#e8e8e8'),
-  },
-  background500: {
-    dark: lighten(0.5, '#1f1f1f'),
-    light: darken(0.5, '#e8e8e8'),
-  },
-  background600: {
-    dark: lighten(0.4, '#1f1f1f'),
-    light: darken(0.4, '#e8e8e8'),
-  },
-  background800: {
-    dark: lighten(0.2, '#1f1f1f'),
-    light: darken(0.2, '#e8e8e8'),
-  },
-  background900: {
-    dark: lighten(0.1, '#1f1f1f'),
-    light: darken(0.1, '#e8e8e8'),
-  },
-  text: { dark: '#eee', light: '#1f1f1f' },
+  background100: { dark: black[0], light: white[0] },
+  background200: { dark: black[1], light: white[1] },
+  background300: { dark: black[2], light: white[2] },
+  background400: { dark: black[3], light: white[3] },
+  background500: { dark: black[4], light: white[4] },
+  background600: { dark: black[5], light: white[5] },
+  background700: { dark: black[6], light: white[6] },
+  background800: { dark: black[7], light: white[7] },
+  background900: { dark: black[8], light: white[8] },
+  text100: { dark: white[0], light: black[0] },
+  text200: { dark: white[1], light: black[1] },
+  text300: { dark: white[2], light: black[2] },
+  text400: { dark: white[3], light: black[3] },
+  text500: { dark: white[4], light: black[4] },
+  text600: { dark: white[5], light: black[5] },
+  text700: { dark: white[6], light: black[6] },
+  text800: { dark: white[7], light: black[7] },
+  text900: { dark: white[8], light: black[8] },
   white: { dark: '#fefefe', light: '#e0e0e0' },
   black: { dark: '#111', light: '#232323' },
   primary: { dark: 'hsl(32, 75%, 60%)', light: 'hsl(212, 50%, 50%)' },
