@@ -33,7 +33,8 @@ function getTop(element: HTMLElement) {
 export const Page = forwardRef<HTMLDivElement, Props>(
   ({ children, className }, outerRef) => {
     const [, add, remove] = usePages();
-    const ref = outerRef ?? useRef<HTMLDivElement>(null);
+    const innerRef = useRef<HTMLDivElement>(null);
+    const ref = outerRef ?? innerRef;
 
     const top = useRef(0);
 
@@ -72,7 +73,7 @@ export const Page = forwardRef<HTMLDivElement, Props>(
             height: '100vh',
             padding: [
               `${space[5].rem} ${space[3].rem}`,
-              `${space[6].rem} ${space[4].rem}`,
+              `${space[5].rem} ${space[4].rem}`,
             ],
           })}
           className={className}

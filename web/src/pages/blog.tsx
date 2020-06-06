@@ -11,13 +11,7 @@ export default function BlogPage() {
       <Head>
         <title>Writing | Christian de Botton</title>
       </Head>
-      <div
-        css={{
-          position: 'relative',
-          marginTop: space[3].rem,
-          textAlign: 'right',
-        }}
-      >
+      <div>
         <Heading level={1} fontSize={5}>
           Writing
         </Heading>

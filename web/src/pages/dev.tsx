@@ -11,13 +11,7 @@ export default function DevPage() {
       <Head>
         <title>Engineering | Christian de Botton</title>
       </Head>
-      <div
-        css={{
-          position: 'relative',
-          marginTop: space[3].rem,
-          textAlign: 'right',
-        }}
-      >
+      <div>
         <Heading level={1} fontSize={5}>
           Engineering
         </Heading>

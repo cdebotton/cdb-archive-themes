@@ -14,8 +14,10 @@ export default function IndexPage() {
       </Head>
       <Page
         css={mq({
+          marginLeft: [space[4].rem, space[4].rem, space[5].rem],
           display: 'grid',
           alignContent: 'center',
+          gridTemplateColumns: ['40ch', '50ch'],
           justifyContent: ['start', 'center'],
         })}
       >
@@ -30,7 +32,7 @@ export default function IndexPage() {
         <Heading
           level={1}
           css={mq({
-            fontSize: [fontSizes[6].rem, fontSizes[7].rem],
+            fontSize: [fontSizes[7].rem, fontSizes[8].rem],
           })}
         >
           My name's <span css={{ color: colors.vars.primary }}>Christian</span>

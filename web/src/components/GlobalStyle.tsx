@@ -14,7 +14,7 @@ export function GlobalStyle() {
           fontSize: `calc(14px + 0.3vw)`,
         },
         body: {
-          background: `radial-gradient(${colors.vars.background100}, ${colors.vars.background900})`,
+          background: `linear-gradient(to bottom right, ${colors.vars.background300}, ${colors.vars.background900})`,
           color: colors.vars.text400,
           margin: space[0].rem,
           fontFamily: fonts.body,

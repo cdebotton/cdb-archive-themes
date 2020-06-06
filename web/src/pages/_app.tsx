@@ -1,11 +1,11 @@
 import { GlobalStyle } from 'components/GlobalStyle';
+import { StandardEffects, HTML } from 'drei';
 import { LayoutComponent, defaultLayout } from 'libs/layouts';
-import { useMode } from 'libs/mode';
 import { useZoom, useTop } from 'libs/pages';
-import { colors } from 'libs/theme';
+import { fontSizes } from 'libs/theme';
 import { AppProps } from 'next/app';
-import React, { Fragment, useState, useRef, useEffect } from 'react';
-import { Canvas, PointerEvents, useThree } from 'react-three-fiber';
+import React, { Fragment, useState, useRef, Suspense } from 'react';
+import { Canvas, PointerEvents } from 'react-three-fiber';
 
 type Overwrite<T, U> = Omit<T, keyof U> & U;
 
@@ -40,8 +40,22 @@ export default function App({ Component, pageProps }: Props) {
           gl.setClearColor(0x000000, 0);
         }}
       >
-        <Background />
-        {Scene && <Scene {...pageProps} domPortal={domPortal} />}
+        <Suspense
+          fallback={
+            <HTML center>
+              <span
+                css={{ fontSize: fontSizes[7].rem }}
+                role="img"
+                aria-label="loading"
+              >
+                🚀
+              </span>
+            </HTML>
+          }
+        >
+          <StandardEffects />
+          {Scene && <Scene {...pageProps} domPortal={domPortal} />}
+        </Suspense>
       </Canvas>
       <div
         {...events}
@@ -63,15 +77,4 @@ export default function App({ Component, pageProps }: Props) {
       </div>
     </Fragment>
   );
-}
-
-function Background() {
-  const { gl } = useThree();
-  const mode = useMode();
-
-  useEffect(() => {
-    gl.setClearColor(colors.values.background800[mode]);
-  }, [gl, mode]);
-
-  return null;
 }

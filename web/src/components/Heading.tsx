@@ -24,6 +24,7 @@ export function Heading({
       ...props,
       css: {
         marginTop: space[0].rem,
+        padding: 0,
         fontSize:
           typeof fontSize === 'number'
             ? fontSizes[fontSize].em ?? fontSize
