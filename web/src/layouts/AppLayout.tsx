@@ -9,24 +9,26 @@ interface Props {
 
 export function AppLayout({ children }: Props) {
   return (
-    <>
+    <div
+      css={mq({
+        position: 'relative',
+        display: 'grid',
+        gridTemplateColumns: ['100vw', 'min-content auto'],
+        justifyContent: 'start',
+        alignItems: 'start',
+      })}
+    >
       <nav
         css={mq({
-          position: 'fixed',
-          zIndex: 1,
-          top: 0,
-          width: '100vw',
+          position: 'sticky',
+          top: space[4].rem,
+          writingMode: ['inherit', 'vertical-lr'],
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, min-content) auto',
           gridAutoFlow: 'column',
-          backgroundColor: colors.vars.background900,
           alignItems: 'center',
           fontSize: [fontSizes[1], fontSizes[2]],
           gridGap: [space[2].rem, space[4].rem],
-          padding: [
-            `${space[2].rem} ${space[3].rem}`,
-            `${space[2].rem} ${space[4].rem}`,
-          ],
+          padding: `${space[2].rem} ${space[4].rem}`,
         })}
       >
         <Link exact href="/">
@@ -37,8 +39,8 @@ export function AppLayout({ children }: Props) {
         <Link href="/blog">Writing</Link>
         <ThemeToggle />
       </nav>
-      {children}
-    </>
+      <div>{children}</div>
+    </div>
   );
 }
 
@@ -76,7 +78,7 @@ function ThemeToggle() {
       })}
       onClick={toggle}
     >
-      {text}
+      <span css={{ writingMode: ['inherit', 'vertical-lr'] }}>{text}</span>
     </button>
   );
 }

@@ -2,9 +2,9 @@ import { Heading } from 'components/Heading';
 import { Page } from 'components/Page';
 import { AppLayout } from 'layouts/AppLayout';
 import { mq, fontSizes, space, colors } from 'libs/theme';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import React, { ReactNode } from 'react';
+import { IndexScene } from 'scenes/IndexScene';
 
 export default function IndexPage() {
   return (
@@ -39,8 +39,8 @@ export default function IndexPage() {
       <Page css={{ display: 'grid', placeContent: 'center' }}>
         <p
           css={mq({
-            maxWidth: [space[9].rem],
-            fontSize: [fontSizes[4].rem, fontSizes[6].rem],
+            maxWidth: [space[9].rem, space[8].rem],
+            fontSize: [fontSizes[4].rem, fontSizes[5].rem],
           })}
         >
           I'm an engineer based in <em>San Francisco</em> by way of{' '}
@@ -58,7 +58,5 @@ export default function IndexPage() {
 IndexPage.getLayout = (page: ReactNode) => {
   return <AppLayout>{page}</AppLayout>;
 };
-
-const IndexScene = dynamic(() => import('scenes/IndexScene'), { ssr: false });
 
 IndexPage.Scene = IndexScene;

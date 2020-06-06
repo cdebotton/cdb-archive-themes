@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: Props) {
 
   const withLayout = Component.getLayout ?? defaultLayout;
   const Scene = Component.Scene;
-  const mode = useMode();
+
   const zoom = useZoom();
   const [, setTop] = useTop();
 
@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }: Props) {
         gl={{ alpha: true }}
         onCreated={({ events, gl }) => {
           setEvents(events);
-          gl.setClearColor(colors.values.background800[mode]);
+          gl.setClearColor(0x000000, 0);
         }}
       >
         <Background />

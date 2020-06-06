@@ -1,33 +1,36 @@
 import { Block } from 'components/Block';
+import { StandardEffects } from 'drei';
 import { useMode } from 'libs/mode';
 import { colors } from 'libs/theme';
-import React, { useMemo, useRef, useState, useEffect } from 'react';
-import { useThree, useFrame, ReactThreeFiber } from 'react-three-fiber';
-import { Mesh, Vector2, Group } from 'three';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import React, { useRef, useState, useEffect, Suspense } from 'react';
+import { useFrame, ReactThreeFiber } from 'react-three-fiber';
+import { Mesh, Group } from 'three';
 
-export default function IndexScene() {
-  const { gl, scene, camera, size } = useThree();
+export function IndexScene() {
+  return (
+    <group>
+      <Suspense fallback={<></>}>
+        <StandardEffects />
+        <ambientLight intensity={0.5} />
+        <spotLight position={[0, 0, 20]} intensity={2} />
+        <Block factor={1}>
+          <Block factor={1.5}>
+            <Dodecahedron size={2} position={[-5, 0, 0]} />
+          </Block>
+          <Block factor={0.5}>
+            <Dodecahedron size={1} position={[-0.5, -3.5, 0]} />
+          </Block>
+          <Block factor={1}>
+            <Dodecahedron size={1.5} position={[2, 2.75, 0]} />
+          </Block>
+        </Block>
+        <Orbs />
+      </Suspense>
+    </group>
+  );
+}
 
-  const composer = useMemo(() => {
-    const composer = new EffectComposer(gl);
-
-    composer.addPass(new RenderPass(scene, camera));
-
-    const res = new Vector2(size.width, size.height);
-    const bloom = new UnrealBloomPass(res, 2, 1, 0.991);
-
-    composer.addPass(bloom);
-
-    return composer;
-  }, [gl, camera, scene, size]);
-
-  useFrame((_, delta) => {
-    composer.render(delta);
-  }, 1);
-
+function Orbs() {
   const orbs = useRef<Group>(null);
 
   useFrame(() => {
@@ -37,39 +40,24 @@ export default function IndexScene() {
   });
 
   return (
-    <group>
-      <ambientLight intensity={0.5} />
-      <spotLight position={[0, 0, 20]} intensity={2} />
-      <Block factor={1}>
-        <Block factor={1.5}>
-          <Dodecahedron size={2} position={[-5, 0, 0]} />
-        </Block>
-        <Block factor={0.5}>
-          <Dodecahedron size={1} position={[-0.5, -3.5, 0]} />
-        </Block>
-        <Block factor={1}>
-          <Dodecahedron size={1.5} position={[2, 2.75, 0]} />
-        </Block>
+    <Block ref={orbs} offset={1} factor={1}>
+      <Block factor={2}>
+        <Orb position={[-2, -2, 0]} scale={[0.5, 0.5, 0.5]} />
       </Block>
-      <Block ref={orbs} offset={1} factor={1}>
-        <Block factor={2}>
-          <Orb position={[-2, -2, 0]} scale={[0.5, 0.5, 0.5]} />
-        </Block>
-        <Block factor={3}>
-          <Orb position={[1, 2, 0]} />
-        </Block>
-        <Block factor={4}>
-          <Orb position={[2, -3, 0]} />
-        </Block>
+      <Block factor={3}>
+        <Orb position={[1, 2, 0]} />
       </Block>
-    </group>
+      <Block factor={4}>
+        <Orb position={[2, -3, 0]} />
+      </Block>
+    </Block>
   );
 }
 
 function Orb(props: ReactThreeFiber.Object3DNode<Mesh, typeof Mesh>) {
   return (
     <mesh {...props}>
-      <sphereBufferGeometry attach="geometry" />
+      <sphereBufferGeometry attach="geometry" args={[1, 15, 15]} />
       <meshPhongMaterial attach="material" color="white" />
     </mesh>
   );

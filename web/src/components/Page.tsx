@@ -68,7 +68,7 @@ export const Page = forwardRef<HTMLDivElement, Props>(
           ref={ref}
           css={mq({
             position: 'relative',
-            width: '100vw',
+            width: '100%',
             height: '100vh',
             padding: [
               `${space[5].rem} ${space[3].rem}`,
