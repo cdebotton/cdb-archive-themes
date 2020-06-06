@@ -26,7 +26,7 @@ export function Link({ children, className, exact, ...props }: Props) {
       {
         className,
         css: css({
-          color: isActive ? colors.vars.primary : colors.vars.text,
+          color: isActive ? colors.vars.primary : colors.vars.text400,
           ':hover': { color: colors.vars.primary },
         }),
       },

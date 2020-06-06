@@ -9,7 +9,7 @@ export function Progress() {
       .fill(null)
       .map((_, i) => (
         <div
-          css={{ backgroundColor: colors.vars.background }}
+          css={{ backgroundColor: colors.vars.background400 }}
           key={`PAGE_HANDLE:${i}`}
         />
       ));

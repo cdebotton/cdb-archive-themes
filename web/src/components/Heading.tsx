@@ -28,7 +28,7 @@ export function Heading({
           typeof fontSize === 'number'
             ? fontSizes[fontSize].em ?? fontSize
             : fontSize,
-        color: colors.vars.text,
+        color: colors.vars.text900,
         lineHeight: lineHeights.heading,
       },
     },
