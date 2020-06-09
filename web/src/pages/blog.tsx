@@ -1,7 +1,6 @@
 import { Heading } from 'components/Heading';
 import { Page } from 'components/Page';
 import { AppLayout } from 'layouts/AppLayout';
-import { space } from 'libs/theme';
 import Head from 'next/head';
 import React, { ReactNode } from 'react';
 

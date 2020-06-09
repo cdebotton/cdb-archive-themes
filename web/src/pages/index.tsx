@@ -1,5 +1,6 @@
 import { Heading } from 'components/Heading';
 import { Page } from 'components/Page';
+import { VimeoLogo } from 'components/VimeoLogo';
 import { AppLayout } from 'layouts/AppLayout';
 import { mq, fontSizes, space, colors } from 'libs/theme';
 import Head from 'next/head';
@@ -42,13 +43,13 @@ export default function IndexPage() {
         <p
           css={mq({
             maxWidth: [space[9].rem, space[8].rem],
-            fontSize: [fontSizes[4].rem, fontSizes[5].rem],
+            fontSize: [fontSizes[2].rem, fontSizes[3].rem],
           })}
         >
           I'm an engineer based in <em>San Francisco</em> by way of{' '}
           <em>Brooklyn</em>, and I work on the frontend platform team at{' '}
-          <a css={{ color: '#1ab7ea' }} href="https://vimeo.com">
-            vimeo
+          <a href="https://vimeo.com" target="_BLANK" rel="noreferrer">
+            <VimeoLogo />
           </a>
           .
         </p>
