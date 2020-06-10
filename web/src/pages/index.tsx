@@ -39,19 +39,27 @@ export default function IndexPage() {
           My name's <span css={{ color: colors.vars.primary }}>Christian</span>
         </Heading>
       </Page>
-      <Page css={{ display: 'grid', placeContent: 'center' }}>
-        <p
-          css={mq({
-            maxWidth: [space[9].rem, space[8].rem],
-            fontSize: [fontSizes[2].rem, fontSizes[3].rem],
-          })}
-        >
+      <Page
+        css={{
+          display: 'grid',
+          placeContent: 'center',
+          maxWidth: [space[9].rem, space[8].rem],
+          fontSize: [fontSizes[2].rem, fontSizes[3].rem],
+        }}
+      >
+        <p css={mq({})}>
           I'm an engineer based in <em>San Francisco</em> by way of{' '}
           <em>Brooklyn</em>, and I work on the frontend platform team at{' '}
           <a href="https://vimeo.com" target="_BLANK" rel="noreferrer">
             <VimeoLogo />
           </a>
           .
+        </p>
+        <p>
+          In a past life I worked at an agency where I built an an{' '}
+          <a href="https://player.themoth.org">audio player</a> for The Moth, as
+          well as marketing projects for clients such as Netflix, AT&T, Columbia
+          University, and more.
         </p>
       </Page>
     </>

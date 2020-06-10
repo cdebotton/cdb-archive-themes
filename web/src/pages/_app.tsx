@@ -34,7 +34,7 @@ export default function App({ Component, pageProps }: Props) {
         orthographic
         pixelRatio={1}
         camera={{ zoom, position: [0, 0, 500] }}
-        gl={{ alpha: true }}
+        gl={{ alpha: true, logarithmicDepthBuffer: true }}
         onCreated={({ events, gl }) => {
           setEvents(events);
           gl.setClearColor(0x000000, 0);
