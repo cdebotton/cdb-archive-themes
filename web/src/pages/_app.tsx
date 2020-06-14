@@ -5,7 +5,7 @@ import { useZoom, useTop } from 'libs/pages';
 import { fontSizes } from 'libs/theme';
 import { AppProps } from 'next/app';
 import React, { Fragment, useState, useRef, Suspense } from 'react';
-import { Canvas, PointerEvents } from 'react-three-fiber';
+import { Canvas, DomEventHandlers } from 'react-three-fiber';
 
 type Overwrite<T, U> = Omit<T, keyof U> & U;
 
@@ -17,7 +17,7 @@ type Props = Overwrite<
 >;
 
 export default function App({ Component, pageProps }: Props) {
-  const [events, setEvents] = useState<PointerEvents>();
+  const [events, setEvents] = useState<DomEventHandlers>();
   const domPortal = useRef<HTMLDivElement>(null);
 
   const withLayout = Component.getLayout ?? defaultLayout;
@@ -31,6 +31,7 @@ export default function App({ Component, pageProps }: Props) {
       <GlobalStyle />
       <Canvas
         concurrent
+        colorManagement
         orthographic
         pixelRatio={1}
         camera={{ zoom, position: [0, 0, 500] }}

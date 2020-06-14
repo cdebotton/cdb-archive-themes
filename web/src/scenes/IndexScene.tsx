@@ -1,101 +1,370 @@
-import { Block } from 'components/Block';
-import { useMode } from 'libs/mode';
-import { colors } from 'libs/theme';
-import React, { useRef, useState, useEffect } from 'react';
-import { useFrame, ReactThreeFiber } from 'react-three-fiber';
-import { Mesh, Group } from 'three';
+import { useZoom } from 'libs/pages';
+import React, { useMemo, useRef } from 'react';
+import { useFrame, useThree } from 'react-three-fiber';
+import { Object3D, InstancedMesh, Vector3 } from 'three';
+
+type Particle = {
+  index: number;
+  position: Vector3;
+  velocity: Vector3;
+  acceleration: Vector3;
+  maxVelocity: number;
+  seed: number;
+};
+
+type SwarmConfig = {
+  particle: Particle;
+  mouse: Vector3;
+};
 
 export function IndexScene() {
+  const dummy = useMemo(() => new Object3D(), []);
+  const mesh = useRef<InstancedMesh>(null);
+  const { viewport } = useThree();
+  const zoom = useZoom();
+
+  function moveTo({ particle, mouse }: SwarmConfig) {
+    dummy.lookAt(mouse);
+
+    particle.acceleration.set(0, 0, 0);
+
+    const desired = mouse.clone();
+    desired.sub(particle.position);
+
+    desired.multiplyScalar(particle.maxVelocity);
+    desired.sub(particle.velocity);
+
+    particle.acceleration.add(desired);
+
+    particle.acceleration.multiplyScalar(0.15);
+
+    particle.velocity.multiplyScalar(0.999);
+    particle.velocity.clampScalar(-particle.maxVelocity, particle.maxVelocity);
+
+    particle.velocity.add(particle.acceleration);
+    particle.position.add(particle.velocity);
+  }
+
+  const particles = useMemo(
+    () =>
+      new Array(1).fill(null).map<Particle>((_, i) => {
+        const width = viewport.width / zoom;
+        const height = viewport.height / zoom;
+
+        return {
+          index: i,
+          acceleration: new Vector3(0, 0, 0),
+          velocity: new Vector3(
+            Math.random() - 0.5,
+            Math.random() - 0.5,
+            Math.random() - 0.5,
+          ),
+          position: new Vector3(
+            (Math.random() - 0.5) * width,
+            (Math.random() - 0.5) * height,
+            (Math.random() - 0.5) * 20,
+          ),
+          maxVelocity: 1 + Math.random() - 0.5,
+          seed: Math.random() * 100,
+        };
+      }),
+    [viewport, zoom],
+  );
+
+  useFrame(({ mouse }) => {
+    particles.forEach((particle) => {
+      if (!mesh.current) {
+        return;
+      }
+
+      moveTo({
+        particle,
+        mouse: new Vector3(
+          (mouse.x * viewport.width) / zoom,
+          (mouse.y * viewport.width) / zoom,
+        ),
+      });
+
+      dummy.position.copy(particle.position);
+      dummy.updateMatrix();
+
+      mesh.current.setMatrixAt(particle.index, dummy.matrix);
+    });
+
+    if (!mesh.current) {
+      return;
+    }
+
+    mesh.current.instanceMatrix.needsUpdate = true;
+  });
+
   return (
     <group>
-      <ambientLight intensity={0.5} />
-      <spotLight position={[0, 0, 20]} intensity={2} />
-      <Block factor={1}>
-        <Block factor={1.5}>
-          <Dodecahedron size={2} position={[-5, 0, 0]} />
-        </Block>
-        <Block factor={0.5}>
-          <Dodecahedron size={1} position={[-0.5, -3.5, 0]} />
-        </Block>
-        <Block factor={1}>
-          <Dodecahedron size={1.5} position={[2, 3.75, 0]} />
-        </Block>
-        <Block factor={2}>
-          <Dodecahedron size={3} position={[5, -4, 0]} />
-        </Block>
-      </Block>
-      <Orbs />
+      <ambientLight />
+      <instancedMesh
+        ref={mesh}
+        // @ts-ignore
+        args={[null, null, particles.length]}
+      >
+        <boxBufferGeometry attach="geometry" args={[0.2, 0, 0.5]} />
+        <meshPhongMaterial attach="material" color="white" wireframe />
+      </instancedMesh>
     </group>
   );
 }
 
-function Orbs() {
-  const orbs = useRef<Group>(null);
+// import * as THREE from "three";
+// import React, { useRef, useMemo } from "react";
+// import { useFrame, useThree } from "react-three-fiber";
+// import "./styles.css";
 
-  useFrame(() => {
-    orbs.current!.rotation.y += 0.02;
-    orbs.current!.rotation.z += 0.01;
-    orbs.current!.rotation.z += 0.01;
-  });
+// //returns a vector towards a point, slows down as we near it
+// function seek(particle, target) {
+//   let { position, velocity, maxVelocity, maxForce } = particle;
+//   let desired = target.clone();
+//   desired.sub(position);
+//   let length = desired.length();
+//   desired.normalize();
+//   desired.multiplyScalar(maxVelocity);
+//   desired.sub(velocity);
+//   if (length > 0) {
+//     desired.divideScalar(1 / length);
+//   }
+//   desired.clampLength(-maxForce, maxForce);
+//   return desired;
+// }
 
-  return (
-    <Block ref={orbs} offset={1} factor={1}>
-      <Block factor={2}>
-        <Orb position={[-2, -2, 0]} scale={[0.5, 0.5, 0.5]} />
-      </Block>
-      <Block factor={3}>
-        <Orb position={[1, 2, 0]} />
-      </Block>
-      <Block factor={4}>
-        <Orb position={[2, -3, 0]} />
-      </Block>
-    </Block>
-  );
-}
+// //returns a vector towards a point, slows down as we near it
+// function flee(particle, target) {
+//   let { position, velocity, maxVelocity, maxForce } = particle;
+//   let desired = position.clone();
+//   desired.sub(target);
+//   let length = desired.length();
+//   desired.normalize();
+//   desired.multiplyScalar(maxVelocity);
+//   desired.sub(velocity);
+//   if (length > 20) {
+//     desired.multiplyScalar(0.0);
+//   }
+//   desired.z = 0;
+//   desired.clampLength(-maxForce, maxForce);
+//   return desired;
+// }
 
-function Orb(props: ReactThreeFiber.Object3DNode<Mesh, typeof Mesh>) {
-  const mode = useMode();
-  const color = mode === 'light' ? 'black' : 'white';
-  const inverse = mode === 'light' ? 'dark' : 'light';
-  const light = colors.values.primary[inverse];
+// //Run alignment, cohesion, and separation as a single loop
+// function runFlocking(particle, particles, index, mousePosition, mousePressed) {
+//   let { maxVelocity, maxForce, velocity, t } = particle;
 
-  return (
-    <mesh {...props}>
-      <sphereBufferGeometry attach="geometry" args={[1, 15, 15]} />
-      <meshPhongMaterial attach="material" color={color} />
-      <pointLight args={[light, 100, 500, 50]} position={[0, 0, 0]} />
-    </mesh>
-  );
-}
+//   //The following const values configure the distances at which to follow other boids
+//   const desiredSeparation = 8 + 5 * Math.sin(t * 0.1);
+//   const desiredAlignment = 30;
+//   const desiredCohesion = 12;
 
-function Dodecahedron({
-  size = 1,
-  position = [0, 0, 0] as [number, number, number],
-}) {
-  const mode = useMode();
-  const primary = colors.values.primary[mode];
+//   //Weights for the flocking simulation
+//   const separationMix = 2.6;
+//   const alignmentMix = 0.6;
+//   const cohesionMix = 0.2;
+//   const mouseMix = 0.8 + Math.sin(t * 0.3) * 0.3;
 
-  useEffect(() => void setColor(primary), [primary]);
+//   let separation = new THREE.Vector3();
+//   let alignment = new THREE.Vector3();
+//   let cohesion = new THREE.Vector3();
+//   let separationCount = 0;
+//   let alignmentCount = 0;
+//   let cohesionCount = 0;
 
-  const ref = useRef<Mesh>(null);
+//   particle.loopStep++;
+//   let loopStart = particle.loopStep % 2 === 0 ? 0 : particles.length / 2;
+//   let loopEnd =
+//     particle.loopStep % 2 === 0 ? particles.length / 2 : particles.length;
 
-  const [color, setColor] = useState(primary);
+//   for (let i = loopStart; i < loopEnd; ++i) {
+//     let { position, velocity } = particles[i];
+//     let d = particle.position.distanceTo(position);
 
-  useFrame(() => {
-    if (ref.current) {
-      ref.current.rotation.z = ref.current.rotation.y += 0.01;
-    }
-  });
+//     //Calculate separation steering forces
+//     if (d > 0 && d < desiredSeparation) {
+//       let diff = particle.position.clone();
+//       diff.sub(position);
+//       diff.divideScalar(d);
+//       separation.add(diff);
+//       separationCount++;
+//     }
 
-  return (
-    <mesh
-      ref={ref}
-      position={position}
-      onPointerOver={() => setColor('hotpink')}
-      onPointerOut={() => setColor(primary)}
-    >
-      <dodecahedronBufferGeometry attach="geometry" args={[size]} />
-      <meshPhongMaterial attach="material" color={color} />
-    </mesh>
-  );
-}
+//     //Calculate cohesion steering forces
+//     if (d > 0 && d < desiredCohesion) {
+//       cohesion.add(position);
+//       cohesionCount++;
+//     }
+
+//     //Calculate alignment steering forces
+//     if (d > 0 && d < desiredAlignment) {
+//       alignment.add(velocity);
+//       alignmentCount++;
+//     }
+//   }
+
+//   //Post-process separation
+//   if (separationCount > 0) {
+//     separation.divideScalar(separationCount);
+//   }
+//   if (separation.length() > 0) {
+//     separation.normalize();
+//     separation.multiplyScalar(maxVelocity);
+//     separation.sub(velocity);
+//     separation.clampLength(-maxForce, maxForce);
+//   }
+
+//   //Post process cohesion
+//   if (cohesionCount > 0) {
+//     cohesion.divideScalar(cohesionCount);
+//   }
+
+//   //Post-process alignment
+//   if (alignmentCount > 0) {
+//     alignment.divideScalar(alignmentCount);
+//   }
+//   if (alignment.length() > 0) {
+//     alignment.normalize();
+//     alignment.multiplyScalar(maxVelocity);
+//     alignment.sub(velocity);
+//     alignment.clampLength(-maxForce, maxForce);
+//   }
+
+//   particle.accelleration.add(separation.multiplyScalar(separationMix));
+//   particle.accelleration.add(
+//     seek(particle, cohesion).multiplyScalar(cohesionMix)
+//   );
+
+//   particle.accelleration.add(alignment.multiplyScalar(alignmentMix));
+
+//   if (mousePressed) {
+//     particle.accelleration.add(flee(particle, mousePosition).multiplyScalar(2));
+//   } else {
+//     let temp = particle.position.clone();
+//     temp.sub(mousePosition);
+//     temp.normalize();
+//     let perp = new THREE.Vector3(temp.y, temp.x, temp.z);
+
+//     perp.multiplyScalar(5);
+//     temp.addVectors(mousePosition, perp);
+
+//     particle.accelleration.add(seek(particle, temp).multiplyScalar(mouseMix));
+//   }
+// }
+
+// export function Flock({ count, mouse }) {
+//   const mesh = useRef();
+//   const light = useRef();
+//   const { size, viewport } = useThree();
+//   const aspect = size.width / viewport.width;
+
+//   const dummy = useMemo(() => new THREE.Object3D(), []);
+//   // Generate some random positions, speed factors and timings
+//   const particles = useMemo(() => {
+//     const temp = [];
+//     for (let i = 0; i < count; i++) {
+//       const t = Math.random() * 100;
+//       const timeSpeed = (0.01 + Math.random() / 200) / 2;
+//       const velocity = new THREE.Vector3(
+//         0.5 - Math.random(),
+//         0.5 - Math.random(),
+//         0.5 - Math.random()
+//       );
+//       const position = new THREE.Vector3(
+//         (0.5 - Math.random()) * 100,
+//         (0.5 - Math.random()) * 100,
+//         (0.5 - Math.random()) * 100
+//       );
+//       const maxVelocity = 1.0 + Math.random() * 0.5;
+//       const maxForce = 0.1;
+//       const accelleration = new THREE.Vector3(0, 0, 0);
+//       const loopStep = 0;
+//       temp.push({
+//         t,
+//         timeSpeed,
+//         position,
+//         velocity,
+//         maxVelocity,
+//         maxForce,
+//         accelleration,
+//         loopStep
+//       });
+//     }
+//     return temp;
+//   }, [count]);
+//   // The innards of this hook will run every frame
+//   useFrame(state => {
+//     let mousePosition = new THREE.Vector3(
+//       mouse.current[0] / aspect,
+//       -mouse.current[1] / aspect,
+//       0
+//     );
+
+//     light.current.position.set(
+//       mousePosition.x,
+//       mousePosition.y,
+//       mousePosition.z
+//     );
+
+//     particles.forEach((particle, i) => {
+//       let { timeSpeed, maxVelocity } = particle;
+
+//       particle.t += timeSpeed;
+
+//       particle.accelleration.x = 0;
+//       particle.accelleration.y = 0;
+//       particle.accelleration.z = 0;
+
+//       runFlocking(particle, particles, i, mousePosition, mouse.current[2]);
+
+//       //Make sure our particles don't change direction too quickly
+//       particle.accelleration.multiplyScalar(0.15);
+
+//       particle.velocity.multiplyScalar(0.999);
+//       particle.velocity.add(particle.accelleration);
+//       particle.velocity.clampScalar(-maxVelocity, maxVelocity);
+
+//       particle.position.add(particle.velocity);
+
+//       // Update the dummy object
+//       dummy.position.set(
+//         particle.position.x,
+//         particle.position.y,
+//         particle.position.z
+//       );
+
+//       let velocityScale = particle.velocity.length() / maxVelocity;
+
+//       dummy.scale.set(velocityScale, velocityScale, 5 * velocityScale);
+
+//       let lookTarget = dummy.position.clone();
+//       lookTarget.add(particle.velocity);
+
+//       dummy.lookAt(lookTarget);
+//       dummy.updateMatrix();
+//       // And apply the matrix to the instanced item
+//       mesh.current.setMatrixAt(i, dummy.matrix);
+//     });
+//     mesh.current.instanceMatrix.needsUpdate = true;
+//   });
+
+//   return (
+//     <>
+//       <pointLight ref={light} distance={30} intensity={5} color="#FFCC66">
+//         <mesh>
+//           <sphereBufferGeometry attach="geometry" args={[2.5, 32, 32]} />
+//           <meshBasicMaterial attach="material" color="#FFCC66" />
+//         </mesh>
+//       </pointLight>
+//       <instancedMesh ref={mesh} args={[null, null, count]}>
+//         <boxBufferGeometry attach="geometry" args={[1.5, 0]} />{" "}
+//         <meshStandardMaterial
+//           attach="material"
+//           wireframe="true"
+//           color="white"
+//         />
+//       </instancedMesh>
+//     </>
+//   );
+// }

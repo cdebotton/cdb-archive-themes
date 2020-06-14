@@ -15,11 +15,9 @@ export default function IndexPage() {
       </Head>
       <Page
         css={mq({
-          marginLeft: [space[4].rem, space[4].rem, space[5].rem],
           display: 'grid',
-          alignContent: 'center',
-          gridTemplateColumns: ['40ch', '50ch'],
-          justifyContent: ['start', 'center'],
+          placeContent: 'center',
+          gridTemplateColumns: ['40ch', '64ch'],
         })}
       >
         <span
@@ -34,33 +32,25 @@ export default function IndexPage() {
           level={1}
           css={mq({
             fontSize: [fontSizes[7].rem, fontSizes[8].rem],
+            margin: 0,
           })}
         >
           My name's <span css={{ color: colors.vars.primary }}>Christian</span>
         </Heading>
-      </Page>
-      <Page
-        css={{
-          display: 'grid',
-          placeContent: 'center',
-          maxWidth: [space[9].rem, space[8].rem],
-          fontSize: [fontSizes[2].rem, fontSizes[3].rem],
-        }}
-      >
-        <p css={mq({})}>
-          I'm an engineer based in <em>San Francisco</em> by way of{' '}
-          <em>Brooklyn</em>, and I work on the frontend platform team at{' '}
-          <a href="https://vimeo.com" target="_BLANK" rel="noreferrer">
-            <VimeoLogo />
-          </a>
-          .
-        </p>
-        <p>
-          In a past life I worked at an agency where I built an an{' '}
-          <a href="https://player.themoth.org">audio player</a> for The Moth, as
-          well as marketing projects for clients such as Netflix, AT&T, Columbia
-          University, and more.
-        </p>
+        <div
+          css={mq({
+            fontSize: [fontSizes[3].rem, fontSizes[4].rem],
+          })}
+        >
+          <p>
+            I'm an engineer based in <em>San Francisco</em> by way of{' '}
+            <em>Brooklyn</em>, and I work on the frontend platform team at{' '}
+            <a href="https://vimeo.com" target="_BLANK" rel="noreferrer">
+              <VimeoLogo />
+            </a>
+            .
+          </p>
+        </div>
       </Page>
     </>
   );

@@ -22,7 +22,8 @@ const offsetContext = createContext(0);
 export const Block = forwardRef<Group, Props>(
   ({ children, offset, factor, ...props }, outerRef) => {
     const { offset: parentOffset, sectionHeight } = useBlock();
-    const ref = outerRef ?? useRef<Group>();
+    const innerRef = useRef<Group>();
+    const ref = outerRef ?? innerRef;
 
     offset = offset ?? parentOffset;
 

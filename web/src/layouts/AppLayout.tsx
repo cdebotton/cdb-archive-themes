@@ -9,39 +9,12 @@ interface Props {
 
 export function AppLayout({ children }: Props) {
   return (
-    <div
-      css={mq({
-        position: 'relative',
-        display: 'grid',
-        gridTemplateColumns: ['100vw', 'min-content auto'],
-        justifyContent: 'start',
-        alignItems: 'start',
-      })}
-    >
-      <nav
-        css={mq({
-          position: 'sticky',
-          writingMode: ['inherit', 'vertical-lr'],
-          display: 'grid',
-          top: 0,
-          gridAutoFlow: 'column',
-          placeContent: 'start',
-          alignItems: 'center',
-          fontSize: [fontSizes[1], fontSizes[2]],
-          gridGap: [space[2].rem, space[4].rem],
-          padding: `${space[5].rem} ${space[4].rem} ${space[4].rem}`,
-        })}
-      >
-        <Link exact href="/">
-          Home
-        </Link>
-        <Link href="/photo">Photography</Link>
-        <Link href="/dev">Engineering</Link>
-        <Link href="/blog">Writing</Link>
-        <ThemeToggle />
-      </nav>
+    <>
       <div>{children}</div>
-    </div>
+      <ThemeToggle
+        css={{ position: 'fixed', top: space[4].rem, right: space[4].rem }}
+      />
+    </>
   );
 }
 
@@ -84,7 +57,7 @@ function ThemeToggle({ className }: ThemeToggleProps) {
       })}
       onClick={toggle}
     >
-      <span css={{ writingMode: ['inherit', 'vertical-lr'] }}>{text}</span>
+      {text}
     </button>
   );
 }
