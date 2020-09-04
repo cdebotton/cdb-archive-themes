@@ -39,7 +39,7 @@
     "facepaint": "^1.2.1",
     "nice-color-palettes": "^3.0.0",
     "polished": "^3.6.5",
-    "react": "^0.0.0-experimental-33c3af284",
+    "react": "^0.14.0",
     "react-dom": "^0.0.0-experimental-33c3af284",
     "react-spring": "^9.0.0-rc.3",
     "react-three-fiber": "^4.2.10",
